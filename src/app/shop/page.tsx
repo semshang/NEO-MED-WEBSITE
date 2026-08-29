@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { CATEGORIES } from "@/data/products";
+import ProductAction from "@/components/ProductAction";
 
 export default function Shop() {
   const { products } = useAdmin();
@@ -132,22 +133,7 @@ export default function Shop() {
                       <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
                       <h3 className="font-bold text-brand-navy mb-4 text-lg leading-tight">{product.name}</h3>
                       <div className="mt-auto pt-4 border-t border-slate-100">
-                        {product.stock === 0 ? (
-                          <div className="w-full bg-slate-100 text-slate-500 py-3 rounded-xl font-bold flex items-center justify-center cursor-not-allowed">
-                            <span className="text-red-500">Out of Stock</span>
-                          </div>
-                        ) : (
-                          <motion.div whileTap={{ scale: 0.97 }}>
-                            <Link 
-                              href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`} 
-                              target="_blank"
-                              className="w-full bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white py-3 rounded-xl font-bold transition-opacity flex items-center justify-center space-x-2 shadow-sm"
-                            >
-                              <MessageCircle size={18} />
-                              <span>Inquire on WhatsApp</span>
-                            </Link>
-                          </motion.div>
-                        )}
+                        <ProductAction product={product} />
                       </div>
                     </div>
                   </motion.div>

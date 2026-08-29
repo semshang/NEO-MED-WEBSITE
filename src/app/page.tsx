@@ -6,6 +6,7 @@ import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "luci
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { useAdmin } from "@/components/admin/AdminProvider";
+import ProductAction from '@/components/ProductAction';
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -263,21 +264,8 @@ export default function Home() {
                     <div className="p-6 flex flex-col flex-grow">
                       <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
                       <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">{product.name}</h3>
-                      <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
-                        {product.stock === 0 ? (
-                          <span className="font-bold text-red-500 text-sm w-full text-center py-1">Out of Stock</span>
-                        ) : (
-                          <>
-                            <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
-                            <Link 
-                              href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`}
-                              target="_blank"
-                              className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300"
-                            >
-                              <ArrowRight size={18} />
-                            </Link>
-                          </>
-                        )}
+                      <div className="mt-auto pt-4 border-t border-slate-100">
+                        <ProductAction product={product} />
                       </div>
                     </div>
                   </motion.div>

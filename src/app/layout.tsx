@@ -7,6 +7,7 @@ import { Providers } from "@/components/Providers";
 import { SITE } from "@/config/site";
 import { LoginModal } from "@/components/LoginModal";
 import { Suspense } from "react";
+import CartOverlay from "@/components/CartOverlay";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <main className="min-h-screen">
             {children}
           </main>
+          <CartOverlay />
           <Footer />
           <Suspense fallback={null}>
             <LoginModal />
