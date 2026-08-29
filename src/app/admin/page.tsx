@@ -40,13 +40,13 @@ export default function AdminDashboard() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" as any }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="relative"
           >
             <motion.button 
               initial={{ boxShadow: "0 0 0 0 rgba(27, 110, 194, 0)" }}
               animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(27, 110, 194, 0.4)", "0 0 0 10px rgba(27, 110, 194, 0)"] }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" as any }}
+              transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all block"
             >
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
               <div className="absolute top-16 left-0 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
                 <div className="px-4 py-2 border-b border-slate-100 mb-1">
                   <p className="text-sm font-bold text-brand-navy truncate">
-                    {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session?.user?.name}
+                    {session?.user?.name}
                   </p>
                   <p className="text-xs text-slate-500 truncate">{session?.user?.email}</p>
                 </div>
@@ -85,15 +85,15 @@ export default function AdminDashboard() {
             <motion.h1 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as any }}
+              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
               className="text-2xl md:text-3xl font-bold text-brand-navy"
             >
-              Welcome back, {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : (session?.user?.name ? session.user.name.split(' ')[0] : "Admin")}
+              Welcome back, {session?.user?.name || "Admin"}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as any }}
+              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" }}
               className="text-slate-500 text-sm md:text-base mt-1"
             >
               Here is what is happening today &mdash; {today}
