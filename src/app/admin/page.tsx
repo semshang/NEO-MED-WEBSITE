@@ -40,13 +40,13 @@ export default function AdminDashboard() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeOut" as any }}
             className="relative"
           >
             <motion.button 
               initial={{ boxShadow: "0 0 0 0 rgba(27, 110, 194, 0)" }}
               animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(27, 110, 194, 0.4)", "0 0 0 10px rgba(27, 110, 194, 0)"] }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" as any }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all block"
             >
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
             <motion.h1 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as any }}
               className="text-2xl md:text-3xl font-bold text-brand-navy"
             >
               Welcome back, {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : (session?.user?.name ? session.user.name.split(' ')[0] : "Admin")}
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
             <motion.p 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" }}
+              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as any }}
               className="text-slate-500 text-sm md:text-base mt-1"
             >
               Here is what is happening today &mdash; {today}

@@ -11,7 +11,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as any } }
 };
 
 const staggerContainer = {
@@ -26,22 +26,22 @@ const staggerContainer = {
 
 const heroBadgeVariant = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
+  visible: { opacity: 1, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" as any } }
 };
 
 const heroHeadlineVariant = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" as any } }
 };
 
 const heroSubtextVariant = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" as any } }
 };
 
 const heroButtonsVariant = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" as any } }
 };
 
 export default function Home() {
@@ -146,7 +146,7 @@ export default function Home() {
                 initial={{ rotate: -15, scale: 0.8 }}
                 whileInView={{ rotate: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.4, ease: "easeOut" as any }}
                 className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
               >
                 <Clock size={28} />
@@ -161,7 +161,7 @@ export default function Home() {
                 initial={{ rotate: -15, scale: 0.8 }}
                 whileInView={{ rotate: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.4, ease: "easeOut" as any }}
                 className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
               >
                 <ShieldCheck size={28} />
@@ -176,7 +176,7 @@ export default function Home() {
                 initial={{ rotate: -15, scale: 0.8 }}
                 whileInView={{ rotate: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
+                transition={{ duration: 0.4, ease: "easeOut" as any }}
                 className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
               >
                 <Truck size={28} />
@@ -232,7 +232,7 @@ export default function Home() {
               {PRODUCTS.slice(0, 6).map((product) => (
                 <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
                   <motion.div 
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
                     className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
@@ -242,7 +242,7 @@ export default function Home() {
                       <motion.div 
                         className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        transition={{ duration: 0.2, ease: "easeOut" as any }}
                       >
                         {/* Try to render image, fallback to text if missing */}
                         <img 

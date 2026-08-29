@@ -100,16 +100,16 @@ export default function Shop() {
                     key={product.id}
                     variants={{
                       hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as any } }
                     }}
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
                     className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <motion.div 
                         className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        transition={{ duration: 0.2, ease: "easeOut" as any }}
                       >
                         {/* Fallback span if image is missing, but try to render image first */}
                         <img 
