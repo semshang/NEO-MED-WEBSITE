@@ -5,13 +5,23 @@ import { useState } from "react";
 
 import Image from "next/image";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 
+const NAV_LINKS = [
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/shop" },
+  { name: "About Us", href: "/about" },
+  { name: "FAQs", href: "/faq" },
+  { name: "Contact", href: "/contact" },
+];
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,54 +32,73 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`w-full sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white/80 backdrop-blur-sm shadow-sm'}`}>
+    <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-slate-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
       {/* Top Bar */}
-      <div className="bg-brand-gray text-brand-navy py-2 px-4 text-sm border-b border-slate-200">
+      <div className="bg-brand-navy text-slate-200 py-2.5 px-4 text-sm font-medium">
         <div className="container mx-auto flex justify-between items-center max-w-7xl">
           <div className="flex items-center space-x-6 hidden md:flex">
-            <div className="flex items-center space-x-2">
-              <Phone size={14} className="text-brand-green" />
+            <div className="flex items-center space-x-2.5">
+              <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <Phone size={12} className="text-white" />
+              </div>
               <span>{SITE.phone}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <Mail size={14} className="text-brand-green" />
+            <div className="flex items-center space-x-2.5">
+              <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <Mail size={12} className="text-white" />
+              </div>
               <span>{SITE.email}</span>
             </div>
           </div>
-          <div className="flex items-center space-x-2 text-center w-full md:w-auto md:text-right text-xs md:text-sm">
-            <MapPin size={14} className="inline mr-1 text-brand-green" />
-            <span>{SITE.fullAddress}</span>
+          <div className="flex items-center justify-center md:justify-end space-x-2.5 w-full md:w-auto text-xs md:text-sm">
+            <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <MapPin size={12} className="text-white" />
+            </div>
+            <span>{SITE.address.split(',')[0]}, Nepal</span>
           </div>
         </div>
       </div>
 
       {/* Main Navigation */}
-      <div className="container mx-auto px-4 py-4 max-w-7xl flex justify-between items-center">
+      <div className="container mx-auto px-4 py-5 max-w-7xl flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image 
             src="/logo-transparent.png" 
             alt="Neomeditech Logo" 
-            width={200} 
-            height={60} 
-            className="h-16 w-auto object-contain"
+            width={240} 
+            height={80} 
+            className="h-20 w-auto object-contain"
             priority
           />
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-8 font-medium text-brand-navy">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <Link href="/shop" className="hover:text-brand-blue transition-colors">Shop</Link>
-          <Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link>
-          <Link href="/faq" className="hover:text-brand-blue transition-colors">FAQs</Link>
-          <Link href="/contact" className="hover:text-brand-blue transition-colors">Contact</Link>
+        <nav className="hidden md:flex items-center space-x-10 font-medium text-brand-navy tracking-[0.01em]">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.name}
+                href={link.href} 
+                className={`relative group py-2 transition-colors duration-200 ${isActive ? 'text-brand-blue' : 'hover:text-brand-blue'}`}
+              >
+                {link.name}
+                {/* Active Indicator / Hover Underline */}
+                <span 
+                  className={`absolute bottom-0 left-0 h-[2px] bg-brand-blue transition-all duration-200 ease-out ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* CTA */}
         <div className="hidden md:block">
           <motion.div whileTap={{ scale: 0.97 }}>
-            <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-medium transition-opacity shadow-sm block text-center">
+            <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
               Get a Quote
             </Link>
           </motion.div>
@@ -87,13 +116,21 @@ export default function Header() {
       {/* Mobile Nav */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 absolute w-full left-0 shadow-lg">
-          <nav className="flex flex-col p-4 space-y-4 font-medium text-brand-navy">
-            <Link href="/" className="hover:text-brand-blue" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link href="/shop" className="hover:text-brand-blue" onClick={() => setIsMenuOpen(false)}>Shop</Link>
-            <Link href="/about" className="hover:text-brand-blue" onClick={() => setIsMenuOpen(false)}>About Us</Link>
-            <Link href="/faq" className="hover:text-brand-blue" onClick={() => setIsMenuOpen(false)}>FAQs</Link>
-            <Link href="/contact" className="hover:text-brand-blue" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-            <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green text-white text-center px-4 py-3 rounded-xl font-medium w-full mt-2" onClick={() => setIsMenuOpen(false)}>
+          <nav className="flex flex-col p-4 space-y-4 font-medium text-brand-navy tracking-[0.01em]">
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                  key={link.name}
+                  href={link.href} 
+                  className={`transition-colors ${isActive ? 'text-brand-blue font-bold' : 'hover:text-brand-blue'}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+            <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green text-white text-center px-4 py-3 rounded-xl font-bold w-full mt-2 shadow-sm" onClick={() => setIsMenuOpen(false)}>
               Get a Quote
             </Link>
           </nav>
