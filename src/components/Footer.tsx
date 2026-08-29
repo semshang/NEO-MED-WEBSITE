@@ -2,7 +2,6 @@ import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
-import Image from "next/image";
 import { SITE } from "@/config/site";
 
 export default function Footer() {
@@ -12,15 +11,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand & About */}
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center bg-white p-3 rounded-2xl shadow-sm border border-slate-100 max-w-fit">
-              <Image 
-                src="/logo.png" 
-                alt="Neomeditech Logo" 
-                width={200} 
-                height={60} 
-                className="h-12 w-auto object-contain"
-              />
-            </Link>
+
             <p className="text-sm text-slate-400 mt-4 leading-relaxed">
               Your trusted partner in providing premium medical and hospital equipment in Nepal. Genuine products, expert service, nationwide delivery.
             </p>
