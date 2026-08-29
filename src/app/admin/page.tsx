@@ -58,7 +58,9 @@ export default function AdminDashboard() {
             {isDropdownOpen && (
               <div className="absolute top-16 left-0 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
                 <div className="px-4 py-2 border-b border-slate-100 mb-1">
-                  <p className="text-sm font-bold text-brand-navy truncate">{session?.user?.name}</p>
+                  <p className="text-sm font-bold text-brand-navy truncate">
+                    {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session?.user?.name}
+                  </p>
                   <p className="text-xs text-slate-500 truncate">{session?.user?.email}</p>
                 </div>
                 <button 
@@ -72,7 +74,7 @@ export default function AdminDashboard() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-brand-navy">
-              Welcome back, {session?.user?.name ? session.user.name.split(' ')[0] : "Admin"}
+              Welcome back, {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : (session?.user?.name ? session.user.name.split(' ')[0] : "Admin")}
             </h1>
             <p className="text-slate-500 text-sm md:text-base mt-1">
               Here is what is happening today &mdash; {today}

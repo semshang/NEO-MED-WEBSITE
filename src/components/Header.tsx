@@ -112,7 +112,7 @@ export default function Header() {
                 )}
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-brand-navy leading-none">
-                    {session.user?.name?.split(' ')[0]}
+                    {session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name?.split(' ')[0]}
                   </span>
                   {session.user?.role === "admin" ? (
                     <Link href="/admin" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Admin</Link>
@@ -171,7 +171,7 @@ export default function Header() {
                     <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
                   )}
                   <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors text-slate-500">
-                    Sign Out ({session.user?.name})
+                    Sign Out ({session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name})
                   </button>
                 </>
               ) : (
