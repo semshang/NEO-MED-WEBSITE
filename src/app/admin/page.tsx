@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -36,10 +37,18 @@ export default function AdminDashboard() {
       {/* Welcome Header */}
       <div className="flex items-center justify-between mb-12 pb-6 border-b border-slate-200">
         <div className="flex items-center space-x-4">
-          <div className="relative">
-            <button 
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="relative"
+          >
+            <motion.button 
+              initial={{ boxShadow: "0 0 0 0 rgba(27, 110, 194, 0)" }}
+              animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(27, 110, 194, 0.4)", "0 0 0 10px rgba(27, 110, 194, 0)"] }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all"
+              className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all block"
             >
               {session?.user?.image ? (
                 <img 
@@ -52,7 +61,7 @@ export default function AdminDashboard() {
                   {session?.user?.name ? session.user.name.charAt(0) : "A"}
                 </div>
               )}
-            </button>
+            </motion.button>
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
@@ -71,14 +80,24 @@ export default function AdminDashboard() {
                 </button>
               </div>
             )}
-          </div>
+          </motion.div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-brand-navy">
+            <motion.h1 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+              className="text-2xl md:text-3xl font-bold text-brand-navy"
+            >
               Welcome back, {session?.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : (session?.user?.name ? session.user.name.split(' ')[0] : "Admin")}
-            </h1>
-            <p className="text-slate-500 text-sm md:text-base mt-1">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" }}
+              className="text-slate-500 text-sm md:text-base mt-1"
+            >
               Here is what is happening today &mdash; {today}
-            </p>
+            </motion.p>
           </div>
         </div>
       </div>
