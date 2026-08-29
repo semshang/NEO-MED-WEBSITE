@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
@@ -23,14 +24,24 @@ const staggerContainer = {
   }
 };
 
-const heroFadeUpVariant = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+const heroBadgeVariant = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
 };
 
-const scaleInVariant = {
+const heroHeadlineVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
+};
+
+const heroSubtextVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" } }
+};
+
+const heroButtonsVariant = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }
 };
 
 export default function Home() {
@@ -42,51 +53,79 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative bg-brand-gray py-20 overflow-hidden">
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-[500px] md:min-h-[600px] flex items-center justify-start overflow-hidden">
+        {/* Background Image with slow zoom */}
+        <motion.div 
+          className="absolute inset-0 z-0"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 20, ease: "easeInOut", repeat: Infinity }}
+        >
+          <Image 
+            src="/hero.jpg" 
+            alt="Medical Equipment in use" 
+            fill 
+            className="object-cover object-center" 
+            priority 
+          />
+        </motion.div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/70 to-transparent z-10"></div>
+
+        {/* Content */}
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 pt-24 pb-24">
+          <div className="max-w-3xl">
+            {/* Badge */}
             <motion.div 
-              variants={staggerContainer}
+              variants={heroBadgeVariant}
               initial="hidden"
               animate="visible"
-              className="space-y-8"
+              className="inline-flex items-center space-x-2 border border-brand-green/50 text-white px-5 py-2 rounded-full text-sm font-medium bg-white/10 backdrop-blur-sm mb-8"
             >
-              <motion.div variants={heroFadeUpVariant} className="inline-block border border-brand-green/30 text-brand-green px-4 py-1.5 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm">
-                Leading Biomedical Solutions in Nepal
-              </motion.div>
-              <motion.h1 variants={heroFadeUpVariant} className="text-5xl md:text-6xl font-extrabold text-brand-navy leading-tight">
-                Premium Medical <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">Equipment</span> You Can Trust
-              </motion.h1>
-              <motion.p variants={heroFadeUpVariant} className="text-lg text-slate-600 leading-relaxed max-w-lg">
-                We provide state-of-the-art biomedical equipment, reliable repair services, and expert support for hospitals, clinics, and individuals across Nepal.
-              </motion.p>
-              <motion.div variants={scaleInVariant} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <motion.div whileTap={{ scale: 0.97 }}>
-                  <Link href="/shop" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md flex items-center justify-center w-full">
-                    Explore Products
-                    <ArrowRight size={18} className="ml-2" />
-                  </Link>
-                </motion.div>
-                <motion.div whileTap={{ scale: 0.97 }}>
-                  <Link href="/contact" className="bg-white hover:bg-slate-50 text-brand-blue border-2 border-brand-blue px-8 py-3.5 rounded-xl font-bold transition-colors shadow-sm text-center block w-full">
-                    Contact Us
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              className="relative"
-            >
-              {/* Subtle accent shape instead of huge blue wash */}
-              <div className="absolute -top-10 -right-10 w-64 h-64 bg-gradient-to-br from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl z-0"></div>
-              <div className="bg-white p-4 rounded-3xl shadow-xl relative z-10 border border-slate-100 transform rotate-1">
-                <div className="bg-brand-gray aspect-video rounded-2xl flex items-center justify-center text-slate-400">
-                  <span className="text-lg">Hero Image Placeholder</span>
-                </div>
+              <div className="bg-brand-green rounded-full p-1">
+                <ShieldCheck size={14} className="text-white" />
               </div>
+              <span>Trusted by 500+ hospitals across Nepal</span>
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1 
+              variants={heroHeadlineVariant}
+              initial="hidden"
+              animate="visible"
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6"
+            >
+              Premium Medical <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">Equipment</span> You Can Trust
+            </motion.h1>
+
+            {/* Subtext */}
+            <motion.p 
+              variants={heroSubtextVariant}
+              initial="hidden"
+              animate="visible"
+              className="text-lg md:text-xl text-slate-200 leading-relaxed max-w-2xl mb-10"
+            >
+              We provide state-of-the-art biomedical equipment, reliable repair services, and expert support for hospitals, clinics, and individuals across Nepal.
+            </motion.p>
+
+            {/* Buttons */}
+            <motion.div 
+              variants={heroButtonsVariant}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+            >
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/shop" className="bg-gradient-to-r from-brand-blue to-brand-green text-white px-8 py-4 rounded-full font-bold shadow-lg flex items-center justify-center w-full transition-transform">
+                  Explore Products
+                  <ArrowRight size={18} className="ml-2" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link href="/contact" className="bg-transparent hover:bg-white text-white hover:text-brand-navy border-2 border-white px-8 py-3.5 rounded-full font-bold transition-colors shadow-sm text-center block w-full">
+                  Contact Us
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
         </div>
