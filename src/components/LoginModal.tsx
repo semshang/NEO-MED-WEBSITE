@@ -94,6 +94,7 @@ export function LoginModal() {
                   width={240} 
                   height={75} 
                   className="h-16 w-auto object-contain mb-8"
+                  style={{ width: 'auto' }}
                   priority
                 />
                 
@@ -193,6 +194,7 @@ export function LoginModal() {
                     width={160} 
                     height={50} 
                     className="h-10 w-auto object-contain mb-8 md:hidden"
+                    style={{ width: 'auto' }}
                   />
 
                   <h3 className="text-2xl font-bold text-brand-navy text-center w-full">Welcome Back</h3>
