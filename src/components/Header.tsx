@@ -48,7 +48,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image 
-            src="/logo.png" 
+            src="/logo-transparent.png" 
             alt="Neomeditech Logo" 
             width={200} 
             height={60} 
