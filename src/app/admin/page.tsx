@@ -5,25 +5,27 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Clock, Package, Users, Plus, List, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-const stats = [
-  { name: "Total Orders", value: "24", icon: ShoppingBag, change: "+5 this week", color: "text-brand-navy" },
-  { name: "Pending Orders", value: "3", icon: Clock, highlight: true, color: "text-amber-500" },
-  { name: "Total Products", value: "28", icon: Package, color: "text-brand-navy" },
-  { name: "Total Customers", value: "15", icon: Users, color: "text-brand-navy" },
-];
-
-const recentOrders = [
-  { id: "#ORD-089", customer: "Rajendra Thapa", product: "EliteFlow Portable Oxygen Concentrator", date: "Aug 29, 2026", status: "New" },
-  { id: "#ORD-088", customer: "Sita Sharma", product: "ECG Machine", date: "Aug 28, 2026", status: "Confirmed" },
-  { id: "#ORD-087", customer: "Bikash Gurung", product: "Digital Glucometer", date: "Aug 27, 2026", status: "Delivered" },
-  { id: "#ORD-086", customer: "Anita Maharjan", product: "Diamond Manual BP Cuff", date: "Aug 25, 2026", status: "Delivered" },
-  { id: "#ORD-085", customer: "Prakash Shrestha", product: "Ultrasound Transmission Gel", date: "Aug 22, 2026", status: "Confirmed" },
-];
+import { useAdmin } from "@/components/admin/AdminProvider";
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  const { orders, products } = useAdmin();
+
+  const totalOrders = orders.length;
+  const pendingOrders = orders.filter(o => o.status === 'New').length;
+  const totalProducts = products.length;
+  const totalCustomers = new Set(orders.map(o => o.customerEmail)).size;
+
+  const stats = [
+    { name: "Total Orders", value: totalOrders.toString(), icon: ShoppingBag, change: "+5 this week", color: "text-brand-navy" },
+    { name: "Pending Orders", value: pendingOrders.toString(), icon: Clock, highlight: pendingOrders > 0, color: pendingOrders > 0 ? "text-amber-500" : "text-brand-navy" },
+    { name: "Total Products", value: totalProducts.toString(), icon: Package, color: "text-brand-navy" },
+    { name: "Total Customers", value: totalCustomers.toString(), icon: Users, color: "text-brand-navy" },
+  ];
+
+  const recentOrders = [...orders].reverse().slice(0, 5);
 
   if (status === "loading") {
     return (
@@ -169,13 +171,15 @@ export default function AdminDashboard() {
                 {recentOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="py-4 px-6 text-sm font-medium text-brand-navy">{order.id}</td>
-                    <td className="py-4 px-6 text-sm text-slate-600">{order.customer}</td>
-                    <td className="py-4 px-6 text-sm text-slate-600 max-w-[200px] truncate" title={order.product}>{order.product}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{order.customerName}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600 max-w-[200px] truncate" title={order.items.map(i=>i.name).join(", ")}>{order.items.map(i=>i.name).join(", ")}</td>
                     <td className="py-4 px-6 text-sm text-slate-500">{order.date}</td>
                     <td className="py-4 px-6 text-sm">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         order.status === 'New' ? 'bg-blue-100 text-blue-800' :
                         order.status === 'Confirmed' ? 'bg-amber-100 text-amber-800' :
+                        order.status === 'Processing' ? 'bg-purple-100 text-purple-800' :
+                        order.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
                         'bg-green-100 text-green-800'
                       }`}>
                         {order.status}
@@ -200,13 +204,13 @@ export default function AdminDashboard() {
           transition={{ duration: 0.4, delay: 0.55, ease: "easeOut" as any }}
           className="flex flex-col space-y-4"
         >
-          <Link href="/admin/products/new" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
+          <Link href="/admin/products" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
             <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
               <Plus className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Add New Product</h3>
-              <p className="text-sm text-slate-500 mt-1">Publish a new item to catalog</p>
+              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Manage Products</h3>
+              <p className="text-sm text-slate-500 mt-1">Add or edit catalog items</p>
             </div>
           </Link>
           

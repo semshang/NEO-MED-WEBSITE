@@ -1,4 +1,5 @@
 import { AdminSidebar } from "@/components/AdminSidebar";
+import { AdminProvider } from "@/components/admin/AdminProvider";
 
 export default function AdminLayout({
   children,
@@ -6,7 +7,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex bg-[#F5F7FA] min-h-[calc(100vh-100px)]">
+    <AdminProvider>
+      <div className="flex bg-[#F5F7FA] min-h-[calc(100vh-100px)]">
       {/* Sidebar - fixed to left side */}
       <div 
         className="hidden lg:block fixed left-0 bottom-0 w-64 bg-white border-r border-slate-200 overflow-y-auto z-40"
@@ -20,5 +22,6 @@ export default function AdminLayout({
         {children}
       </div>
     </div>
+    </AdminProvider>
   );
 }
