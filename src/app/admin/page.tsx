@@ -3,6 +3,23 @@
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { ShoppingBag, Clock, Package, Users, Plus, List, ArrowRight } from "lucide-react";
+import Link from "next/link";
+
+const stats = [
+  { name: "Total Orders", value: "24", icon: ShoppingBag, change: "+5 this week", color: "text-brand-navy" },
+  { name: "Pending Orders", value: "3", icon: Clock, highlight: true, color: "text-amber-500" },
+  { name: "Total Products", value: "28", icon: Package, color: "text-brand-navy" },
+  { name: "Total Customers", value: "15", icon: Users, color: "text-brand-navy" },
+];
+
+const recentOrders = [
+  { id: "#ORD-089", customer: "Rajendra Thapa", product: "EliteFlow Portable Oxygen Concentrator", date: "Aug 29, 2026", status: "New" },
+  { id: "#ORD-088", customer: "Sita Sharma", product: "ECG Machine", date: "Aug 28, 2026", status: "Confirmed" },
+  { id: "#ORD-087", customer: "Bikash Gurung", product: "Digital Glucometer", date: "Aug 27, 2026", status: "Delivered" },
+  { id: "#ORD-086", customer: "Anita Maharjan", product: "Diamond Manual BP Cuff", date: "Aug 25, 2026", status: "Delivered" },
+  { id: "#ORD-085", customer: "Prakash Shrestha", product: "Ultrasound Transmission Gel", date: "Aug 22, 2026", status: "Confirmed" },
+];
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -10,21 +27,18 @@ export default function AdminDashboard() {
 
   if (status === "loading") {
     return (
-      <div className="container mx-auto px-4 py-20 max-w-7xl min-h-[60vh]">
-        <div className="flex items-center space-x-4 mb-12 pb-6 border-b border-slate-100">
+      <div className="px-6 py-10 lg:px-10">
+        <div className="flex items-center space-x-4 mb-12 pb-6 border-b border-slate-200/60">
           <div className="w-14 h-14 bg-slate-200 rounded-full animate-pulse"></div>
           <div className="space-y-3">
             <div className="h-7 w-48 bg-slate-200 rounded animate-pulse"></div>
             <div className="h-4 w-64 bg-slate-200 rounded animate-pulse"></div>
           </div>
         </div>
-        <div className="h-10 w-64 bg-slate-200 rounded animate-pulse mb-4"></div>
-        <div className="h-6 w-96 bg-slate-200 rounded animate-pulse"></div>
       </div>
     );
   }
 
-  // Formatting current date
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -33,22 +47,22 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-20 max-w-7xl min-h-[60vh]">
+    <div className="px-6 py-10 lg:px-10">
       {/* Welcome Header */}
-      <div className="flex items-center justify-between mb-12 pb-6 border-b border-slate-200">
+      <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-200/60">
         <div className="flex items-center space-x-4">
           <motion.div 
             initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: "easeOut" as any }}
             className="relative"
           >
             <motion.button 
               initial={{ boxShadow: "0 0 0 0 rgba(27, 110, 194, 0)" }}
               animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(27, 110, 194, 0.4)", "0 0 0 10px rgba(27, 110, 194, 0)"] }}
-              transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }}
+              transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" as any }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all block"
+              className="focus:outline-none rounded-full ring-2 ring-transparent focus:ring-brand-blue transition-all block bg-white"
             >
               {session?.user?.image ? (
                 <img 
@@ -63,7 +77,6 @@ export default function AdminDashboard() {
               )}
             </motion.button>
 
-            {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div className="absolute top-16 left-0 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1 z-50">
                 <div className="px-4 py-2 border-b border-slate-100 mb-1">
@@ -85,7 +98,7 @@ export default function AdminDashboard() {
             <motion.h1 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+              transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as any }}
               className="text-2xl md:text-3xl font-bold text-brand-navy"
             >
               Welcome back, {session?.user?.name || "Admin"}
@@ -93,7 +106,7 @@ export default function AdminDashboard() {
             <motion.p 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" }}
+              transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as any }}
               className="text-slate-500 text-sm md:text-base mt-1"
             >
               Here is what is happening today &mdash; {today}
@@ -102,9 +115,123 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Existing Content */}
-      <h1 className="text-4xl font-bold text-brand-navy mb-4">Admin Dashboard</h1>
-      <p className="text-slate-600">Welcome to the Neomeditech admin panel.</p>
+      {/* Stats Row */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {stats.map((stat, i) => (
+          <motion.div
+            key={stat.name}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 + (i * 0.05), ease: "easeOut" as any }}
+            className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <p className="text-slate-500 font-medium">{stat.name}</p>
+              <div className={`p-2 rounded-lg ${stat.highlight ? 'bg-amber-50' : 'bg-brand-blue/5'}`}>
+                <stat.icon className={`w-5 h-5 ${stat.highlight ? 'text-amber-500' : 'text-brand-blue'}`} />
+              </div>
+            </div>
+            <div>
+              <h3 className={`text-3xl font-bold ${stat.color}`}>{stat.value}</h3>
+              {stat.change && (
+                <p className="text-green-600 text-sm font-medium mt-2">{stat.change}</p>
+              )}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Recent Orders Table */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" as any }}
+          className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden"
+        >
+          <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-brand-navy">Recent Orders</h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[600px]">
+              <thead>
+                <tr className="bg-slate-50/50">
+                  <th className="py-3 px-6 text-xs font-semibold text-slate-500 uppercase">Order ID</th>
+                  <th className="py-3 px-6 text-xs font-semibold text-slate-500 uppercase">Customer</th>
+                  <th className="py-3 px-6 text-xs font-semibold text-slate-500 uppercase">Product</th>
+                  <th className="py-3 px-6 text-xs font-semibold text-slate-500 uppercase">Date</th>
+                  <th className="py-3 px-6 text-xs font-semibold text-slate-500 uppercase">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {recentOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="py-4 px-6 text-sm font-medium text-brand-navy">{order.id}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600">{order.customer}</td>
+                    <td className="py-4 px-6 text-sm text-slate-600 max-w-[200px] truncate" title={order.product}>{order.product}</td>
+                    <td className="py-4 px-6 text-sm text-slate-500">{order.date}</td>
+                    <td className="py-4 px-6 text-sm">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        order.status === 'New' ? 'bg-blue-100 text-blue-800' :
+                        order.status === 'Confirmed' ? 'bg-amber-100 text-amber-800' :
+                        'bg-green-100 text-green-800'
+                      }`}>
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="p-4 border-t border-slate-100 flex justify-end bg-slate-50/30">
+            <Link href="/admin/orders" className="text-sm font-medium text-brand-blue flex items-center hover:text-brand-navy transition-colors">
+              View all orders <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* Quick Actions */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.55, ease: "easeOut" as any }}
+          className="flex flex-col space-y-4"
+        >
+          <Link href="/admin/products/new" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
+            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
+              <Plus className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Add New Product</h3>
+              <p className="text-sm text-slate-500 mt-1">Publish a new item to catalog</p>
+            </div>
+          </Link>
+          
+          <Link href="/admin/orders" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
+            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
+              <List className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">View Orders</h3>
+              <p className="text-sm text-slate-500 mt-1">Process pending requests</p>
+            </div>
+          </Link>
+
+          <Link href="/admin/customers" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
+            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
+              <Users className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Manage Customers</h3>
+              <p className="text-sm text-slate-500 mt-1">View customer directory</p>
+            </div>
+          </Link>
+        </motion.div>
+      </div>
+
     </div>
   );
 }
