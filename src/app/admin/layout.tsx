@@ -7,15 +7,13 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex bg-[#F5F7FA] min-h-[calc(100vh-100px)]">
-      {/* Sidebar - fixed position relative to viewport but scrolls inside */}
-      <div className="hidden lg:block w-64 shrink-0 bg-white border-r border-slate-200">
-        <div className="sticky top-[100px] h-[calc(100vh-100px)] overflow-y-auto">
-          <AdminSidebar />
-        </div>
+      {/* Sidebar - fixed to left side */}
+      <div className="hidden lg:block fixed left-0 top-[120px] bottom-0 w-64 bg-white border-r border-slate-200 overflow-y-auto z-40">
+        <AdminSidebar />
       </div>
       
       {/* Main Content Area */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 lg:ml-64 min-w-0">
         {children}
       </div>
     </div>
