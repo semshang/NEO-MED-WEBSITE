@@ -4,6 +4,9 @@ import Link from "next/link";
 import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
+import { PRODUCTS } from "@/data/products";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 const fadeUpVariant = {
   hidden: { opacity: 0, y: 30 },
@@ -31,6 +34,11 @@ const scaleInVariant = {
 };
 
 export default function Home() {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: "start" },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })]
+  );
+
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
@@ -157,55 +165,73 @@ export default function Home() {
               <h2 className="text-3xl font-bold text-brand-navy mb-4">Featured Equipment</h2>
               <p className="text-slate-600 max-w-2xl">Discover our top-rated medical devices trusted by healthcare professionals across the country.</p>
             </div>
-            <Link href="/shop" className="hidden md:flex items-center text-brand-blue font-bold hover:text-brand-blue-700 transition-colors">
-              View All Products
-              <ArrowRight size={16} className="ml-1" />
-            </Link>
+            <div className="hidden md:flex items-center space-x-4">
+              <button 
+                className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-brand-navy hover:text-brand-blue hover:border-brand-blue transition-colors shadow-sm"
+                onClick={() => emblaApi?.scrollPrev()}
+              >
+                <ArrowRight size={20} className="transform rotate-180" />
+              </button>
+              <button 
+                className="w-12 h-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-brand-navy hover:text-brand-blue hover:border-brand-blue transition-colors shadow-sm"
+                onClick={() => emblaApi?.scrollNext()}
+              >
+                <ArrowRight size={20} />
+              </button>
+            </div>
           </motion.div>
 
           <motion.div 
-            variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+            variants={fadeUpVariant}
+            className="overflow-hidden -mx-4 px-4" 
+            ref={emblaRef}
           >
-            {[1, 2, 3, 4].map((item) => (
-              <motion.div 
-                key={item}
-                variants={fadeUpVariant}
-                whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
-              >
-                <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
-                  <div className="absolute inset-0 bg-brand-navy/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 duration-200">
-                    <span className="bg-white text-brand-navy font-bold px-4 py-2 rounded-full shadow-md text-sm border border-slate-100">View Details</span>
-                  </div>
+            <div className="flex">
+              {PRODUCTS.slice(0, 6).map((product) => (
+                <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
                   <motion.div 
-                    className="w-full h-full flex items-center justify-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                    className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
                   >
-                    <span className="text-slate-400 text-sm relative z-0">Product Image</span>
+                    <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
+                      <div className="absolute inset-0 bg-brand-navy/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 duration-200">
+                        <span className="bg-white text-brand-navy font-bold px-4 py-2 rounded-full shadow-md text-sm border border-slate-100">View Details</span>
+                      </div>
+                      <motion.div 
+                        className="w-full h-full flex items-center justify-center"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
+                        <span className="text-slate-400 text-sm relative z-0">Product Image</span>
+                      </motion.div>
+                    </div>
+                    <div className="p-6 flex flex-col flex-grow">
+                      <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
+                      <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">{product.name}</h3>
+                      <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
+                        <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
+                        <Link 
+                          href={`https://wa.me/${SITE.whatsapp}?text=Hi, I would like to inquire about the ${encodeURIComponent(product.name)}`}
+                          target="_blank"
+                          className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300"
+                        >
+                          <ArrowRight size={18} />
+                        </Link>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
-                <div className="p-6 flex flex-col flex-grow">
-                  <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">Category</div>
-                  <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">Premium Oxygen Concentrator 5L</h3>
-                  <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
-                    <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
-                    <button className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300">
-                      <ArrowRight size={18} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </motion.div>
           
-          <div className="mt-10 text-center md:hidden">
-            <Link href="/shop" className="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-800 px-6 py-3 rounded-xl font-semibold w-full">
+          <div className="mt-10 text-center flex flex-col md:flex-row items-center justify-center gap-4">
+            <Link href="/shop" className="inline-flex items-center justify-center bg-white border-2 border-brand-blue text-brand-blue hover:bg-slate-50 px-8 py-3.5 rounded-xl font-bold transition-colors w-full md:w-auto">
               View All Products
+              <ArrowRight size={18} className="ml-2" />
             </Link>
           </div>
         </div>
