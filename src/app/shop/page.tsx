@@ -107,11 +107,23 @@ export default function Shop() {
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <motion.div 
-                        className="w-full h-full flex items-center justify-center"
+                        className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
                       >
-                        <span className="text-slate-400 text-sm relative z-0">Image: {product.name}</span>
+                        {/* Fallback span if image is missing, but try to render image first */}
+                        <img 
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-contain z-10"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 flex items-center justify-center text-center px-4">
+                          Image: {product.name}
+                        </span>
                       </motion.div>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
@@ -121,7 +133,7 @@ export default function Shop() {
                       <div className="mt-auto pt-4 border-t border-slate-100">
                         <motion.div whileTap={{ scale: 0.97 }}>
                           <Link 
-                            href={`https://wa.me/${SITE.whatsapp}?text=Hi, I would like to inquire about the ${encodeURIComponent(product.name)}`} 
+                            href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`} 
                             target="_blank"
                             className="w-full bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white py-3 rounded-xl font-bold transition-opacity flex items-center justify-center space-x-2 shadow-sm"
                           >

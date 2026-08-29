@@ -240,11 +240,23 @@ export default function Home() {
                         <span className="bg-white text-brand-navy font-bold px-4 py-2 rounded-full shadow-md text-sm border border-slate-100">View Details</span>
                       </div>
                       <motion.div 
-                        className="w-full h-full flex items-center justify-center"
+                        className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
                       >
-                        <span className="text-slate-400 text-sm relative z-0">Product Image</span>
+                        {/* Try to render image, fallback to text if missing */}
+                        <img 
+                          src={product.image}
+                          alt={product.name}
+                          className="w-full h-full object-contain z-10"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 flex items-center justify-center text-center px-4">
+                          Image: {product.name}
+                        </span>
                       </motion.div>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
@@ -253,7 +265,7 @@ export default function Home() {
                       <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
                         <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
                         <Link 
-                          href={`https://wa.me/${SITE.whatsapp}?text=Hi, I would like to inquire about the ${encodeURIComponent(product.name)}`}
+                          href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`}
                           target="_blank"
                           className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300"
                         >
