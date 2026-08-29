@@ -14,7 +14,6 @@ function LoginCard() {
 
   const handleSignIn = async () => {
     setIsLoading(true);
-    // signIn handles the redirect to Google
     await signIn("google", { callbackUrl: "/" });
   };
 
@@ -36,9 +35,9 @@ function LoginCard() {
       variants={cardVariants}
       initial="hidden"
       animate={error ? ["visible", "errorShake"] : "visible"}
-      className="bg-white p-8 md:p-12 rounded-2xl w-full max-w-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:shadow-none"
+      className="bg-white p-8 md:p-12 rounded-2xl w-full max-w-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:shadow-none flex flex-col justify-center"
     >
-      <div className="mb-10 text-center md:text-left">
+      <div className="mb-8 text-center md:text-left">
         <h2 className="text-3xl font-bold text-brand-navy mb-2 relative inline-block">
           Welcome to Neomeditech
           <motion.div 
@@ -61,7 +60,7 @@ function LoginCard() {
         whileTap={{ scale: 0.98 }}
         onClick={handleSignIn}
         disabled={isLoading}
-        className="w-full flex items-center justify-center space-x-3 bg-white border border-slate-200 hover:border-brand-blue rounded-full py-3.5 px-4 font-bold text-slate-700 transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed group"
+        className="w-full flex items-center justify-center space-x-3 bg-white border border-slate-200 hover:border-brand-blue rounded-full py-4 px-4 font-bold text-slate-700 transition-colors shadow-lg shadow-slate-200/50 disabled:opacity-70 disabled:cursor-not-allowed group"
       >
         {isLoading ? (
           <svg className="animate-spin h-5 w-5 text-brand-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -78,6 +77,17 @@ function LoginCard() {
         )}
         <span>{isLoading ? "Signing in..." : "Sign in with Google"}</span>
       </motion.button>
+      
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.6 }}
+        className="mt-8 flex items-center before:flex-1 before:border-t before:border-slate-100 before:mr-4 after:flex-1 after:border-t after:border-slate-100 after:ml-4"
+      >
+        <span className="text-xs text-slate-400 font-medium whitespace-nowrap">
+          New here? Signing in creates your account automatically
+        </span>
+      </motion.div>
 
       {error && (
         <motion.div 
@@ -94,32 +104,17 @@ function LoginCard() {
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-100px)] bg-white md:bg-slate-50">
+    <div className="flex flex-col md:flex-row min-h-screen bg-white">
       {/* Left Branding Panel */}
-      <div className="w-full md:w-1/2 bg-brand-navy flex flex-col justify-center px-8 py-16 md:p-16 lg:p-24 relative overflow-hidden shrink-0 shadow-xl z-10 md:min-h-full">
+      <div className="w-full md:w-[55%] lg:w-[55%] bg-brand-navy flex flex-col justify-center px-8 py-16 md:p-16 lg:p-24 relative overflow-hidden shrink-0 shadow-2xl z-10 md:min-h-full md:[clip-path:polygon(0_0,100%_0,92%_100%,0_100%)]">
         {/* Animated Background Blobs (Desktop Only) */}
         <div className="absolute inset-0 z-0 hidden md:block overflow-hidden pointer-events-none">
-          <motion.div 
-            animate={{ 
-              x: [0, 50, -20, 0], 
-              y: [0, -30, 40, 0],
-              scale: [1, 1.2, 0.9, 1] 
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[20%] left-[10%] w-96 h-96 bg-brand-blue opacity-10 rounded-full blur-3xl mix-blend-screen"
-          />
-          <motion.div 
-            animate={{ 
-              x: [0, -40, 30, 0], 
-              y: [0, 50, -20, 0],
-              scale: [1, 0.9, 1.1, 1] 
-            }}
-            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute bottom-[20%] right-[10%] w-80 h-80 bg-brand-green opacity-10 rounded-full blur-3xl mix-blend-screen"
-          />
+          <div className="absolute top-[10%] left-[10%] w-96 h-96 bg-brand-blue opacity-[0.15] rounded-full blur-3xl mix-blend-screen animate-blob-1" />
+          <div className="absolute bottom-[10%] right-[20%] w-80 h-80 bg-brand-green opacity-[0.15] rounded-full blur-3xl mix-blend-screen animate-blob-2" />
+          <div className="absolute top-[40%] right-[10%] w-72 h-72 bg-brand-blue opacity-[0.15] rounded-full blur-3xl mix-blend-screen animate-blob-3" />
         </div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 md:-mr-12">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -149,7 +144,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right Login Panel */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-8 md:p-12 relative bg-white">
+      <div className="w-full md:flex-1 flex items-center justify-center p-8 md:p-12 relative bg-white">
         <Suspense fallback={
           <div className="w-full max-w-md h-64 bg-slate-50 rounded-2xl animate-pulse flex items-center justify-center">
             <div className="w-8 h-8 rounded-full border-2 border-brand-blue border-t-transparent animate-spin"></div>
