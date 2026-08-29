@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, ShoppingBag, Package, Users, Settings, LogOut } from "lucide-react";
-import Image from "next/image";
 import { signOut } from "next-auth/react";
 
 const navItems = [
@@ -20,19 +19,6 @@ export function AdminSidebar() {
   return (
     <div className="h-full flex flex-col justify-between py-6">
       <div>
-        <div className="px-6 mb-8">
-          <Link href="/">
-            <Image 
-              src="/logo-transparent.png" 
-              alt="Neomeditech Logo" 
-              width={160} 
-              height={50} 
-              className="h-8 w-auto object-contain"
-              style={{ width: 'auto' }}
-              priority
-            />
-          </Link>
-        </div>
         <nav className="space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
