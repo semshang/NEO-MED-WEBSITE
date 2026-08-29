@@ -63,7 +63,15 @@ const rawProducts = [
   { id: 28, name: "Sony Thermal Printer And Head", category: "Imaging & Radiology Supplies" },
 ];
 
-export const PRODUCTS = rawProducts.map((p) => ({
+const placeholderImages = [
+  "/products/oxygen-concentrator.png",
+  "/products/patient-monitor.png",
+  "/products/infusion-pump.png"
+];
+
+export const PRODUCTS = rawProducts.map((p, index) => ({
   ...p,
-  image: `/products/${generateSlug(p.name)}.jpg`,
+  image: placeholderImages[index % placeholderImages.length],
+  // Keep the slugified path as a secondary reference if needed later
+  actualImagePath: `/products/${generateSlug(p.name)}.jpg`,
 }));

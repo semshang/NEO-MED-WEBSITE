@@ -121,7 +121,7 @@ export default function Shop() {
                             e.currentTarget.nextElementSibling?.classList.remove('hidden');
                           }}
                         />
-                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 flex items-center justify-center text-center px-4">
+                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 items-center justify-center text-center px-4">
                           Image: {product.name}
                         </span>
                       </motion.div>
