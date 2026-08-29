@@ -66,7 +66,13 @@ const rawProducts = [
 const placeholderImages = [
   "/products/oxygen-concentrator.png",
   "/products/patient-monitor.png",
-  "/products/infusion-pump.png"
+  "/products/infusion-pump.png",
+  "/products/ecg-machine.jpg",
+  "/products/bp-cuff.jpg",
+  "/products/ultrasound-machine.jpg",
+  "/products/hospital-bed.jpg",
+  "/products/glucometer.jpg",
+  "/products/pulse-oximeter.jpg"
 ];
 
 export const PRODUCTS = rawProducts.map((p, index) => ({
