@@ -21,6 +21,7 @@ export interface Order {
   total: number;
   items: OrderItem[];
   adminNotes: string;
+  address?: string;
 }
 
 export interface Product {
@@ -31,6 +32,14 @@ export interface Product {
   stock: number;
   price: number;
   description: string;
+}
+
+export interface CartItem {
+  productId: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
 }
 
 export interface CustomerMeta {
@@ -52,6 +61,7 @@ interface AdminContextType {
   products: Product[];
   customerMeta: Record<string, CustomerMeta>;
   settings: Settings;
+  cart: CartItem[];
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
   updateOrderNotes: (orderId: string, notes: string) => void;
   addProduct: (p: Omit<Product, "id">) => void;
@@ -59,13 +69,18 @@ interface AdminContextType {
   deleteProduct: (id: number) => void;
   updateCustomerMeta: (email: string, meta: Partial<CustomerMeta>) => void;
   updateSettings: (s: Partial<Settings>) => void;
+  addToCart: (product: Product, quantity: number) => void;
+  updateCartItem: (productId: number, quantity: number) => void;
+  removeFromCart: (productId: number) => void;
+  clearCart: () => void;
+  placeOrder: (customer: { name: string; email: string; phone: string; address: string; notes: string }) => string;
 }
 
 const AdminContext = createContext<AdminContextType | null>(null);
 
 const initialProducts = RAW_PRODUCTS.map((p, i) => ({
   ...p,
-  stock: i % 5 === 0 ? 3 : (i % 7 === 0 ? 0 : 25), // some low stock, some out of stock
+  stock: i % 5 === 0 ? 3 : (i % 7 === 0 ? 0 : 25),
   price: 50000 + (i * 1000),
   description: "Premium medical equipment."
 }));
@@ -81,6 +96,7 @@ const initialOrders: Order[] = [
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({
     "rajendra@example.com": { vip: true, notes: "Kathmandu General Hospital - bulk buyer" }
   });
@@ -94,7 +110,6 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   });
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from local storage on mount
   useEffect(() => {
     try {
       const savedProducts = localStorage.getItem("neo_products");
@@ -108,13 +123,15 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
       const savedCustomers = localStorage.getItem("neo_customers");
       if (savedCustomers) setCustomerMeta(JSON.parse(savedCustomers));
+
+      const savedCart = localStorage.getItem("neo_cart");
+      if (savedCart) setCart(JSON.parse(savedCart));
     } catch (e) {
       console.error("Failed to load from local storage", e);
     }
     setIsLoaded(true);
   }, []);
 
-  // Save to local storage on change
   useEffect(() => {
     if (!isLoaded) return;
     localStorage.setItem("neo_products", JSON.stringify(products));
@@ -135,10 +152,14 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("neo_customers", JSON.stringify(customerMeta));
   }, [customerMeta, isLoaded]);
 
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_cart", JSON.stringify(cart));
+  }, [cart, isLoaded]);
+
   const updateOrderStatus = (orderId: string, status: OrderStatus) => {
     setOrders(prev => prev.map(o => {
       if (o.id === orderId) {
-        // Decrease stock if changed to Confirmed
         if (status === 'Confirmed' && o.status !== 'Confirmed') {
           setProducts(prods => prods.map(p => {
             const item = o.items.find(i => i.productId === p.id);
@@ -180,10 +201,66 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     setSettings(prev => ({ ...prev, ...s }));
   };
 
+  const addToCart = (product: Product, quantity: number) => {
+    setCart(prev => {
+      const existing = prev.find(item => item.productId === product.id);
+      if (existing) {
+        return prev.map(item => 
+          item.productId === product.id 
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+      return [...prev, { productId: product.id, name: product.name, price: product.price, quantity, image: product.image }];
+    });
+  };
+
+  const updateCartItem = (productId: number, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(productId);
+      return;
+    }
+    setCart(prev => prev.map(item => item.productId === productId ? { ...item, quantity } : item));
+  };
+
+  const removeFromCart = (productId: number) => {
+    setCart(prev => prev.filter(item => item.productId !== productId));
+  };
+
+  const clearCart = () => setCart([]);
+
+  const placeOrder = (customer: { name: string; email: string; phone: string; address: string; notes: string }) => {
+    const orderId = `#ORD-${Math.floor(100 + Math.random() * 900)}`;
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    const newOrder: Order = {
+      id: orderId,
+      customerName: customer.name,
+      customerEmail: customer.email,
+      customerPhone: customer.phone,
+      address: customer.address,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: "New",
+      total,
+      adminNotes: customer.notes ? `Customer Notes: ${customer.notes}` : "",
+      items: cart.map(c => ({
+        productId: c.productId,
+        quantity: c.quantity,
+        price: c.price,
+        name: c.name
+      }))
+    };
+    
+    setOrders([newOrder, ...orders]);
+    clearCart();
+    return orderId;
+  };
+
   return (
     <AdminContext.Provider value={{
-      orders, products, customerMeta, settings,
-      updateOrderStatus, updateOrderNotes, addProduct, updateProduct, deleteProduct, updateCustomerMeta, updateSettings: updateSettingsLocal
+      orders, products, customerMeta, settings, cart,
+      updateOrderStatus, updateOrderNotes, addProduct, updateProduct, deleteProduct, updateCustomerMeta, updateSettings: updateSettingsLocal,
+      addToCart, updateCartItem, removeFromCart, clearCart, placeOrder
     }}>
       {children}
     </AdminContext.Provider>
