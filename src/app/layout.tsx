@@ -8,6 +8,7 @@ import { SITE } from "@/config/site";
 import { LoginModal } from "@/components/LoginModal";
 import { Suspense } from "react";
 import CartOverlay from "@/components/CartOverlay";
+import { AuthToast } from "@/components/AuthToast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,9 @@ export default function RootLayout({
             {children}
           </main>
           <CartOverlay />
+          <Suspense fallback={null}>
+            <AuthToast />
+          </Suspense>
           <Footer />
           <Suspense fallback={null}>
             <LoginModal />
