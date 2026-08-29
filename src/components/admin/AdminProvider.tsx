@@ -82,7 +82,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({
-    "rajendra@example.com": { vip: true, notes: "Kathmandu General Hospital — bulk buyer" }
+    "rajendra@example.com": { vip: true, notes: "Kathmandu General Hospital - bulk buyer" }
   });
   const [settings, setSettings] = useState<Settings>({
     phone: "+977 9712011758, +977 9712011757",
@@ -92,6 +92,48 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     notificationEmail: "contact@neomeditech.com.np",
     lowStockThreshold: 5,
   });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from local storage on mount
+  useEffect(() => {
+    try {
+      const savedProducts = localStorage.getItem("neo_products");
+      if (savedProducts) setProducts(JSON.parse(savedProducts));
+      
+      const savedOrders = localStorage.getItem("neo_orders");
+      if (savedOrders) setOrders(JSON.parse(savedOrders));
+
+      const savedSettings = localStorage.getItem("neo_settings");
+      if (savedSettings) setSettings(JSON.parse(savedSettings));
+
+      const savedCustomers = localStorage.getItem("neo_customers");
+      if (savedCustomers) setCustomerMeta(JSON.parse(savedCustomers));
+    } catch (e) {
+      console.error("Failed to load from local storage", e);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save to local storage on change
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_products", JSON.stringify(products));
+  }, [products, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_orders", JSON.stringify(orders));
+  }, [orders, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_settings", JSON.stringify(settings));
+  }, [settings, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_customers", JSON.stringify(customerMeta));
+  }, [customerMeta, isLoaded]);
 
   const updateOrderStatus = (orderId: string, status: OrderStatus) => {
     setOrders(prev => prev.map(o => {
