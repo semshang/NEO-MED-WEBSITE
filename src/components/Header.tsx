@@ -5,8 +5,8 @@ import { useState } from "react";
 
 import Image from "next/image";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
@@ -23,6 +23,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -126,7 +127,7 @@ export default function Header() {
               </button>
             </div>
           ) : (
-            <button onClick={() => signIn('google')} className="text-sm font-bold text-brand-navy hover:text-brand-blue transition-colors ml-2">
+            <button onClick={() => router.push('?login=true', { scroll: false })} className="text-sm font-bold text-brand-navy hover:text-brand-blue transition-colors ml-2">
               Sign In
             </button>
           )}
@@ -175,7 +176,7 @@ export default function Header() {
                   </button>
                 </>
               ) : (
-                <button onClick={() => { signIn('google'); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors font-bold">
+                <button onClick={() => { router.push('?login=true', { scroll: false }); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors font-bold">
                   Sign In with Google
                 </button>
               )}
