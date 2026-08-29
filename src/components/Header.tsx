@@ -6,6 +6,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
@@ -22,6 +23,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -95,13 +97,39 @@ export default function Header() {
           })}
         </nav>
 
-        {/* CTA */}
-        <div className="hidden md:block">
+        {/* CTA & Auth */}
+        <div className="hidden md:flex items-center space-x-4">
           <motion.div whileTap={{ scale: 0.97 }}>
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
               Get a Quote
             </Link>
           </motion.div>
+          {session ? (
+            <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-slate-200">
+              <div className="flex items-center space-x-2">
+                {session.user?.image && (
+                  <img src={session.user.image} alt="Profile" className="w-8 h-8 rounded-full border border-slate-200" />
+                )}
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-brand-navy leading-none">
+                    {session.user?.name?.split(' ')[0]}
+                  </span>
+                  {session.user?.role === "admin" ? (
+                    <Link href="/admin" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Admin</Link>
+                  ) : (
+                    <Link href="/account" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Account</Link>
+                  )}
+                </div>
+              </div>
+              <button onClick={() => signOut()} className="text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors">
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => signIn('google')} className="text-sm font-bold text-brand-navy hover:text-brand-blue transition-colors ml-2">
+              Sign In
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -133,6 +161,25 @@ export default function Header() {
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green text-white text-center px-4 py-3 rounded-xl font-bold w-full mt-2 shadow-sm" onClick={() => setIsMenuOpen(false)}>
               Get a Quote
             </Link>
+            
+            <div className="pt-4 mt-4 border-t border-slate-100 flex flex-col space-y-4">
+              {session ? (
+                <>
+                  {session.user?.role === "admin" ? (
+                    <Link href="/admin" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>Admin Dashboard</Link>
+                  ) : (
+                    <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
+                  )}
+                  <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors text-slate-500">
+                    Sign Out ({session.user?.name})
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => { signIn('google'); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors font-bold">
+                  Sign In with Google
+                </button>
+              )}
+            </div>
           </nav>
         </div>
       )}
