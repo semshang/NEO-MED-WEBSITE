@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
-import { PRODUCTS } from "@/data/products";
+import { useAdmin } from "@/components/admin/AdminProvider";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -45,6 +45,7 @@ const heroButtonsVariant = {
 };
 
 export default function Home() {
+  const { products } = useAdmin();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 1500, stopOnInteraction: false })]
@@ -229,7 +230,7 @@ export default function Home() {
             ref={emblaRef}
           >
             <div className="flex">
-              {PRODUCTS.slice(0, 6).map((product) => (
+              {products.slice(0, 6).map((product) => (
                 <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
                   <motion.div 
                     whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
@@ -263,14 +264,20 @@ export default function Home() {
                       <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
                       <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">{product.name}</h3>
                       <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
-                        <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
-                        <Link 
-                          href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`}
-                          target="_blank"
-                          className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300"
-                        >
-                          <ArrowRight size={18} />
-                        </Link>
+                        {product.stock === 0 ? (
+                          <span className="font-bold text-red-500 text-sm w-full text-center py-1">Out of Stock</span>
+                        ) : (
+                          <>
+                            <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
+                            <Link 
+                              href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello, I am interested in inquiring about ${product.name}. Could you please provide more information regarding pricing and availability?`)}`}
+                              target="_blank"
+                              className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300"
+                            >
+                              <ArrowRight size={18} />
+                            </Link>
+                          </>
+                        )}
                       </div>
                     </div>
                   </motion.div>

@@ -1,14 +1,30 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useAdmin, Product } from "@/components/admin/AdminProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Plus, X, Edit, Trash2, AlertCircle } from "lucide-react";
+import { Search, Plus, X, Edit, Trash2, AlertCircle, UploadCloud } from "lucide-react";
 
 export default function ProductsPage() {
   const { products, settings, addProduct, updateProduct, deleteProduct } = useAdmin();
   const [search, setSearch] = useState("");
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | "new" | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  // Image Upload State
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
+  const [imageError, setImageError] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editingProduct && typeof editingProduct === "object" && editingProduct.image) {
+      setImagePreview(editingProduct.image);
+    } else {
+      setImagePreview("");
+    }
+    setImageFile(null);
+    setImageError(false);
+  }, [editingProduct]);
 
   const filteredProducts = useMemo(() => {
     return products.filter(p => 
@@ -17,10 +33,38 @@ export default function ProductsPage() {
     );
   }, [products, search]);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size exceeds 5MB limit.");
+        return;
+      }
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+      setImageError(false);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    // TODO: Connect real backend/S3/Cloudinary upload here later
+    return URL.createObjectURL(file);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!imagePreview) {
+      setImageError(true);
+      return;
+    }
+
+    let finalImageUrl = imagePreview;
+    if (imageFile) {
+      finalImageUrl = await uploadImage(imageFile);
+    }
+
     if (editingProduct === "new") {
-      // Actually we'd need a real form state, using a simple hack here for mock
       const form = e.target as HTMLFormElement;
       addProduct({
         name: (form.elements.namedItem("name") as HTMLInputElement).value,
@@ -28,7 +72,7 @@ export default function ProductsPage() {
         description: (form.elements.namedItem("description") as HTMLTextAreaElement).value,
         stock: parseInt((form.elements.namedItem("stock") as HTMLInputElement).value || "0"),
         price: parseInt((form.elements.namedItem("price") as HTMLInputElement).value || "0"),
-        image: "/products/placeholder.jpg",
+        image: finalImageUrl,
       });
     } else if (editingProduct && typeof editingProduct === "object" && editingProduct.id) {
       const form = e.target as HTMLFormElement;
@@ -38,6 +82,7 @@ export default function ProductsPage() {
         description: (form.elements.namedItem("description") as HTMLTextAreaElement).value,
         stock: parseInt((form.elements.namedItem("stock") as HTMLInputElement).value || "0"),
         price: parseInt((form.elements.namedItem("price") as HTMLInputElement).value || "0"),
+        image: finalImageUrl,
       });
     }
     setEditingProduct(null);
@@ -141,6 +186,44 @@ export default function ProductsPage() {
               </div>
               
               <form onSubmit={handleSave} className="p-6 space-y-4">
+                
+                {/* Image Upload Field */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Product Image</label>
+                  <div 
+                    className={`relative border-2 border-dashed rounded-xl flex flex-col items-center justify-center overflow-hidden transition-colors ${imageError ? 'border-red-400 bg-red-50' : 'border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-brand-blue/50'} ${imagePreview ? 'h-48' : 'h-32'}`}
+                  >
+                    {imagePreview ? (
+                      <>
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-contain p-2" />
+                        <button 
+                          type="button" 
+                          onClick={() => { setImagePreview(""); setImageFile(null); setImageError(false); }} 
+                          className="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow-md text-slate-500 hover:text-red-500 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </>
+                    ) : (
+                      <div className="text-center px-4 cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                        <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+                        <p className="text-sm font-medium text-slate-600">Click to upload or drag an image here</p>
+                        <p className="text-xs text-slate-400 mt-1">JPG, PNG, WEBP (Max 5MB)</p>
+                      </div>
+                    )}
+                    <input 
+                      ref={fileInputRef}
+                      type="file" 
+                      accept="image/png, image/jpeg, image/webp" 
+                      className="hidden" 
+                      onChange={handleImageChange} 
+                    />
+                  </div>
+                  {imageError && (
+                    <p className="text-sm text-red-500 mt-1.5 flex items-center"><AlertCircle className="w-4 h-4 mr-1"/> Please upload a product image</p>
+                  )}
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Product Name</label>
                   <input name="name" required defaultValue={editingProduct !== "new" ? editingProduct.name : ""} className="w-full border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-blue focus:outline-none" />
