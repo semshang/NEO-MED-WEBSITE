@@ -36,7 +36,7 @@ const scaleInVariant = {
 export default function Home() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
-    [Autoplay({ delay: 4000, stopOnInteraction: false })]
+    [Autoplay({ delay: 1500, stopOnInteraction: false })]
   );
 
   return (
