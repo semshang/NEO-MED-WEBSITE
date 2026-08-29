@@ -1,0 +1,294 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
+import { motion } from "framer-motion";
+import { SITE } from "@/config/site";
+
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const heroFadeUpVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+};
+
+const scaleInVariant = {
+  hidden: { opacity: 0, scale: 0.95 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" } }
+};
+
+export default function Home() {
+  return (
+    <div className="flex flex-col overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative bg-brand-gray py-20 overflow-hidden">
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <motion.div 
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="space-y-8"
+            >
+              <motion.div variants={heroFadeUpVariant} className="inline-block border border-brand-green/30 text-brand-green px-4 py-1.5 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm">
+                Leading Biomedical Solutions in Nepal
+              </motion.div>
+              <motion.h1 variants={heroFadeUpVariant} className="text-5xl md:text-6xl font-extrabold text-brand-navy leading-tight">
+                Premium Medical <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">Equipment</span> You Can Trust
+              </motion.h1>
+              <motion.p variants={heroFadeUpVariant} className="text-lg text-slate-600 leading-relaxed max-w-lg">
+                We provide state-of-the-art biomedical equipment, reliable repair services, and expert support for hospitals, clinics, and individuals across Nepal.
+              </motion.p>
+              <motion.div variants={scaleInVariant} className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Link href="/shop" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md flex items-center justify-center w-full">
+                    Explore Products
+                    <ArrowRight size={18} className="ml-2" />
+                  </Link>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Link href="/contact" className="bg-white hover:bg-slate-50 text-brand-blue border-2 border-brand-blue px-8 py-3.5 rounded-xl font-bold transition-colors shadow-sm text-center block w-full">
+                    Contact Us
+                  </Link>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+              className="relative"
+            >
+              {/* Subtle accent shape instead of huge blue wash */}
+              <div className="absolute -top-10 -right-10 w-64 h-64 bg-gradient-to-br from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl z-0"></div>
+              <div className="bg-white p-4 rounded-3xl shadow-xl relative z-10 border border-slate-100 transform rotate-1">
+                <div className="bg-brand-gray aspect-video rounded-2xl flex items-center justify-center text-slate-400">
+                  <span className="text-lg">Hero Image Placeholder</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="py-12 bg-white border-b border-slate-100">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
+              <motion.div 
+                initial={{ rotate: -15, scale: 0.8 }}
+                whileInView={{ rotate: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
+              >
+                <Clock size={28} />
+              </motion.div>
+              <div>
+                <h3 className="font-bold text-lg text-brand-navy">24/7 Support</h3>
+                <p className="text-slate-500 text-sm mt-1">Expert technical assistance anytime you need it.</p>
+              </div>
+            </motion.div>
+            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
+              <motion.div 
+                initial={{ rotate: -15, scale: 0.8 }}
+                whileInView={{ rotate: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
+              >
+                <ShieldCheck size={28} />
+              </motion.div>
+              <div>
+                <h3 className="font-bold text-lg text-brand-navy">Genuine Equipment</h3>
+                <p className="text-slate-500 text-sm mt-1">100% authentic medical products with warranty.</p>
+              </div>
+            </motion.div>
+            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
+              <motion.div 
+                initial={{ rotate: -15, scale: 0.8 }}
+                whileInView={{ rotate: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
+              >
+                <Truck size={28} />
+              </motion.div>
+              <div>
+                <h3 className="font-bold text-lg text-brand-navy">Nationwide Delivery</h3>
+                <p className="text-slate-500 text-sm mt-1">Fast and safe delivery across all parts of Nepal.</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-20 bg-brand-gray">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeUpVariant}
+            className="flex justify-between items-end mb-12"
+          >
+            <div>
+              <h2 className="text-3xl font-bold text-brand-navy mb-4">Featured Equipment</h2>
+              <p className="text-slate-600 max-w-2xl">Discover our top-rated medical devices trusted by healthcare professionals across the country.</p>
+            </div>
+            <Link href="/shop" className="hidden md:flex items-center text-brand-blue font-bold hover:text-brand-blue-700 transition-colors">
+              View All Products
+              <ArrowRight size={16} className="ml-1" />
+            </Link>
+          </motion.div>
+
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
+            {[1, 2, 3, 4].map((item) => (
+              <motion.div 
+                key={item}
+                variants={fadeUpVariant}
+                whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
+              >
+                <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
+                  <div className="absolute inset-0 bg-brand-navy/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 duration-200">
+                    <span className="bg-white text-brand-navy font-bold px-4 py-2 rounded-full shadow-md text-sm border border-slate-100">View Details</span>
+                  </div>
+                  <motion.div 
+                    className="w-full h-full flex items-center justify-center"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    <span className="text-slate-400 text-sm relative z-0">Product Image</span>
+                  </motion.div>
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">Category</div>
+                  <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">Premium Oxygen Concentrator 5L</h3>
+                  <div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100">
+                    <span className="font-bold text-slate-500 group-hover:text-brand-green transition-colors text-lg">Inquire</span>
+                    <button className="w-10 h-10 rounded-full bg-brand-gray text-brand-blue flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-brand-blue group-hover:to-brand-green group-hover:text-white transition-all duration-300">
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+          
+          <div className="mt-10 text-center md:hidden">
+            <Link href="/shop" className="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-800 px-6 py-3 rounded-xl font-semibold w-full">
+              View All Products
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeUpVariant}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-brand-navy mb-4">What Our Clients Say</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">Don&apos;t just take our word for it. Here is what hospitals and clinics have to say about our services.</p>
+          </motion.div>
+          
+          <motion.div 
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {[1, 2, 3].map((item) => (
+              <motion.div key={item} variants={fadeUpVariant} className="bg-brand-gray p-8 rounded-3xl border border-slate-200 relative">
+                <MessageSquare className="text-slate-300 absolute top-8 right-8" size={40} />
+                <div className="flex text-brand-green mb-6">
+                  <Star size={18} fill="currentColor" />
+                  <Star size={18} fill="currentColor" />
+                  <Star size={18} fill="currentColor" />
+                  <Star size={18} fill="currentColor" />
+                  <Star size={18} fill="currentColor" />
+                </div>
+                <p className="text-slate-700 italic mb-8 relative z-10 leading-relaxed">
+                  &quot;The quality of equipment provided by Neomeditech is outstanding. Their prompt service and professional support team make them our preferred vendor.&quot;
+                </p>
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-white border border-slate-200 rounded-full flex items-center justify-center text-brand-navy font-bold shadow-sm">
+                    DR
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-brand-navy">Dr. Ram Sharma</h4>
+                    <p className="text-sm text-slate-500">Kathmandu General Hospital</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-brand-gray border-t border-slate-200 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeUpVariant}
+          className="container mx-auto px-4 max-w-4xl text-center relative z-10"
+        >
+          <h2 className="text-3xl md:text-5xl font-extrabold text-brand-navy mb-6 leading-tight">Need Medical Equipment for Your Clinic?</h2>
+          <p className="text-slate-600 text-lg mb-10 max-w-2xl mx-auto">
+            Get in touch with our experts today for customized solutions, bulk orders, and specialized biomedical equipment.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <motion.div whileTap={{ scale: 0.97 }}>
+              <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md text-lg block w-full text-center">
+                Get a Free Quote
+              </Link>
+            </motion.div>
+            <motion.div whileTap={{ scale: 0.97 }}>
+              <Link href={`https://wa.me/${SITE.whatsapp}`} target="_blank" className="bg-white hover:bg-slate-50 text-brand-blue border-2 border-brand-blue px-8 py-3.5 rounded-xl font-bold transition-colors shadow-sm text-lg flex items-center justify-center w-full">
+                Message on WhatsApp
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
+    </div>
+  );
+}
