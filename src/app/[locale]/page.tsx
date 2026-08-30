@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[500px] md:min-h-[600px] flex items-center justify-start overflow-hidden">
+      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-12 md:pb-16">
         {/* Background Image with slow zoom */}
         <motion.div 
           className="absolute inset-0 z-0"
@@ -79,7 +79,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/70 to-transparent z-10"></div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-7xl relative z-20 pt-12 md:pt-16 pb-16 md:pb-24 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
           <div className="w-full md:w-[45%] lg:w-[40%] max-w-2xl z-10">
             {/* Badge */}
             <motion.div 
