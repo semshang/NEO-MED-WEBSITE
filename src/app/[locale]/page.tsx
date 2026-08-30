@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
+import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star, Play, FlaskConical, Users, Globe, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 import { useTranslations } from "next-intl";
@@ -80,12 +80,12 @@ export default function Home() {
               variants={heroBadgeVariant}
               initial="hidden"
               animate="visible"
-              className="inline-flex items-center space-x-2 border border-brand-green/30 text-brand-navy px-5 py-2 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm mb-6 lg:mb-8 shadow-sm"
+              className="inline-flex items-center space-x-2 border border-slate-200 text-slate-600 px-4 py-1.5 rounded-full text-xs font-bold bg-slate-50/50 backdrop-blur-sm mb-6 shadow-sm"
             >
-              <div className="bg-brand-green rounded-full p-1">
-                <ShieldCheck size={14} className="text-white" />
+              <div className="bg-[#33CC33] rounded-full p-1 shrink-0">
+                <ShieldCheck size={12} className="text-white" />
               </div>
-              <span>{tHero("trustedByBadge")}</span>
+              <span>Trusted by 500+ hospitals across Nepal</span>
             </motion.div>
 
             {/* Headline */}
@@ -93,9 +93,15 @@ export default function Home() {
               variants={heroHeadlineVariant}
               initial="hidden"
               animate="visible"
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-brand-navy leading-[1.15] lg:leading-[1.1] mb-4 lg:mb-6"
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 flex flex-col items-center lg:items-start"
             >
-              {tHero("title1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">{tHero("titleHighlight")}</span> {tHero("title2")}
+              <span className="text-brand-navy">Advanced Technology.</span>
+              <span className="text-brand-navy mt-1">Reliable Care.</span>
+              <span className="mt-1 flex items-center justify-center lg:justify-start">
+                <span className="text-[#0066FF]">Better</span>
+                <span className="ml-3 text-transparent bg-clip-text bg-gradient-to-r from-[#0066FF] to-[#33CC33]">O</span>
+                <span className="text-[#33CC33]">utcomes.</span>
+              </span>
             </motion.h1>
 
             {/* Subtext */}
@@ -103,58 +109,28 @@ export default function Home() {
               variants={heroSubtextVariant}
               initial="hidden"
               animate="visible"
-              className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mb-8 font-medium"
+              className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-lg mb-8 mx-auto lg:mx-0 font-medium"
             >
-              We provide state-of-the-art biomedical equipment, reliable repair services, and expert support for hospitals, clinics, and individuals across Nepal.
+              Neomeditech provides innovative, high-quality medical devices designed to improve patient care and healthcare professionals' experience across Nepal.
             </motion.p>
-
-            {/* Trust Badges under text */}
-            <motion.div 
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
-              }}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-10"
-            >
-              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="flex items-start space-x-3 bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm backdrop-blur-sm w-full">
-                <div className="bg-brand-blue/10 p-2 rounded-full text-brand-blue mt-0.5 shrink-0">
-                  <ShieldCheck size={16} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800 text-sm">Certified Experts</h4>
-                  <p className="text-slate-500 text-xs">Biomedical Specialists</p>
-                </div>
-              </motion.div>
-              
-              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="flex items-start space-x-3 bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm backdrop-blur-sm w-full">
-                <div className="bg-brand-green/10 p-2 rounded-full text-brand-green mt-0.5 shrink-0">
-                  <ShieldCheck size={16} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-slate-800 text-sm">Warranty Included</h4>
-                  <p className="text-slate-500 text-xs">Peace of Mind</p>
-                </div>
-              </motion.div>
-            </motion.div>
 
             {/* Buttons */}
             <motion.div 
               variants={heroButtonsVariant}
               initial="hidden"
               animate="visible"
-              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"
+              className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center lg:justify-start"
             >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/shop" className="bg-gradient-to-r from-brand-blue to-brand-green text-white px-8 py-4 rounded-full font-bold shadow-lg flex items-center justify-center w-full transition-transform">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+                <Link href="/shop" className="bg-[#0066FF] hover:bg-[#0052cc] text-white px-8 py-3.5 rounded-lg font-bold shadow-lg shadow-blue-500/20 flex items-center justify-center w-full transition-colors">
                   Explore Products
                   <ArrowRight size={18} className="ml-2" />
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/contact" className="bg-transparent hover:bg-white text-white hover:text-brand-navy border-2 border-white px-8 py-3.5 rounded-full font-bold transition-colors shadow-sm text-center block w-full">
-                  Contact Us
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
+                <Link href="#" className="bg-white hover:bg-slate-50 text-[#0066FF] border-2 border-[#0066FF] px-8 py-3.5 rounded-lg font-bold transition-colors shadow-sm flex items-center justify-center w-full">
+                  Watch Our Video
+                  <Play size={18} className="ml-2 fill-current" />
                 </Link>
               </motion.div>
             </motion.div>
@@ -183,6 +159,40 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* New Hero Bottom Trust Strip */}
+      <div className="container mx-auto px-4 max-w-7xl relative z-30 -mt-8 sm:-mt-12 mb-8 sm:mb-12">
+        <div className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-slate-100">
+          <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
+            <div className="text-teal-500 shrink-0"><FlaskConical size={26} strokeWidth={2} /></div>
+            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Innovative<br/>Medical Solutions</h4></div>
+          </div>
+          <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
+          
+          <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
+            <div className="text-blue-500 shrink-0"><ShieldCheck size={26} strokeWidth={2} /></div>
+            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">High Quality<br/>& Reliable</h4></div>
+          </div>
+          <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
+          
+          <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
+            <div className="text-blue-500 shrink-0"><Users size={26} strokeWidth={2} /></div>
+            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Trusted by<br/>Healthcare Professionals</h4></div>
+          </div>
+          <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
+          
+          <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
+            <div className="text-green-500 shrink-0"><Globe size={26} strokeWidth={2} /></div>
+            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Nationwide Reach<br/>& Local Support</h4></div>
+          </div>
+          <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
+          
+          <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
+            <div className="text-teal-500 shrink-0"><Heart size={26} strokeWidth={2} /></div>
+            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Better Care<br/>for Every Patient</h4></div>
+          </div>
+        </div>
+      </div>
 
       {/* Trust Badges */}
       <section className="py-12 bg-white border-b border-slate-100">
