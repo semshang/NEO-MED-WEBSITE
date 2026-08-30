@@ -126,13 +126,25 @@ export function LoginModal() {
                   </div>
                 </div>
 
-                {/* Product Platforms & Badge (From Mockup) */}
-                <div className="mt-auto flex-1 relative flex items-end justify-center w-full min-h-[220px] -mx-4 -mb-12">
+                {/* Product Platforms & Badge */}
+                <div className="mt-auto flex-1 relative flex items-end justify-center w-full min-h-[240px] pt-8">
                   <img 
-                    src="/login-podium-only.png" 
+                    src="/login-podium-transparent.png" 
                     alt="Neomeditech Equipment" 
-                    className="w-full h-auto object-contain mix-blend-multiply drop-shadow-sm"
+                    className="w-[115%] h-auto object-contain relative z-10 drop-shadow-xl"
+                    style={{ maxWidth: '115%', marginLeft: '-7.5%', marginBottom: '-5%' }}
                   />
+
+                  {/* Floating Badge */}
+                  <div className="absolute bottom-6 left-0 bg-white p-3.5 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-3 z-30 min-w-[220px]">
+                    <div className="text-[#10b981] bg-[#10b981]/10 p-1.5 rounded-full">
+                      <ShieldCheck size={18} strokeWidth={2.5} />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-brand-navy leading-tight">Certified Biomedical Experts</h5>
+                      <p className="text-[10px] text-slate-500 leading-tight mt-0.5">Backed by years of industry experience.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
