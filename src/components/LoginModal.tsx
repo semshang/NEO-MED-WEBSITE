@@ -228,12 +228,12 @@ export function LoginModal() {
   
                   {/* Copy (Centered) */}
                   <div className="mb-4 lg:mb-6 text-center">
-                    <h2 className="text-2xl lg:text-3xl font-black text-brand-navy mb-2 leading-tight">
+                    <h2 className="text-xl lg:text-2xl font-black text-brand-navy mb-2 leading-tight">
                       {tAuth("qualityEquip")}<br />
                       <span className="text-brand-blue">{tAuth("better")}</span>
                       <span className="text-[#10b981]"> {tAuth("outcomes")}</span>
                     </h2>
-                    <p className="text-slate-600 text-xs lg:text-sm leading-snug mx-auto max-w-sm">
+                    <p className="text-slate-600 text-[10px] lg:text-xs leading-snug mx-auto max-w-sm">
                       {tAuth("trustedBy")}
                     </p>
                   </div>
@@ -245,8 +245,8 @@ export function LoginModal() {
                         <ShieldCheck size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("genuine")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("genuineDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-xs leading-none">{tTrust("genuine")}</h4>
+                        <p className="text-slate-500 text-[9px] lg:text-[10px] mt-1 leading-none">{tTrust("genuineDesc")}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -254,8 +254,8 @@ export function LoginModal() {
                         <Headset size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("support")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("supportDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-xs leading-none">{tTrust("support")}</h4>
+                        <p className="text-slate-500 text-[9px] lg:text-[10px] mt-1 leading-none">{tTrust("supportDesc")}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -263,8 +263,8 @@ export function LoginModal() {
                         <Truck size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("delivery")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("deliveryDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-xs leading-none">{tTrust("delivery")}</h4>
+                        <p className="text-slate-500 text-[9px] lg:text-[10px] mt-1 leading-none">{tTrust("deliveryDesc")}</p>
                       </div>
                     </div>
                   </div>
@@ -283,11 +283,11 @@ export function LoginModal() {
                     {/* Certified Badge (Absolute floating over bottom left of image) */}
                     <div className="absolute bottom-6 left-6 lg:left-8 bg-white/95 p-2 lg:p-3 rounded-xl shadow-lg flex items-center space-x-2 lg:space-x-3 border border-slate-100 z-20">
                       <div className="bg-[#e6f8f3] p-1.5 lg:p-2 rounded-lg text-[#10b981] shrink-0">
-                        <Shield size={16} className="lg:w-5 lg:h-5" />
+                        <Shield size={14} className="lg:w-4 lg:h-4" />
                       </div>
                       <div>
-                        <div className="text-brand-navy font-bold text-xs lg:text-sm leading-none font-bold">{tTrust("certified")}</div>
-                        <div className="text-slate-500 text-[9px] lg:text-[11px] mt-1 leading-none">{tTrust("certifiedDesc")}</div>
+                        <div className="text-brand-navy font-bold text-[11px] lg:text-xs leading-none">{tTrust("certified")}</div>
+                        <div className="text-slate-500 text-[9px] lg:text-[10px] mt-1 leading-none">{tTrust("certifiedDesc")}</div>
                       </div>
                     </div>
                   </div>
@@ -329,7 +329,7 @@ export function LoginModal() {
                 </motion.div>
 
                 <motion.div variants={formItemVariants} className="mb-4">
-                  <h3 className="text-2xl lg:text-3xl font-black text-brand-navy mb-2">
+                  <h3 className="text-xl lg:text-2xl font-black text-brand-navy mb-2">
                     {mode === "login" ? tAuth("welcomeBack") : mode === "register" ? tAuth("createAccount") : "Reset Password"}
                   </h3>
                   <p className="text-slate-500 text-sm">
