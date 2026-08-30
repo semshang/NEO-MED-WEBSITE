@@ -53,9 +53,14 @@ export default function Header() {
             style={{ width: 'auto' }}
             priority
           />
-          <span className="text-2xl md:text-3xl font-black text-brand-navy tracking-tight hidden sm:block">
-            Neomeditech
-          </span>
+          <div className="hidden sm:flex flex-col justify-center">
+            <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green tracking-tight leading-none pb-0.5">
+              Neomeditech
+            </span>
+            <span className="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green uppercase tracking-[0.2em] mt-0.5 leading-none">
+              Biomedical Solutions
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
