@@ -1,4 +1,4 @@
-﻿import { withAuth } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
@@ -83,6 +83,6 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  // Match all request paths except api (handled explicitly), _next/static, _next/image, favicon.ico
-  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
+  // Match all request paths except api, _next/static, _next/image, and static files (with dots)
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
 };
