@@ -30,9 +30,14 @@ export default function CheckoutPage() {
 
     // Simulate API delay
     setTimeout(() => {
-      const newOrderId = placeOrder(customer);
-      setOrderId(newOrderId);
-      setIsSubmitting(false);
+      try {
+        const newOrderId = placeOrder(customer);
+        setOrderId(newOrderId);
+      } catch (err: any) {
+        alert(err.message || "Failed to process order. Please check your inputs.");
+      } finally {
+        setIsSubmitting(false);
+      }
     }, 1500);
   };
 

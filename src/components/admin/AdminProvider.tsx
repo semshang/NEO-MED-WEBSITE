@@ -230,19 +230,32 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const clearCart = () => setCart([]);
 
   const placeOrder = (customer: { name: string; email: string; phone: string; address: string; notes: string }) => {
-    const orderId = `#ORD-${Math.floor(100 + Math.random() * 900)}`;
+    // 1. Input Validation
+    if (!customer.name || customer.name.length < 2 || customer.name.length > 100) throw new Error("Invalid name");
+    if (!customer.phone || customer.phone.length < 7 || customer.phone.length > 20) throw new Error("Invalid phone");
+    if (!customer.address || customer.address.length < 5 || customer.address.length > 200) throw new Error("Invalid address");
+    
+    // Email validation (optional but if provided must be valid)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (customer.email && !emailRegex.test(customer.email)) throw new Error("Invalid email format");
+
+    // 2. Data Isolation & Security - Non-sequential hard-to-guess IDs
+    const orderId = `#ORD-${crypto.randomUUID().split('-')[0].toUpperCase()}`;
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
+    // 3. Sanitization (basic manual stripping for now to prevent script injection in notes/names)
+    const sanitize = (str: string) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+
     const newOrder: Order = {
       id: orderId,
-      customerName: customer.name,
-      customerEmail: customer.email,
-      customerPhone: customer.phone,
-      address: customer.address,
+      customerName: sanitize(customer.name),
+      customerEmail: sanitize(customer.email),
+      customerPhone: sanitize(customer.phone),
+      address: sanitize(customer.address),
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       status: "New",
       total,
-      adminNotes: customer.notes ? `Customer Notes: ${customer.notes}` : "",
+      adminNotes: customer.notes ? `Customer Notes: ${sanitize(customer.notes)}` : "",
       items: cart.map(c => ({
         productId: c.productId,
         quantity: c.quantity,
