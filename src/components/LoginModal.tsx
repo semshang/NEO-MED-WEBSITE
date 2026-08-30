@@ -126,47 +126,13 @@ export function LoginModal() {
                   </div>
                 </div>
 
-                {/* Product Platforms */}
-                <div className="mt-auto flex-1 relative flex items-end justify-center pb-8 pt-12 min-h-[160px]">
-                  {/* Left Platform */}
-                  <div className="absolute bottom-8 left-0 w-32 h-10 bg-[#b8dbf2] rounded-[50%] shadow-[0_8px_16px_rgba(0,0,0,0.1)]"></div>
-                  {/* Center Platform */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-48 h-14 bg-[#93c5e8] rounded-[50%] shadow-[0_12px_24px_rgba(0,0,0,0.15)] z-10"></div>
-                  {/* Right Platform */}
-                  <div className="absolute bottom-6 right-0 w-28 h-10 bg-[#a1dfbb] rounded-[50%] shadow-[0_6px_12px_rgba(0,0,0,0.08)]"></div>
-
-                  <div className="relative z-20 flex items-end justify-center w-full space-x-2">
-                    {/* Using mix-blend-multiply to hide white backgrounds on the products */}
-                    <img 
-                      src="/products/oxygen-concentrator.png" 
-                      alt="Oxygen Concentrator" 
-                      className="w-24 object-contain mb-8 relative z-10 -ml-4 mix-blend-multiply"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                    <img 
-                      src="/products/patient-monitor.png" 
-                      alt="Patient Monitor" 
-                      className="w-40 object-contain mb-8 relative z-20 mix-blend-multiply drop-shadow-xl"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                    <img 
-                      src="/products/infusion-pump.png" 
-                      alt="Infusion Pump" 
-                      className="w-20 object-contain mb-6 relative z-10 -mr-4 mix-blend-multiply"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
-                  </div>
-                </div>
-
-                {/* Floating Badge */}
-                <div className="absolute bottom-6 left-12 bg-white p-3.5 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-3 z-30 min-w-[240px]">
-                  <div className="text-[#10b981] bg-[#10b981]/10 p-1.5 rounded-full">
-                    <ShieldCheck size={18} strokeWidth={2.5} />
-                  </div>
-                  <div>
-                    <h5 className="text-xs font-bold text-brand-navy leading-tight">Certified Biomedical Experts</h5>
-                    <p className="text-[10px] text-slate-500 leading-tight mt-0.5">Backed by years of industry experience.</p>
-                  </div>
+                {/* Product Platforms & Badge (From Mockup) */}
+                <div className="mt-auto flex-1 relative flex items-end justify-center w-full min-h-[220px] -mx-4 -mb-12">
+                  <img 
+                    src="/login-podium-only.png" 
+                    alt="Neomeditech Equipment" 
+                    className="w-full h-auto object-contain mix-blend-multiply drop-shadow-sm"
+                  />
                 </div>
               </div>
             </div>
