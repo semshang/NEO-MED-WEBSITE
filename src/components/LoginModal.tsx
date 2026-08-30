@@ -243,7 +243,7 @@ export function LoginModal() {
 
                 <div className="space-y-3 mb-4 lg:mb-6">
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-2 rounded-xl shadow-sm text-brand-blue shrink-0">
+                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
                       <ShieldCheck size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
@@ -252,7 +252,7 @@ export function LoginModal() {
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-2 rounded-xl shadow-sm text-brand-blue shrink-0">
+                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
                       <Headset size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
@@ -261,7 +261,7 @@ export function LoginModal() {
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-2 rounded-xl shadow-sm text-brand-green shrink-0">
+                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-green shrink-0">
                       <Truck size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
@@ -271,7 +271,7 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-0">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[160px] lg:min-h-0 flex-shrink-0 lg:flex-shrink">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
