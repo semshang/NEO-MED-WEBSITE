@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-12 md:pb-16 bg-gradient-to-br from-[#e0f2fe] to-white">
+      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-4 lg:pb-8 bg-gradient-to-br from-[#e0f2fe] to-white">
         
         {/* Decorative Background Elements */}
         {/* Dot Grid Top Right */}
@@ -161,7 +161,7 @@ export default function Home() {
       </section>
 
       {/* New Hero Bottom Trust Strip */}
-      <div className="container mx-auto px-4 max-w-7xl relative z-30 -mt-8 sm:-mt-12 mb-8 sm:mb-12">
+      <div className="container mx-auto px-4 max-w-7xl relative z-30 -mt-12 lg:-mt-24 mb-12 sm:mb-16">
         <div className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-slate-100">
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><FlaskConical size={26} strokeWidth={2} /></div>
@@ -193,65 +193,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Trust Badges */}
-      <section className="py-12 bg-white border-b border-slate-100">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <motion.div 
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
-              <motion.div 
-                initial={{ rotate: -15, scale: 0.8 }}
-                whileInView={{ rotate: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" as any }}
-                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
-              >
-                <Clock size={28} />
-              </motion.div>
-              <div>
-                <h3 className="font-bold text-lg text-brand-navy">24/7 Support</h3>
-                <p className="text-slate-500 text-sm mt-1">Expert technical assistance anytime you need it.</p>
-              </div>
-            </motion.div>
-            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
-              <motion.div 
-                initial={{ rotate: -15, scale: 0.8 }}
-                whileInView={{ rotate: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" as any }}
-                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
-              >
-                <ShieldCheck size={28} />
-              </motion.div>
-              <div>
-                <h3 className="font-bold text-lg text-brand-navy">Genuine Equipment</h3>
-                <p className="text-slate-500 text-sm mt-1">100% authentic medical products with warranty.</p>
-              </div>
-            </motion.div>
-            <motion.div variants={fadeUpVariant} className="flex items-center space-x-4 p-6 bg-white rounded-2xl border border-slate-200 shadow-sm transition-colors hover:border-brand-green/50">
-              <motion.div 
-                initial={{ rotate: -15, scale: 0.8 }}
-                whileInView={{ rotate: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, ease: "easeOut" as any }}
-                className="w-14 h-14 bg-brand-green/10 text-brand-green rounded-xl flex items-center justify-center shrink-0"
-              >
-                <Truck size={28} />
-              </motion.div>
-              <div>
-                <h3 className="font-bold text-lg text-brand-navy">{tTrust("delivery")}</h3>
-                <p className="text-slate-500 text-sm mt-1">Fast and safe delivery across all parts of Nepal.</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Featured Products */}
       <section className="py-20 bg-brand-gray">
