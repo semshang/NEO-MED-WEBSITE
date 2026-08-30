@@ -92,9 +92,16 @@ export function LoginModal() {
     router.push(newPath, { scroll: false });
   };
 
+  const getSafeRedirect = (url: string | null) => {
+    if (!url) return "/account";
+    // Only allow absolute relative paths starting with a single slash
+    if (url.startsWith("/") && !url.startsWith("//")) return url;
+    return "/account";
+  };
+
   const handleGoogleSignIn = () => {
     setIsLoading(true);
-    const callbackUrl = searchParams.get("callbackUrl") || "/account";
+    const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
     signIn("google", { callbackUrl });
   };
 
@@ -115,7 +122,7 @@ export function LoginModal() {
         setError("Invalid email or password");
         setIsLoading(false);
       } else {
-        const callbackUrl = searchParams.get("callbackUrl") || "/account";
+        const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
         router.push(callbackUrl);
         router.refresh();
       }
@@ -154,7 +161,7 @@ export function LoginModal() {
           setError("Account created, but auto-login failed. Please sign in.");
           setMode("login");
         } else {
-          const callbackUrl = searchParams.get("callbackUrl") || "/account";
+          const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
           router.push(callbackUrl);
           router.refresh();
         }

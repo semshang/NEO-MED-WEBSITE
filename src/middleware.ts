@@ -5,25 +5,35 @@ import { routing } from "./i18n/routing";
 
 // Basic in-memory rate limiting map
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT = 30; // max requests
+const authRateLimitMap = new Map<string, { count: number; lastReset: number }>();
+
+const RATE_LIMIT = 30; // max requests for general routes
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute window
+
+const AUTH_RATE_LIMIT = 5; // max requests for auth routes
+const AUTH_RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute window
 
 function applyRateLimit(req: NextRequest): NextResponse | null {
   const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
   const now = Date.now();
+  const isAuthRoute = req.nextUrl.pathname.startsWith('/api/auth') || req.nextUrl.pathname.includes('login=true');
   
-  const windowData = rateLimitMap.get(ip);
+  const map = isAuthRoute ? authRateLimitMap : rateLimitMap;
+  const limit = isAuthRoute ? AUTH_RATE_LIMIT : RATE_LIMIT;
+  const window = isAuthRoute ? AUTH_RATE_LIMIT_WINDOW : RATE_LIMIT_WINDOW;
+
+  const windowData = map.get(ip);
   if (!windowData) {
-    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    map.set(ip, { count: 1, lastReset: now });
     return null;
   }
   
-  if (now - windowData.lastReset > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { count: 1, lastReset: now });
+  if (now - windowData.lastReset > window) {
+    map.set(ip, { count: 1, lastReset: now });
     return null;
   }
   
-  if (windowData.count >= RATE_LIMIT) {
+  if (windowData.count >= limit) {
     return new NextResponse(
       JSON.stringify({ error: "Too Many Requests. Please try again later." }),
       { status: 429, headers: { "Content-Type": "application/json" } }
@@ -60,7 +70,7 @@ const authMiddleware = withAuth(
   }
 );
 
-export default async function proxy(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   // Apply rate limit on all requests
   const rateLimitResponse = applyRateLimit(req);
   if (rateLimitResponse) return rateLimitResponse;
