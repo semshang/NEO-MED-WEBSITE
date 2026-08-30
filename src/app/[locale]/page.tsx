@@ -59,19 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-8 lg:pt-12 pb-4 lg:pb-8 bg-gradient-to-br from-[#e0f2fe] to-white">
-        
-        {/* Decorative Background Elements */}
-        {/* Dot Grid Top Right */}
-        <div className="absolute right-[2%] top-[10%] w-[350px] h-[350px] opacity-[0.07] z-0 pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(circle, #0f172a 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
-             
-        {/* Soft Mint Blob Bottom Left */}
-        <div className="absolute left-[-5%] bottom-[-10%] w-[500px] h-[500px] bg-[#d1fae5] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
-        
-        {/* Soft Blue Blob Center Right */}
-        <div className="absolute right-[5%] top-[15%] w-[600px] h-[600px] bg-[#bae6fd] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
-
+      <section className="relative flex items-center justify-start overflow-hidden pt-8 lg:pt-12 pb-4 lg:pb-8 bg-white">
         {/* Content */}
         <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12">
           <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left lg:pt-8">
@@ -146,10 +134,10 @@ export default function Home() {
             <motion.div
               animate={{ x: [0, 20, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full max-w-[500px] lg:max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] z-20 mx-auto lg:mx-0"
+              className="relative w-full max-w-[500px] lg:max-w-[750px] xl:max-w-[850px] aspect-[4/3] z-20 mx-auto lg:mx-0"
             >
               <Image
-                src="/hero-podium.png"
+                src="/hero-equipment.png"
                 alt="Premium Medical Equipment Monitor"
                 fill
                 className="object-contain"
