@@ -202,35 +202,25 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.55, ease: "easeOut" as any }}
-          className="flex flex-col space-y-4"
+          className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 h-full"
         >
-          <Link href="/admin/products" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
-            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
-              <Plus className="w-6 h-6" />
+          <Link href="/admin/products" className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col items-center justify-center text-center hover:shadow-lg transition-all hover:border-brand-blue/30 group min-h-[160px]">
+            <div className="p-4 bg-brand-blue/5 rounded-full text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mb-4">
+              <Plus className="w-8 h-8" />
             </div>
             <div>
               <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Manage Products</h3>
-              <p className="text-sm text-slate-500 mt-1">Add or edit catalog items</p>
+              <p className="text-sm text-slate-500 mt-2">Add or edit catalog items</p>
             </div>
           </Link>
           
-          <Link href="/admin/orders" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
-            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
-              <List className="w-6 h-6" />
+          <Link href="/admin/orders" className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col items-center justify-center text-center hover:shadow-lg transition-all hover:border-brand-blue/30 group min-h-[160px]">
+            <div className="p-4 bg-brand-blue/5 rounded-full text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mb-4">
+              <List className="w-8 h-8" />
             </div>
             <div>
               <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">View Orders</h3>
-              <p className="text-sm text-slate-500 mt-1">Process pending requests</p>
-            </div>
-          </Link>
-
-          <Link href="/admin/customers" className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex items-center hover:shadow-md transition-all hover:border-brand-blue/30 group">
-            <div className="p-3 bg-brand-blue/5 rounded-lg text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors mr-4">
-              <Users className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-bold text-brand-navy group-hover:text-brand-blue transition-colors">Manage Customers</h3>
-              <p className="text-sm text-slate-500 mt-1">View customer directory</p>
+              <p className="text-sm text-slate-500 mt-2">Process pending requests</p>
             </div>
           </Link>
         </motion.div>

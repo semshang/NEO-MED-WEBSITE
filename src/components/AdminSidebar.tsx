@@ -17,40 +17,37 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="h-full flex flex-col justify-between py-6">
-      <div>
-        <nav className="space-y-1">
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            const Icon = item.icon;
-            
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center space-x-3 px-6 py-3 transition-colors ${
-                  isActive 
-                    ? "bg-brand-blue/5 border-l-4 border-brand-blue text-brand-blue font-semibold" 
-                    : "border-l-4 border-transparent text-slate-600 hover:bg-slate-50 hover:text-brand-navy font-medium"
-                }`}
-              >
-                <Icon className={`w-5 h-5 ${isActive ? "text-brand-blue" : "text-slate-400"}`} />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
-      
-      <div className="px-6 mt-8">
+    <div className="flex flex-col py-6">
+      <nav className="space-y-1">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`flex items-center space-x-3 px-6 py-3 transition-colors ${
+                isActive 
+                  ? "bg-brand-blue/5 border-l-4 border-brand-blue text-brand-blue font-semibold" 
+                  : "border-l-4 border-transparent text-slate-600 hover:bg-slate-50 hover:text-brand-navy font-medium"
+              }`}
+            >
+              <Icon className={`w-5 h-5 ${isActive ? "text-brand-blue" : "text-slate-400"}`} />
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
+        
+        {/* Sign Out pinned to bottom of nav items */}
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="flex items-center space-x-3 w-full px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium"
+          className="flex items-center space-x-3 w-full px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-red-600 border-l-4 border-transparent transition-colors font-medium text-left"
         >
-          <LogOut className="w-5 h-5 text-red-500" />
+          <LogOut className="w-5 h-5 text-slate-400 group-hover:text-red-500" />
           <span>Sign Out</span>
         </button>
-      </div>
+      </nav>
     </div>
   );
 }

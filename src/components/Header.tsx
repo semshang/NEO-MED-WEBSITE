@@ -64,7 +64,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10 font-medium text-brand-navy tracking-[0.01em]">
+        <nav className="hidden xl:flex items-center space-x-6 xl:space-x-10 font-medium text-brand-navy tracking-[0.01em]">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -86,7 +86,7 @@ export default function Header() {
         </nav>
 
         {/* CTA & Auth */}
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden xl:flex items-center space-x-4">
           <motion.div whileTap={{ scale: 0.97 }}>
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
               {t('getQuote')}
@@ -98,8 +98,12 @@ export default function Header() {
           {session ? (
             <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-slate-200">
               <div className="flex items-center space-x-2">
-                {session.user?.image && (
-                  <img src={session.user.image} alt="Profile" className="w-8 h-8 rounded-full border border-slate-200" />
+                {session.user?.image ? (
+                  <Image src={session.user.image} alt="Profile" width={32} height={32} className="rounded-full ring-2 ring-brand-blue/20" />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-bold text-sm">
+                    {session.user?.name?.charAt(0) || "U"}
+                  </div>
                 )}
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-brand-navy leading-none">
@@ -116,12 +120,12 @@ export default function Header() {
                   )}
                 </div>
               </div>
-              <button onClick={() => signOut()} className="text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors">
-                {tAuth('logout')}
+              <button onClick={() => signOut()} className="text-slate-400 hover:text-brand-blue transition-colors p-2" title="Sign Out">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
               </button>
             </div>
           ) : (
-            <button onClick={() => router.push('?login=true', { scroll: false })} className="text-sm font-bold text-brand-navy hover:text-brand-blue transition-colors ml-2">
+            <button onClick={() => router.push('?login=true', { scroll: false })} className="text-brand-navy hover:text-brand-blue font-bold px-4 py-2 transition-colors">
               {tAuth('login')}
             </button>
           )}
@@ -129,7 +133,7 @@ export default function Header() {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className="lg:hidden text-brand-navy"
+          className="xl:hidden text-brand-navy"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -138,7 +142,7 @@ export default function Header() {
 
       {/* Mobile Nav */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-slate-100 absolute w-full left-0 shadow-lg">
+        <div className="xl:hidden bg-white border-t border-slate-100 absolute w-full left-0 shadow-lg">
           <nav className="flex flex-col p-4 space-y-4 font-medium text-brand-navy tracking-[0.01em]">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
