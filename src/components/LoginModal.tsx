@@ -82,7 +82,10 @@ export function LoginModal() {
                     className="w-8 h-8 object-contain"
                   />
                   <div className="flex flex-col">
-                    <span className="text-[#0d52bc] font-black tracking-widest leading-none text-xs lg:text-sm">NEOMEDITECH</span>
+                    <span className="font-black tracking-widest leading-none text-xs lg:text-sm">
+                      <span className="text-[#0d52bc]">NEOMEDI</span>
+                      <span className="text-[#10b981]">TECH</span>
+                    </span>
                     <span className="text-slate-400 font-semibold text-[7px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
                   </div>
                 </div>
@@ -169,14 +172,22 @@ export function LoginModal() {
               <div className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
                 
                 {/* Mobile Logo (hidden on desktop) */}
-                <Image 
-                  src="/logo-transparent.png" 
-                  alt="Neomeditech" 
-                  width={160} 
-                  height={50} 
-                  className="h-8 w-auto object-contain mb-6 md:hidden"
-                  style={{ width: 'auto' }}
-                />
+                <div className="flex md:hidden items-center space-x-2 mb-6">
+                  <Image 
+                    src="/logo-transparent.png" 
+                    alt="Neomeditech" 
+                    width={40} 
+                    height={40} 
+                    className="w-8 h-8 object-contain"
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-black tracking-widest leading-none text-sm">
+                      <span className="text-[#0d52bc]">NEOMEDI</span>
+                      <span className="text-[#10b981]">TECH</span>
+                    </span>
+                    <span className="text-slate-400 font-semibold text-[8px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
+                  </div>
+                </div>
 
                 <h3 className="text-2xl lg:text-[28px] font-bold text-brand-navy mb-1 tracking-tight">Welcome Back</h3>
                 <p className="text-xs lg:text-[13px] text-slate-500 mb-6">Sign in to access your account</p>
