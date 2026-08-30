@@ -115,11 +115,7 @@ export default function Header() {
                     {session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name?.split(' ')[0]}
                   </span>
                   {session.user?.role === "admin" ? (
-                    <div className="flex items-center space-x-2 text-[10px] uppercase tracking-wider font-bold">
-                      <Link href="/admin" className="text-brand-blue hover:underline">Admin</Link>
-                      <span className="text-slate-300">|</span>
-                      <Link href="/account" className="text-slate-500 hover:text-brand-blue transition-colors">Account</Link>
-                    </div>
+                    <Link href="/admin" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Admin</Link>
                   ) : (
                     <Link href="/account" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Account</Link>
                   )}
@@ -170,10 +166,7 @@ export default function Header() {
               {session ? (
                 <>
                   {session.user?.role === "admin" ? (
-                    <>
-                      <Link href="/admin" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>Admin Dashboard</Link>
-                      <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
-                    </>
+                    <Link href="/admin" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>Admin Dashboard</Link>
                   ) : (
                     <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
                   )}
