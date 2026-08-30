@@ -18,7 +18,7 @@ export function AdminSidebar() {
 
   return (
     <div className="flex flex-col py-6">
-      <nav className="space-y-1">
+      <nav className="space-y-3 px-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -27,26 +27,28 @@ export function AdminSidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center space-x-3 px-6 py-3 transition-colors ${
+              className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ease-out border-l-4 ${
                 isActive 
-                  ? "bg-brand-blue/5 border-l-4 border-brand-blue text-brand-blue font-semibold" 
-                  : "border-l-4 border-transparent text-slate-600 hover:bg-slate-50 hover:text-brand-navy font-medium"
+                  ? "bg-brand-blue/10 border-brand-blue text-brand-blue font-bold shadow-sm" 
+                  : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-brand-navy hover:shadow-sm hover:border-slate-200 font-medium"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "text-brand-blue" : "text-slate-400"}`} />
+              <Icon className={`w-5 h-5 transition-colors ${isActive ? "text-brand-blue" : "text-slate-400 group-hover:text-brand-navy"}`} />
               <span>{item.name}</span>
             </Link>
           );
         })}
         
-        {/* Sign Out pinned to bottom of nav items */}
-        <button
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="flex items-center space-x-3 w-full px-6 py-3 text-slate-600 hover:bg-slate-50 hover:text-red-600 border-l-4 border-transparent transition-colors font-medium text-left"
-        >
-          <LogOut className="w-5 h-5 text-slate-400 group-hover:text-red-500" />
-          <span>Sign Out</span>
-        </button>
+        {/* Sign Out pinned to bottom of nav items, with mb-20 to clear floating Next.js/chat widget */}
+        <div className="mt-8 mb-20">
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="group flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ease-out border-l-4 border-transparent text-slate-600 hover:bg-red-50 hover:text-red-600 hover:shadow-sm hover:border-red-200 font-medium text-left"
+          >
+            <LogOut className="w-5 h-5 text-slate-400 group-hover:text-red-500 transition-colors" />
+            <span>Sign Out</span>
+          </button>
+        </div>
       </nav>
     </div>
   );
