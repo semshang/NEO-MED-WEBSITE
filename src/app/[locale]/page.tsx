@@ -151,7 +151,7 @@ export default function Home() {
               className="relative w-full max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 scale-110 md:scale-125 lg:scale-110 origin-right"
             >
               <Image
-                src="/login-podium-transparent.png"
+                src="/hero-podium.png"
                 alt="Premium Medical Equipment Monitor"
                 fill
                 className="object-contain"
