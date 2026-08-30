@@ -43,16 +43,19 @@ export default function Header() {
       {/* Main Navigation */}
       <div className="container mx-auto px-4 py-5 max-w-7xl flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center space-x-3">
           <Image 
             src="/logo-transparent.png" 
             alt="Neomeditech Logo" 
-            width={240} 
+            width={80} 
             height={80} 
-            className="h-20 w-auto object-contain"
+            className="h-16 md:h-20 w-auto object-contain"
             style={{ width: 'auto' }}
             priority
           />
+          <span className="text-2xl md:text-3xl font-black text-brand-navy tracking-tight hidden sm:block">
+            Neomeditech
+          </span>
         </Link>
 
         {/* Desktop Nav */}
