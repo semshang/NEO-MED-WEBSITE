@@ -201,7 +201,7 @@ export function LoginModal() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto min-h-[600px]"
+            className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto max-h-[95vh] md:max-h-[85vh]"
           >
             {/* Close Button */}
             <button 
@@ -271,7 +271,7 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[180px] lg:min-h-[240px]">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[120px] lg:min-h-[160px]">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
