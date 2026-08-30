@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { ShieldCheck, Headset, Truck, Shield, X, Globe, ChevronDown, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, User } from "lucide-react";
 import { useTranslations } from "next-intl";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
 
@@ -205,7 +206,7 @@ export function LoginModal() {
             {/* Close Button */}
             <button 
               onClick={closeModal}
-              className="absolute top-4 right-4 z-50 w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 transition-colors"
+              className="absolute top-4 right-4 z-50 w-8 h-8 lg:w-10 lg:h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 transition-colors"
             >
               <X size={20} />
             </button>
@@ -270,14 +271,14 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[120px]">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
                     transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
                     src="/login-podium-transparent.png" 
                     alt="Neomeditech Equipment" 
-                    className="w-full max-h-[180px] lg:max-h-[240px] object-contain object-bottom relative z-10 drop-shadow-xl"
+                    className="w-full h-full max-h-[180px] lg:max-h-[240px] object-contain object-bottom relative z-10 drop-shadow-xl"
                   />
 
                   {/* Floating Badge */}
@@ -300,14 +301,10 @@ export function LoginModal() {
             </motion.div>
 
             {/* Right Panel - Form */}
-            <div className="w-full md:w-1/2 p-6 sm:p-8 lg:p-12 flex flex-col overflow-y-auto">
+            <div className="w-full md:w-1/2 p-6 sm:p-8 lg:px-12 lg:py-8 flex flex-col overflow-y-auto custom-scrollbar">
               {/* Top Bar */}
-              <div className="flex justify-between items-center mb-6 lg:mb-10 w-full pr-10">
-                <div className="flex items-center space-x-1 text-slate-500 text-sm hover:bg-slate-50 px-3 py-1.5 rounded-full cursor-pointer transition-colors border border-transparent hover:border-slate-200">
-                  <Globe size={16} />
-                  <span className="font-medium">English</span>
-                  <ChevronDown size={14} className="ml-1" />
-                </div>
+              <div className="flex justify-end items-center mb-4 lg:mb-6 w-full pr-10">
+                <LanguageSwitcher />
               </div>
 
               <motion.div variants={rightPanelVariants} className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
