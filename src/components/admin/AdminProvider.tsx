@@ -56,12 +56,25 @@ export interface Settings {
   lowStockThreshold: number;
 }
 
+export interface Message {
+  id: string;
+  senderName: string;
+  email: string;
+  subject: string;
+  body: string;
+  date: string;
+  unread: boolean;
+}
+
 interface AdminContextType {
   orders: Order[];
   products: Product[];
+  messages: Message[];
   customerMeta: Record<string, CustomerMeta>;
   settings: Settings;
   cart: CartItem[];
+  seenNotifications: string[];
+  markNotificationsSeen: (ids: string[]) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
   updateOrderNotes: (orderId: string, notes: string) => void;
   addProduct: (p: Omit<Product, "id">) => void;
@@ -93,10 +106,17 @@ const initialOrders: Order[] = [
   { id: "#ORD-085", customerName: "Prakash Shrestha", customerEmail: "prakash@example.com", customerPhone: "+977 9800000005", date: "Aug 22, 2026", status: "Processing", total: 200000, adminNotes: "Awaiting supplier restock for one item.", items: [{ productId: 5, quantity: 4, price: 50000, name: initialProducts[4].name }] },
 ];
 
+const initialMessages: Message[] = [
+  { id: "MSG-001", senderName: "Sarah Jenkins", email: "sarah@example.com", subject: "Question about Infusion Pump warranty", body: "...", date: "Aug 28, 2026", unread: false },
+  { id: "MSG-002", senderName: "Sita Sharma", email: "sita@example.com", subject: "Bulk order discount inquiry", body: "...", date: "Aug 30, 2026", unread: true }
+];
+
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [seenNotifications, setSeenNotifications] = useState<string[]>([]);
   const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({
     "rajendra@example.com": { vip: true, notes: "Kathmandu General Hospital - bulk buyer" }
   });
@@ -118,6 +138,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
       const savedOrders = localStorage.getItem("neo_orders");
       if (savedOrders) setOrders(JSON.parse(savedOrders));
 
+      const savedMessages = localStorage.getItem("neo_messages");
+      if (savedMessages) setMessages(JSON.parse(savedMessages));
+
       const savedSettings = localStorage.getItem("neo_settings");
       if (savedSettings) setSettings(JSON.parse(savedSettings));
 
@@ -126,6 +149,9 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
       const savedCart = localStorage.getItem("neo_cart");
       if (savedCart) setCart(JSON.parse(savedCart));
+
+      const savedSeen = localStorage.getItem("neo_seen_notifications");
+      if (savedSeen) setSeenNotifications(JSON.parse(savedSeen));
     } catch (e) {
       console.error("Failed to load from local storage", e);
     }
@@ -141,6 +167,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     if (!isLoaded) return;
     localStorage.setItem("neo_orders", JSON.stringify(orders));
   }, [orders, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_messages", JSON.stringify(messages));
+  }, [messages, isLoaded]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("neo_seen_notifications", JSON.stringify(seenNotifications));
+  }, [seenNotifications, isLoaded]);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -269,9 +305,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
     return orderId;
   };
 
+  const markNotificationsSeen = (ids: string[]) => {
+    setSeenNotifications(prev => {
+      const newSeen = new Set([...prev, ...ids]);
+      return Array.from(newSeen);
+    });
+  };
+
   return (
     <AdminContext.Provider value={{
-      orders, products, customerMeta, settings, cart,
+      orders, products, messages, customerMeta, settings, cart, seenNotifications, markNotificationsSeen,
       updateOrderStatus, updateOrderNotes, addProduct, updateProduct, deleteProduct, updateCustomerMeta, updateSettings: updateSettingsLocal,
       addToCart, updateCartItem, removeFromCart, clearCart, placeOrder
     }}>

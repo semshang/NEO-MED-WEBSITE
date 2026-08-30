@@ -4,6 +4,7 @@ import { Link } from "@/i18n/routing";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
+import { AdminNotifications } from "./admin/AdminNotifications";
 
 export function AdminHeader() {
   const { data: session } = useSession();
@@ -31,8 +32,11 @@ export function AdminHeader() {
           </div>
         </Link>
 
-        {/* Profile & Auth */}
+        {/* Notifications & Profile & Auth */}
         <div className="flex items-center space-x-4">
+          <AdminNotifications />
+          <div className="h-6 border-l border-slate-200"></div>
+          
           <div className="flex items-center space-x-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
             {session?.user?.image ? (
               <Image src={session.user.image} alt="Profile" width={28} height={28} className="rounded-full ring-2 ring-brand-blue/20" />
