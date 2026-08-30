@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-4 lg:pt-6 pb-4 lg:pb-8 bg-gradient-to-r from-white via-[#f4f9fd] to-[#e8f4fd]">
+      <section className="relative flex items-center justify-start overflow-hidden pt-4 lg:pt-6 pb-24 lg:pb-36 bg-gradient-to-r from-white via-[#f4f9fd] to-[#e8f4fd]">
         {/* Content */}
         <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between">
           <div className="w-full lg:w-[55%] xl:w-[50%] max-w-2xl z-10 text-center lg:text-left">
