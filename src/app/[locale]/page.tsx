@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-4 lg:pb-8 bg-gradient-to-br from-[#e0f2fe] to-white">
+      <section className="relative flex items-center justify-start overflow-hidden pt-8 lg:pt-12 pb-4 lg:pb-8 bg-gradient-to-br from-[#e0f2fe] to-white">
         
         {/* Decorative Background Elements */}
         {/* Dot Grid Top Right */}
@@ -73,8 +73,8 @@ export default function Home() {
         <div className="absolute right-[5%] top-[15%] w-[600px] h-[600px] bg-[#bae6fd] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
-          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left">
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12">
+          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left lg:pt-8">
             {/* Badge */}
             <motion.div 
               variants={heroBadgeVariant}
