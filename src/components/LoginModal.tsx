@@ -212,10 +212,10 @@ export function LoginModal() {
             </button>
 
             {/* Left Panel - Marketing */}
-            <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-8 lg:p-10 relative overflow-hidden">
+            <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-6 lg:p-8 relative overflow-hidden">
               <div className="relative z-10 flex flex-col h-full">
                 {/* Logo */}
-                <div className="flex items-center space-x-2.5 mb-6">
+                <div className="flex items-center space-x-2.5 mb-4">
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
@@ -237,11 +237,11 @@ export function LoginModal() {
                   <span className="text-[#0d52bc]">{tAuth("betterOutcomes")}</span>
                 </h2>
                 
-                <p className="text-slate-600 text-sm lg:text-base mb-8 max-w-sm">
+                <p className="text-slate-600 text-sm lg:text-base mb-4 max-w-sm">
                   {tAuth("trustedBy")}
                 </p>
 
-                <div className="space-y-5 lg:space-y-6 mb-8 lg:mb-12">
+                <div className="space-y-3 mb-4 lg:mb-6">
                   <div className="flex items-start space-x-4">
                     <div className="bg-white p-2 rounded-xl shadow-sm text-brand-blue shrink-0">
                       <ShieldCheck size={20} />
@@ -271,14 +271,14 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[120px]">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[100px] overflow-hidden">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
                     transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
                     src="/login-podium-transparent.png" 
                     alt="Neomeditech Equipment" 
-                    className="w-full h-full max-h-[180px] lg:max-h-[240px] object-contain object-bottom relative z-10 drop-shadow-xl"
+                    className="w-full h-full object-contain object-bottom relative z-10 drop-shadow-xl"
                   />
 
                   {/* Floating Badge */}
@@ -301,16 +301,16 @@ export function LoginModal() {
             </motion.div>
 
             {/* Right Panel - Form */}
-            <div className="w-full md:w-1/2 p-6 sm:p-8 lg:px-12 lg:py-8 flex flex-col overflow-y-auto custom-scrollbar">
+            <div className="w-full md:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col justify-center">
               {/* Top Bar */}
-              <div className="flex justify-end items-center mb-4 lg:mb-6 w-full pr-10">
+              <div className="flex justify-end items-center mb-2 lg:mb-4 w-full pr-10">
                 <LanguageSwitcher />
               </div>
 
               <motion.div variants={rightPanelVariants} className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
                 
                 {/* Mobile Logo (hidden on desktop) */}
-                <motion.div variants={formItemVariants} className="flex md:hidden items-center space-x-2.5 mb-6">
+                <motion.div variants={formItemVariants} className="flex md:hidden items-center space-x-2.5 mb-4">
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
@@ -327,7 +327,7 @@ export function LoginModal() {
                   </div>
                 </motion.div>
 
-                <motion.div variants={formItemVariants} className="mb-8">
+                <motion.div variants={formItemVariants} className="mb-4">
                   <h3 className="text-2xl lg:text-3xl font-black text-brand-navy mb-2">
                     {mode === "login" ? tAuth("welcomeBack") : mode === "register" ? tAuth("createAccount") : "Reset Password"}
                   </h3>
@@ -348,7 +348,7 @@ export function LoginModal() {
                   </motion.div>
                 )}
 
-                <motion.form variants={formItemVariants} onSubmit={handleSubmit} className="space-y-4 lg:space-y-5">
+                <motion.form variants={formItemVariants} onSubmit={handleSubmit} className="space-y-3">
                   {mode === "register" && (
                     <div>
                       <label className="block text-xs font-bold text-brand-navy mb-1.5">Full Name</label>
@@ -358,7 +358,7 @@ export function LoginModal() {
                           type="text"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder="John Doe"
                           required
                         />
@@ -374,7 +374,7 @@ export function LoginModal() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                         placeholder={tAuth("emailPlaceholder")}
                         required
                       />
@@ -390,7 +390,7 @@ export function LoginModal() {
                           type={showPassword ? "text" : "password"}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder={tAuth("passwordPlaceholder")}
                           required
                         />
@@ -414,7 +414,7 @@ export function LoginModal() {
                           type={showPassword ? "text" : "password"}
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder="Confirm password"
                           required
                         />
@@ -441,7 +441,7 @@ export function LoginModal() {
                   <button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-brand-blue hover:bg-brand-navy text-white font-bold py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-6 flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full bg-brand-blue hover:bg-brand-navy text-white font-bold py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-4 flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <Loader2 size={18} className="animate-spin" />
@@ -458,7 +458,7 @@ export function LoginModal() {
 
                 {mode !== "forgot" && (
                   <>
-                    <motion.div variants={formItemVariants} className="flex items-center justify-center space-x-4 my-6 lg:my-8">
+                    <motion.div variants={formItemVariants} className="flex items-center justify-center space-x-4 my-4">
                       <div className="h-px bg-slate-200 flex-1"></div>
                       <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold bg-white px-2">
                         {tAuth("continueWith")}
@@ -470,7 +470,7 @@ export function LoginModal() {
                       <button 
                         onClick={handleGoogleSignIn}
                         disabled={isLoading}
-                        className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
+                        className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
                       >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.81 15.69 17.61V20.36H19.26C21.35 18.44 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>
@@ -484,7 +484,7 @@ export function LoginModal() {
                   </>
                 )}
 
-                <motion.div variants={formItemVariants} className="mt-8 lg:mt-auto text-center">
+                <motion.div variants={formItemVariants} className="mt-4 lg:mt-auto text-center">
                   <p className="text-xs text-slate-500 font-medium">
                     {mode === "login" ? tAuth("noAccount") : mode === "register" ? "Already have an account?" : "Remembered your password?"}{" "}
                     <button 
