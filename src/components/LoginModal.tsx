@@ -272,7 +272,7 @@ export function LoginModal() {
                 </div>
                 
                 {/* Absolutely positioned image to guarantee it stays large */}
-                <div className="absolute bottom-0 left-0 right-0 h-[220px] lg:h-[280px] pointer-events-none z-10">
+                <div className="absolute bottom-0 left-0 right-0 h-[160px] md:h-[180px] lg:h-[240px] pointer-events-none z-10">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
@@ -284,7 +284,7 @@ export function LoginModal() {
                 </div>
 
                 {/* Floating Badge - absolute relative to left panel */}
-                <div className="absolute bottom-6 left-6 lg:bottom-8 lg:left-8 bg-white/95 p-2.5 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2.5 z-30 min-w-[180px] lg:min-w-[200px] border border-slate-100">
+                <div className="absolute bottom-4 left-6 lg:bottom-8 lg:left-8 bg-white/95 p-2.5 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2.5 z-30 min-w-[180px] lg:min-w-[200px] border border-slate-100">
                   <div className="bg-[#e6f8f3] p-1.5 rounded-lg text-[#10b981]">
                     <Shield size={16} />
                   </div>
