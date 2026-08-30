@@ -203,13 +203,7 @@ export function LoginModal() {
             exit="exit"
             className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto max-h-[98vh] md:max-h-[95vh]"
           >
-            {/* Close Button */}
-            <button 
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-50 w-8 h-8 lg:w-10 lg:h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 transition-colors"
-            >
-              <X size={20} />
-            </button>
+            
 
             {/* Left Panel - Marketing */}
             <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-6 lg:p-8 relative overflow-hidden">
@@ -271,7 +265,7 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end h-[200px] lg:h-[280px] shrink-0 mt-2">
+                <div className="mt-auto relative w-full flex flex-col justify-end h-[170px] lg:h-[240px] shrink-0 mb-4 mt-2">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
@@ -303,8 +297,14 @@ export function LoginModal() {
             {/* Right Panel - Form */}
             <div className="w-full md:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col justify-start md:justify-center overflow-y-auto custom-scrollbar">
               {/* Top Bar */}
-              <div className="flex justify-end items-center mb-2 lg:mb-4 w-full pr-10">
+              <div className="flex justify-end items-center mb-2 lg:mb-4 w-full gap-4">
                 <LanguageSwitcher />
+                <button 
+                  onClick={closeModal}
+                  className="w-8 h-8 lg:w-10 lg:h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 transition-colors shrink-0"
+                >
+                  <X size={20} />
+                </button>
               </div>
 
               <motion.div variants={rightPanelVariants} className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
@@ -441,7 +441,7 @@ export function LoginModal() {
                   <button 
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-brand-blue hover:bg-brand-navy text-white font-bold py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-4 flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-4 flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <Loader2 size={18} className="animate-spin" />
@@ -460,7 +460,7 @@ export function LoginModal() {
                   <>
                     <motion.div variants={formItemVariants} className="flex items-center justify-center space-x-4 my-4">
                       <div className="h-px bg-slate-200 flex-1"></div>
-                      <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold bg-white px-2">
+                      <span className="text-[10px] lg:text-xs text-slate-500 font-bold bg-white px-2">
                         {tAuth("continueWith")}
                       </span>
                       <div className="h-px bg-slate-200 flex-1"></div>
