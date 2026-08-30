@@ -62,9 +62,15 @@ export default function Home() {
       <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-12 md:pb-16 bg-gradient-to-br from-[#e0f2fe] to-white">
         
         {/* Decorative Background Elements */}
-        <div className="absolute right-[5%] top-[20%] w-[300px] h-[300px] opacity-30 z-0" 
-             style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1.5px, transparent 1.5px)', backgroundSize: '24px 24px' }}></div>
-        <div className="absolute left-[-10%] bottom-[-10%] w-[600px] h-[600px] bg-gradient-to-tr from-[#d1fae5]/50 to-[#bae6fd]/40 rounded-full blur-3xl z-0 pointer-events-none"></div>
+        {/* Dot Grid Top Right */}
+        <div className="absolute right-[2%] top-[10%] w-[350px] h-[350px] opacity-[0.07] z-0 pointer-events-none" 
+             style={{ backgroundImage: 'radial-gradient(circle, #0f172a 2px, transparent 2px)', backgroundSize: '32px 32px' }}></div>
+             
+        {/* Soft Mint Blob Bottom Left */}
+        <div className="absolute left-[-5%] bottom-[-10%] w-[500px] h-[500px] bg-[#d1fae5] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
+        
+        {/* Soft Blue Blob Center Right */}
+        <div className="absolute right-[5%] top-[15%] w-[600px] h-[600px] bg-[#bae6fd] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
         {/* Content */}
         <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
@@ -161,9 +167,6 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
             className="w-full md:w-[55%] lg:w-[55%] flex justify-center md:justify-end relative mt-16 md:mt-0 z-10"
           >
-            {/* Soft Glow behind image instead of dark blur */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-brand-green blur-[80px] opacity-20 rounded-full w-[80%] h-[80%] m-auto transform scale-90 pointer-events-none"></div>
-            
             <motion.div
               animate={{ x: [0, 30, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
