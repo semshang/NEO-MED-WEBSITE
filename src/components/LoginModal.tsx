@@ -206,95 +206,88 @@ export function LoginModal() {
             
 
             {/* Left Panel - Marketing */}
-            <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-6 lg:p-8 relative overflow-hidden">
-              <div className="relative z-10 flex flex-col h-full overflow-visible">
-                {/* Logo */}
-                <div className="flex items-center space-x-2.5 mb-4">
-                  <Image 
-                    src="/logo-transparent.png" 
-                    alt="Neomeditech" 
-                    width={96} 
-                    height={48} 
-                    className="h-7 lg:h-10 w-auto object-contain -mt-1.5 lg:-mt-2"
-                  />
-                  <div className="flex flex-col justify-center">
-                    <span className="font-black tracking-widest leading-none text-base lg:text-[22px]">
-                      <span className="text-[#0d52bc]">NEOMEDI</span>
-                      <span className="text-[#10b981]">TECH</span>
-                    </span>
-                    <span className="text-slate-400 font-semibold text-[7px] lg:text-[11px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
+              <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-gradient-to-b from-[#eff5f9] to-[#e1edf4] p-8 lg:p-12 relative overflow-y-auto custom-scrollbar">
+                <div className="relative z-10 flex flex-col h-full min-h-max">
+                  {/* Logo */}
+                  <div className="mb-6 lg:mb-8">
+                    <Image 
+                      src="/logo.png" 
+                      alt="Neomeditech" 
+                      width={160} 
+                      height={80} 
+                      className="h-10 lg:h-12 w-auto object-contain"
+                    />
+                  </div>
+  
+                  {/* Copy */}
+                  <div className="mb-6 lg:mb-8">
+                    <h2 className="text-3xl lg:text-4xl font-black text-brand-navy mb-4 leading-tight">
+                      {tAuth("qualityEquip")}<br />
+                      <span className="text-brand-blue">{tAuth("better")}</span>
+                      <span className="text-[#10b981]">{tAuth("outcomes")}</span>
+                    </h2>
+                    <p className="text-slate-600 text-sm lg:text-base leading-relaxed">
+                      {tAuth("trustedBy")}
+                    </p>
+                  </div>
+  
+                  {/* Trust Points */}
+                  <div className="space-y-4 lg:space-y-5 mb-8">
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-white p-2.5 rounded-xl shadow-sm text-brand-blue shrink-0">
+                        <ShieldCheck size={20} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-brand-navy text-sm lg:text-base">{tTrust("genuine")}</h4>
+                        <p className="text-slate-500 text-xs lg:text-sm mt-0.5">{tTrust("genuineDesc")}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-white p-2.5 rounded-xl shadow-sm text-brand-blue shrink-0">
+                        <Headset size={20} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-brand-navy text-sm lg:text-base">{tTrust("support")}</h4>
+                        <p className="text-slate-500 text-xs lg:text-sm mt-0.5">{tTrust("supportDesc")}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start space-x-4">
+                      <div className="bg-white p-2.5 rounded-xl shadow-sm text-brand-green shrink-0">
+                        <Truck size={20} />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-brand-navy text-sm lg:text-base">{tTrust("delivery")}</h4>
+                        <p className="text-slate-500 text-xs lg:text-sm mt-0.5">{tTrust("deliveryDesc")}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Image (Normal Flow) */}
+                  <div className="w-full flex justify-center items-center h-[200px] lg:h-[260px] shrink-0 mb-6">
+                    <motion.img 
+                      initial={{ y: 0 }}
+                      animate={{ y: [-5, 5, -5] }}
+                      transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                      src="/login-podium-transparent.png" 
+                      alt="Neomeditech Equipment" 
+                      className="w-full h-full object-contain object-bottom drop-shadow-xl"
+                    />
+                  </div>
+
+                  {/* Certified Badge (Normal Flow below image) */}
+                  <div className="bg-white p-3 lg:p-4 rounded-xl shadow-sm flex items-center space-x-3 w-full border border-slate-100">
+                    <div className="bg-[#e6f8f3] p-2 rounded-lg text-[#10b981] shrink-0">
+                      <Shield size={20} />
+                    </div>
+                    <div>
+                      <div className="text-brand-navy font-bold text-xs lg:text-sm">{tTrust("certified")}</div>
+                      <div className="text-slate-500 text-[10px] lg:text-xs mt-0.5">{tTrust("certifiedDesc")}</div>
+                    </div>
                   </div>
                 </div>
-                
-                <h2 className="text-3xl lg:text-4xl font-black text-brand-navy mb-4 leading-tight">
-                  {tAuth("qualityEquip")}<br />
-                  <span className="text-[#0d52bc]">{tAuth("better")}</span><span className="text-[#10b981]">{tAuth("outcomes")}</span>
-                </h2>
-                
-                <p className="text-slate-600 text-sm lg:text-base mb-4 max-w-sm">
-                  {tAuth("trustedBy")}
-                </p>
-
-                <div className="space-y-3 mb-4 lg:mb-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
-                      <ShieldCheck size={16} className="lg:w-5 lg:h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("genuine")}</h4>
-                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("genuineDesc")}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
-                      <Headset size={16} className="lg:w-5 lg:h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("support")}</h4>
-                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("supportDesc")}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-green shrink-0">
-                      <Truck size={16} className="lg:w-5 lg:h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("delivery")}</h4>
-                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("deliveryDesc")}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-0 max-h-[120px] lg:max-h-[180px] mb-6 mt-2 lg:mb-8">
-                  <motion.img 
-                    initial={{ y: 0 }}
-                    animate={{ y: [-5, 5, -5] }}
-                    transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-                    src="/login-podium-transparent.png" 
-                    alt="Neomeditech Equipment" 
-                    className="w-full h-full object-contain object-bottom relative z-10 drop-shadow-xl"
-                  />
-
-                  {/* Floating Badge */}
-                  <div className="absolute bottom-2 lg:bottom-4 left-0 bg-white/95 p-2 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2 z-30 min-w-[160px] lg:min-w-[200px] border border-slate-100">
-                    <div className="bg-[#e6f8f3] p-1.5 rounded-lg text-[#10b981]">
-                      <Shield size={14} className="lg:w-4 lg:h-4" />
-                    </div>
-                    <div>
-                      <div className="text-brand-navy font-bold text-[10px] lg:text-xs leading-tight">{tTrust("certified")}</div>
-                      <div className="text-slate-500 text-[8px] lg:text-[10px] mt-0.5 leading-tight">{tTrust("certifiedDesc")}</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              
-              {/* Background decorative elements */}
-              <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br from-brand-blue/5 to-brand-green/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-              <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-blue/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
-            </motion.div>
-
-            {/* Right Panel - Form */}
+              </motion.div>
+  
+              {/* Right Panel - Form */}
             <div className="w-full md:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col justify-start md:justify-center overflow-y-auto custom-scrollbar">
               {/* Top Bar */}
               <div className="flex justify-end items-center mb-2 lg:mb-4 w-full gap-4">
