@@ -64,7 +64,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-10 font-medium text-brand-navy tracking-[0.01em]">
+        <nav className="hidden lg:flex items-center space-x-6 xl:space-x-10 font-medium text-brand-navy tracking-[0.01em]">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -86,7 +86,7 @@ export default function Header() {
         </nav>
 
         {/* CTA & Auth */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-4">
           <motion.div whileTap={{ scale: 0.97 }}>
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
               {t('getQuote')}
@@ -129,7 +129,7 @@ export default function Header() {
 
         {/* Mobile Menu Toggle */}
         <button 
-          className="md:hidden text-brand-navy"
+          className="lg:hidden text-brand-navy"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? <X size={28} /> : <Menu size={28} />}

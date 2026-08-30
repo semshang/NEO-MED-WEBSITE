@@ -73,14 +73,14 @@ export default function Home() {
         <div className="absolute right-[5%] top-[15%] w-[600px] h-[600px] bg-[#bae6fd] opacity-20 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
-          <div className="w-full md:w-[45%] lg:w-[40%] max-w-2xl z-10">
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left">
             {/* Badge */}
             <motion.div 
               variants={heroBadgeVariant}
               initial="hidden"
               animate="visible"
-              className="inline-flex items-center space-x-2 border border-brand-green/30 text-brand-navy px-5 py-2 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm mb-8 shadow-sm"
+              className="inline-flex items-center space-x-2 border border-brand-green/30 text-brand-navy px-5 py-2 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm mb-6 lg:mb-8 shadow-sm"
             >
               <div className="bg-brand-green rounded-full p-1">
                 <ShieldCheck size={14} className="text-white" />
@@ -93,7 +93,7 @@ export default function Home() {
               variants={heroHeadlineVariant}
               initial="hidden"
               animate="visible"
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-navy leading-[1.1] mb-6"
+              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-brand-navy leading-[1.15] lg:leading-[1.1] mb-4 lg:mb-6"
             >
               {tHero("title1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">{tHero("titleHighlight")}</span> {tHero("title2")}
             </motion.h1>
@@ -165,12 +165,12 @@ export default function Home() {
             initial={{ opacity: 0, x: -100, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-            className="w-full md:w-[55%] lg:w-[55%] flex justify-center md:justify-end relative mt-16 md:mt-0 z-10"
+            className="w-full lg:w-[55%] flex justify-center lg:justify-end relative mt-12 lg:mt-0 z-10"
           >
             <motion.div
-              animate={{ x: [0, 30, 0] }}
+              animate={{ x: [0, 20, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] z-20 scale-110 md:scale-125 lg:scale-110 origin-right"
+              className="relative w-full max-w-[500px] lg:max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] z-20 mx-auto lg:mx-0"
             >
               <Image
                 src="/hero-podium.png"

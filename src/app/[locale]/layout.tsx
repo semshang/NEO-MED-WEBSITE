@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/Header";
@@ -40,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <Header />
