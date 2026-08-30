@@ -59,24 +59,12 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-12 md:pb-16">
-        {/* Background Image with slow zoom */}
-        <motion.div 
-          className="absolute inset-0 z-0"
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ duration: 20, ease: "easeInOut", repeat: Infinity }}
-        >
-          <Image 
-            src="/hero.jpg" 
-            alt="Medical Equipment in use" 
-            fill 
-            className="object-cover object-center" 
-            priority 
-          />
-        </motion.div>
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/70 to-transparent z-10"></div>
+      <section className="relative flex items-center justify-start overflow-hidden pt-12 md:pt-16 pb-12 md:pb-16 bg-gradient-to-br from-[#e0f2fe] to-white">
+        
+        {/* Decorative Background Elements */}
+        <div className="absolute right-[5%] top-[20%] w-[300px] h-[300px] opacity-30 z-0" 
+             style={{ backgroundImage: 'radial-gradient(circle, #94a3b8 1.5px, transparent 1.5px)', backgroundSize: '24px 24px' }}></div>
+        <div className="absolute left-[-10%] bottom-[-10%] w-[600px] h-[600px] bg-gradient-to-tr from-[#d1fae5]/50 to-[#bae6fd]/40 rounded-full blur-3xl z-0 pointer-events-none"></div>
 
         {/* Content */}
         <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
@@ -86,7 +74,7 @@ export default function Home() {
               variants={heroBadgeVariant}
               initial="hidden"
               animate="visible"
-              className="inline-flex items-center space-x-2 border border-brand-green/50 text-white px-5 py-2 rounded-full text-sm font-medium bg-white/10 backdrop-blur-sm mb-8"
+              className="inline-flex items-center space-x-2 border border-brand-green/30 text-brand-navy px-5 py-2 rounded-full text-sm font-bold bg-white/50 backdrop-blur-sm mb-8 shadow-sm"
             >
               <div className="bg-brand-green rounded-full p-1">
                 <ShieldCheck size={14} className="text-white" />
@@ -99,7 +87,7 @@ export default function Home() {
               variants={heroHeadlineVariant}
               initial="hidden"
               animate="visible"
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6"
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-brand-navy leading-[1.1] mb-6"
             >
               {tHero("title1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">{tHero("titleHighlight")}</span> {tHero("title2")}
             </motion.h1>
@@ -109,10 +97,41 @@ export default function Home() {
               variants={heroSubtextVariant}
               initial="hidden"
               animate="visible"
-              className="text-lg md:text-xl text-slate-200 leading-relaxed max-w-2xl mb-10"
+              className="text-lg md:text-xl text-slate-600 leading-relaxed max-w-2xl mb-8 font-medium"
             >
               We provide state-of-the-art biomedical equipment, reliable repair services, and expert support for hospitals, clinics, and individuals across Nepal.
             </motion.p>
+
+            {/* Trust Badges under text */}
+            <motion.div 
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } }
+              }}
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-10"
+            >
+              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="flex items-start space-x-3 bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm backdrop-blur-sm w-full">
+                <div className="bg-brand-blue/10 p-2 rounded-full text-brand-blue mt-0.5 shrink-0">
+                  <ShieldCheck size={16} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 text-sm">Certified Experts</h4>
+                  <p className="text-slate-500 text-xs">Biomedical Specialists</p>
+                </div>
+              </motion.div>
+              
+              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }} className="flex items-start space-x-3 bg-white/60 p-3 rounded-xl border border-white/40 shadow-sm backdrop-blur-sm w-full">
+                <div className="bg-brand-green/10 p-2 rounded-full text-brand-green mt-0.5 shrink-0">
+                  <ShieldCheck size={16} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-800 text-sm">Warranty Included</h4>
+                  <p className="text-slate-500 text-xs">Peace of Mind</p>
+                </div>
+              </motion.div>
+            </motion.div>
 
             {/* Buttons */}
             <motion.div 
@@ -140,15 +159,15 @@ export default function Home() {
             initial={{ opacity: 0, x: -100, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-            className="w-full md:w-[55%] lg:w-[60%] flex justify-center md:justify-end relative mt-16 md:mt-0 z-10"
+            className="w-full md:w-[55%] lg:w-[55%] flex justify-center md:justify-end relative mt-16 md:mt-0 z-10"
           >
-            {/* Glow effect behind the image */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-brand-green blur-3xl opacity-30 rounded-full w-full h-full transform scale-90"></div>
+            {/* Soft Glow behind image instead of dark blur */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-brand-green blur-[80px] opacity-20 rounded-full w-[80%] h-[80%] m-auto transform scale-90 pointer-events-none"></div>
             
             <motion.div
               animate={{ x: [0, 30, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 scale-110 md:scale-125 lg:scale-110 origin-right"
+              className="relative w-full max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] z-20 scale-110 md:scale-125 lg:scale-110 origin-right"
             >
               <Image
                 src="/hero-podium.png"
