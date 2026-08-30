@@ -1,10 +1,11 @@
-import { withAuth } from "next-auth/middleware";
+﻿import { withAuth } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
 // Basic in-memory rate limiting map
-// In production (Vercel/Edge), use Redis (e.g. @upstash/ratelimit) since this resets per instance.
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
-const RATE_LIMIT = 20; // max requests
+const RATE_LIMIT = 30; // max requests
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute window
 
 function applyRateLimit(req: NextRequest): NextResponse | null {
@@ -14,13 +15,12 @@ function applyRateLimit(req: NextRequest): NextResponse | null {
   const windowData = rateLimitMap.get(ip);
   if (!windowData) {
     rateLimitMap.set(ip, { count: 1, lastReset: now });
-    return null; // OK
+    return null;
   }
   
   if (now - windowData.lastReset > RATE_LIMIT_WINDOW) {
-    // Reset window
     rateLimitMap.set(ip, { count: 1, lastReset: now });
-    return null; // OK
+    return null;
   }
   
   if (windowData.count >= RATE_LIMIT) {
@@ -34,20 +34,21 @@ function applyRateLimit(req: NextRequest): NextResponse | null {
   return null;
 }
 
+const intlMiddleware = createMiddleware(routing);
+
 const authMiddleware = withAuth(
   function middleware(req) {
     const token = req.nextauth.token;
     const path = req.nextUrl.pathname;
 
-    // Strict protection for admin routes
-    if (path.startsWith("/admin")) {
+    // Strict protection for admin routes (including localized e.g. /en/admin)
+    if (path.includes("/admin")) {
       if (token?.role !== "admin") {
         return NextResponse.redirect(new URL("/?error=unauthorized", req.url));
       }
     }
     
-    // Other matched routes just need any valid session (guaranteed by authorized callback)
-    return NextResponse.next();
+    return intlMiddleware(req);
   },
   {
     callbacks: {
@@ -60,20 +61,28 @@ const authMiddleware = withAuth(
 );
 
 export default async function proxy(req: NextRequest) {
-  // 1. Apply rate limit on every matched request (API routes, login flows, etc.)
+  // Apply rate limit on all requests
   const rateLimitResponse = applyRateLimit(req);
   if (rateLimitResponse) return rateLimitResponse;
 
-  // 2. Delegate to next-auth middleware for session checking
-  return (authMiddleware as any)(req);
+  const path = req.nextUrl.pathname;
+
+  // Skip auth/intl for api routes
+  if (path.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
+  // Define routes that require auth
+  const isProtectedPath = path.includes("/admin") || path.includes("/account") || path.includes("/checkout");
+
+  if (isProtectedPath) {
+    return (authMiddleware as any)(req);
+  } else {
+    return intlMiddleware(req);
+  }
 }
 
-// Matcher defines which routes are protected by the proxy
 export const config = {
-  matcher: [
-    "/admin/:path*", 
-    "/account/:path*", 
-    "/checkout/:path*",
-    "/api/:path*" // Also rate limit any backend API routes
-  ],
+  // Match all request paths except api (handled explicitly), _next/static, _next/image, favicon.ico
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
 };

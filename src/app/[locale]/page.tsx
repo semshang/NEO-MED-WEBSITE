@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
+import { useTranslations } from "next-intl";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import ProductAction from '@/components/ProductAction';
 import useEmblaCarousel from "embla-carousel-react";
@@ -46,6 +47,9 @@ const heroButtonsVariant = {
 };
 
 export default function Home() {
+  const tHero = useTranslations("hero");
+  const tTrust = useTranslations("trust");
+  const tShop = useTranslations("shop");
   const { products } = useAdmin();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
@@ -87,7 +91,7 @@ export default function Home() {
               <div className="bg-brand-green rounded-full p-1">
                 <ShieldCheck size={14} className="text-white" />
               </div>
-              <span>Trusted by 500+ hospitals across Nepal</span>
+              <span>{tHero("trustedByBadge")}</span>
             </motion.div>
 
             {/* Headline */}
@@ -97,7 +101,7 @@ export default function Home() {
               animate="visible"
               className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] mb-6"
             >
-              Premium Medical <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">Equipment</span> You Can Trust
+              {tHero("title1")} <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green">{tHero("titleHighlight")}</span> {tHero("title2")}
             </motion.h1>
 
             {/* Subtext */}
@@ -209,7 +213,7 @@ export default function Home() {
                 <Truck size={28} />
               </motion.div>
               <div>
-                <h3 className="font-bold text-lg text-brand-navy">Nationwide Delivery</h3>
+                <h3 className="font-bold text-lg text-brand-navy">{tTrust("delivery")}</h3>
                 <p className="text-slate-500 text-sm mt-1">Fast and safe delivery across all parts of Nepal.</p>
               </div>
             </motion.div>
@@ -368,14 +372,14 @@ export default function Home() {
           variants={fadeUpVariant}
           className="container mx-auto px-4 max-w-4xl text-center relative z-10"
         >
-          <h2 className="text-3xl md:text-5xl font-extrabold text-brand-navy mb-6 leading-tight">Need Medical Equipment for Your Clinic?</h2>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-brand-navy mb-6 leading-tight">{tHero("ctaTitle")}</h2>
           <p className="text-slate-600 text-lg mb-10 max-w-2xl mx-auto">
-            Get in touch with our experts today for customized solutions, bulk orders, and specialized biomedical equipment.
+            {tHero("ctaSubtitle")}
           </p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
             <motion.div whileTap={{ scale: 0.97 }}>
               <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md text-lg block w-full text-center">
-                Get a Free Quote
+                {tHero("getQuote")}
               </Link>
             </motion.div>
             <motion.div whileTap={{ scale: 0.97 }}>

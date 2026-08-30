@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -10,13 +11,15 @@ import { CATEGORIES } from "@/data/products";
 import ProductAction from "@/components/ProductAction";
 
 export default function Shop() {
+  const tShop = useTranslations("shop");
+  const tNav = useTranslations("nav");
   const { products } = useAdmin();
-  const [activeCategory, setActiveCategory] = useState("All Products");
+  const [activeCategory, setActiveCategory] = useState(tShop("allProducts"));
   const [searchQuery, setSearchQuery] = useState("");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const filteredProducts = products.filter((product) => {
-    const matchesCategory = activeCategory === "All Products" || product.category === activeCategory;
+    const matchesCategory = activeCategory === tShop("allProducts") || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
@@ -44,7 +47,7 @@ export default function Shop() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search products..."
+                    placeholder={tShop("search")}
                     className="w-full pl-10 pr-4 py-3 bg-brand-gray border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -52,9 +55,9 @@ export default function Shop() {
                   <Search size={18} className="absolute left-3 top-3.5 text-slate-400" />
                 </div>
 
-                {/* Categories */}
+                {/* {tShop("categories")} */}
                 <div>
-                  <h3 className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">Categories</h3>
+                  <h3 className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">{tShop("categories")}</h3>
                   <ul className="space-y-2">
                     {CATEGORIES.map((category) => (
                       <li key={category}>
@@ -82,7 +85,7 @@ export default function Shop() {
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
                 <p className="text-slate-500 text-lg">No products found matching your criteria.</p>
                 <button 
-                  onClick={() => {setActiveCategory("All Products"); setSearchQuery("");}}
+                  onClick={() => {setActiveCategory(tShop("allProducts")); setSearchQuery("");}}
                   className="mt-4 text-brand-blue font-medium hover:underline"
                 >
                   Clear all filters

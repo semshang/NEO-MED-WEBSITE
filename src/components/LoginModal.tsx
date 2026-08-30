@@ -6,6 +6,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { ShieldCheck, Headset, Truck, Shield, X, Globe, ChevronDown, Mail, Lock, Eye, ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const modalVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
@@ -59,6 +60,9 @@ const formItemVariants: Variants = {
 };
 
 export function LoginModal() {
+  const tAuth = useTranslations("auth");
+  const tHero = useTranslations("hero");
+  const tTrust = useTranslations("trust");
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -138,12 +142,12 @@ export function LoginModal() {
                 </div>
                 
                 <h2 className="text-2xl lg:text-[28px] font-extrabold text-brand-navy leading-tight mb-2">
-                  Quality Equipment.<br />
-                  <span className="text-[#0d52bc]">Better </span><span className="text-[#10b981]">Outcomes.</span>
+                  {tAuth("qualityEquip")}<br />
+                  <span className="text-[#0d52bc]">{tAuth("betterOutcomes")}</span>
                 </h2>
                 
                 <p className="text-[11px] lg:text-xs text-slate-600 mb-5 max-w-[95%] leading-relaxed">
-                  Trusted by hospitals and healthcare professionals across Nepal for reliable biomedical solutions.
+                  {tAuth("trustedBy")}
                 </p>
 
                 <div className="space-y-3 mb-2 relative z-20">
@@ -152,8 +156,8 @@ export function LoginModal() {
                       <ShieldCheck size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">100% Genuine Equipment</h4>
-                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">All equipment is original and quality certified.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">{tTrust("genuine")}</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">{tTrust("genuineDesc")}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -161,8 +165,8 @@ export function LoginModal() {
                       <Headset size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">24/7 Expert Support</h4>
-                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">Our experts are always here to help you.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">{tTrust("support")}</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">{tTrust("supportDesc")}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
@@ -170,8 +174,8 @@ export function LoginModal() {
                       <Truck size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">Nationwide Delivery</h4>
-                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">Fast and safe delivery across Nepal.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">{tTrust("delivery")}</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">{tTrust("deliveryDesc")}</p>
                     </div>
                   </div>
                 </div>
@@ -193,8 +197,8 @@ export function LoginModal() {
                       <ShieldCheck size={14} strokeWidth={2.5} />
                     </div>
                     <div>
-                      <h5 className="text-[10px] lg:text-[11px] font-bold text-brand-navy leading-tight">Certified Biomedical Experts</h5>
-                      <p className="text-[8px] lg:text-[9px] text-slate-500 leading-tight mt-0.5">Backed by years of industry experience.</p>
+                      <h5 className="text-[10px] lg:text-[11px] font-bold text-brand-navy leading-tight">{tTrust("certified")}</h5>
+                      <p className="text-[8px] lg:text-[9px] text-slate-500 leading-tight mt-0.5">{tTrust("certifiedDesc")}</p>
                     </div>
                   </div>
                 </div>
@@ -239,33 +243,33 @@ export function LoginModal() {
                   </div>
                 </motion.div>
 
-                <motion.h3 variants={formItemVariants} className="text-2xl lg:text-[28px] font-bold text-brand-navy mb-1 tracking-tight">Welcome Back</motion.h3>
-                <motion.p variants={formItemVariants} className="text-xs lg:text-[13px] text-slate-500 mb-6">Sign in to access your account</motion.p>
+                <motion.h3 variants={formItemVariants} className="text-2xl lg:text-[28px] font-bold text-brand-navy mb-1 tracking-tight">{tAuth("welcomeBack")}</motion.h3>
+                <motion.p variants={formItemVariants} className="text-xs lg:text-[13px] text-slate-500 mb-6">{tAuth("signInToAccess")}</motion.p>
 
                 <div className="space-y-3">
                   <motion.div variants={formItemVariants}>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Email Address</label>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1.5">{tAuth("email")}</label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                      <input type="email" placeholder="Enter your email" className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0d52bc] focus:ring-1 focus:ring-[#0d52bc] transition-all text-xs lg:text-sm" />
+                      <input type="email" placeholder={tAuth("emailPlaceholder")} className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0d52bc] focus:ring-1 focus:ring-[#0d52bc] transition-all text-xs lg:text-sm" />
                     </div>
                   </motion.div>
                   
                   <motion.div variants={formItemVariants}>
-                    <label className="block text-[11px] font-bold text-slate-700 mb-1.5">Password</label>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-1.5">{tAuth("password")}</label>
                     <div className="relative">
                       <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                      <input type="password" placeholder="Enter your password" className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0d52bc] focus:ring-1 focus:ring-[#0d52bc] transition-all text-xs lg:text-sm" />
+                      <input type="password" placeholder={tAuth("passwordPlaceholder")} className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0d52bc] focus:ring-1 focus:ring-[#0d52bc] transition-all text-xs lg:text-sm" />
                       <Eye className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 cursor-pointer transition-colors" size={16} />
                     </div>
                     <div className="flex justify-end mt-1.5">
-                      <a href="#" className="text-[10px] lg:text-[11px] text-[#0d52bc] font-bold hover:underline">Forgot Password?</a>
+                      <a href="#" className="text-[10px] lg:text-[11px] text-[#0d52bc] font-bold hover:underline">Forgot {tAuth("password")}?</a>
                     </div>
                   </motion.div>
 
                   <motion.div variants={formItemVariants} className="flex items-center mt-1 mb-4">
                     <input type="checkbox" id="remember" className="rounded text-[#0d52bc] focus:ring-[#0d52bc] border-slate-300 w-3.5 h-3.5" />
-                    <label htmlFor="remember" className="ml-2 text-[10px] lg:text-[11px] text-slate-600 font-medium">Remember me</label>
+                    <label htmlFor="remember" className="ml-2 text-[10px] lg:text-[11px] text-slate-600 font-medium">{tAuth("rememberMe")}</label>
                   </motion.div>
 
                   <motion.button 
@@ -273,13 +277,13 @@ export function LoginModal() {
                     onClick={() => alert("Credentials login not implemented for mock.")}
                     className="w-full bg-gradient-to-r from-[#0d52bc] to-[#10b981] text-white rounded-xl py-3 font-bold shadow-md hover:shadow-lg hover:opacity-95 transition-all flex items-center justify-center space-x-2"
                   >
-                    <span className="text-sm">Sign In</span>
+                    <span className="text-sm">{tAuth("login")}</span>
                     <ArrowRight size={16} />
                   </motion.button>
 
                   <motion.div variants={formItemVariants} className="relative flex items-center py-2 lg:py-2.5">
                     <div className="flex-grow border-t border-slate-100"></div>
-                    <span className="flex-shrink-0 mx-4 text-slate-400 text-[10px] lg:text-[11px] font-medium">or continue with</span>
+                    <span className="flex-shrink-0 mx-4 text-slate-400 text-[10px] lg:text-[11px] font-medium">{tAuth("continueWith")}</span>
                     <div className="flex-grow border-t border-slate-100"></div>
                   </motion.div>
 
@@ -298,7 +302,7 @@ export function LoginModal() {
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                         </svg>
                       )}
-                      <span className="text-[11px] lg:text-xs font-bold text-slate-700">Continue with Google</span>
+                      <span className="text-[11px] lg:text-xs font-bold text-slate-700">{tAuth("continueGoogle")}</span>
                     </button>
                   </motion.div>
                 </div>
@@ -306,12 +310,12 @@ export function LoginModal() {
                 {/* Footer Section */}
                 <motion.div variants={formItemVariants} className="mt-6 flex flex-col items-center">
                   <p className="text-[10px] lg:text-[11px] text-slate-600 mb-2">
-                    Don't have an account? <a href="#" className="text-[#0d52bc] font-bold hover:underline">Create Account</a>
+                    {tAuth("noAccount")} <a href="#" className="text-[#0d52bc] font-bold hover:underline">{tAuth("createAccount")}</a>
                   </p>
                   
                   <div className="flex items-center space-x-1.5 text-slate-400">
                     <ShieldCheck size={14} />
-                    <span className="text-[9px] lg:text-[10px] font-medium">Your data is secure and encrypted</span>
+                    <span className="text-[9px] lg:text-[10px] font-medium">{tAuth("secureData")}</span>
                   </div>
                 </motion.div>
 

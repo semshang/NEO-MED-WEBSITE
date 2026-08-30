@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { Product, useAdmin } from './admin/AdminProvider';
 import { Minus, Plus, ShoppingCart } from 'lucide-react';
+import { useTranslations } from "next-intl";
 import { motion } from 'framer-motion';
 
 export default function ProductAction({ product }: { product: Product }) {
+  const tShop = useTranslations("shop");
   const [qty, setQty] = useState(1);
   const { addToCart, cart } = useAdmin();
   const [addedState, setAddedState] = useState(false);
@@ -23,7 +25,7 @@ export default function ProductAction({ product }: { product: Product }) {
   if (product.stock === 0) {
     return (
       <div className="w-full bg-slate-100 text-slate-500 py-3 rounded-xl font-bold flex items-center justify-center cursor-not-allowed">
-        <span className="text-red-500">Out of Stock</span>
+        <span className="text-red-500">{tShop("outOfStock")}</span>
       </div>
     );
   }
@@ -56,7 +58,7 @@ export default function ProductAction({ product }: { product: Product }) {
         }`}
       >
         <ShoppingCart size={18} />
-        <span>{addedState ? 'Added to Order!' : 'Add to Order'}</span>
+        <span>{addedState ? '{tShop("addToOrder")} ✓' : '{tShop("addToOrder")}'}</span>
       </motion.button>
     </div>
   );

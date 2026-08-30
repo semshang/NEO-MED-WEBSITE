@@ -1,28 +1,32 @@
 "use client";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Phone, MapPin, Mail, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import Image from "next/image";
 import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { useSession, signOut } from "next-auth/react";
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 import { motion } from "framer-motion";
 import { SITE } from "@/config/site";
 
 const NAV_LINKS = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "About Us", href: "/about" },
-  { name: "FAQs", href: "/faq" },
-  { name: "Contact", href: "/contact" },
+  { key: "home", href: "/" },
+  { key: "shop", href: "/shop" },
+  { key: "about", href: "/about" },
+  { key: "faq", href: "/faq" },
+  { key: "contact", href: "/contact" },
 ];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -83,11 +87,11 @@ export default function Header() {
             const isActive = pathname === link.href;
             return (
               <Link 
-                key={link.name}
-                href={link.href} 
+                key={link.key}
+                href={link.href as any} 
                 className={`relative group py-2 transition-colors duration-200 ${isActive ? 'text-brand-blue' : 'hover:text-brand-blue'}`}
               >
-                {link.name}
+                {t(link.key as any)}
                 {/* Active Indicator / Hover Underline */}
                 <span 
                   className={`absolute bottom-0 left-0 h-[2px] bg-brand-blue transition-all duration-200 ease-out ${
@@ -103,9 +107,12 @@ export default function Header() {
         <div className="hidden md:flex items-center space-x-4">
           <motion.div whileTap={{ scale: 0.97 }}>
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
-              Get a Quote
+              {t('getQuote')}
             </Link>
           </motion.div>
+          
+          <LanguageSwitcher />
+
           {session ? (
             <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-slate-200">
               <div className="flex items-center space-x-2">
@@ -128,12 +135,12 @@ export default function Header() {
                 </div>
               </div>
               <button onClick={() => signOut()} className="text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors">
-                Sign Out
+                {tAuth('logout')}
               </button>
             </div>
           ) : (
             <button onClick={() => router.push('?login=true', { scroll: false })} className="text-sm font-bold text-brand-navy hover:text-brand-blue transition-colors ml-2">
-              Sign In
+              {tAuth('login')}
             </button>
           )}
         </div>
@@ -155,17 +162,17 @@ export default function Header() {
               const isActive = pathname === link.href;
               return (
                 <Link 
-                  key={link.name}
-                  href={link.href} 
+                  key={link.key}
+                  href={link.href as any} 
                   className={`transition-colors ${isActive ? 'text-brand-blue font-bold' : 'hover:text-brand-blue'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {link.name}
+                  {t(link.key as any)}
                 </Link>
               );
             })}
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green text-white text-center px-4 py-3 rounded-xl font-bold w-full mt-2 shadow-sm" onClick={() => setIsMenuOpen(false)}>
-              Get a Quote
+              {t('getQuote')}
             </Link>
             
             <div className="pt-4 mt-4 border-t border-slate-100 flex flex-col space-y-4">
@@ -180,12 +187,12 @@ export default function Header() {
                     <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
                   )}
                   <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors text-slate-500">
-                    Sign Out ({session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name})
+                    {tAuth('logout')} ({session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name})
                   </button>
                 </>
               ) : (
                 <button onClick={() => { router.push('?login=true', { scroll: false }); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors font-bold">
-                  Sign In with Google
+                  {tAuth('continueGoogle')}
                 </button>
               )}
             </div>

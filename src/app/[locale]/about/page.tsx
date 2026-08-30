@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Target, Award, Users, ThumbsUp } from "lucide-react";
 import { SITE } from "@/config/site";
 
@@ -7,14 +8,15 @@ export const metadata = {
 };
 
 export default function About() {
+  const tAbout = useTranslations("about");
   return (
     <div className="bg-brand-gray min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-brand-blue to-brand-green py-20 text-white">
         <div className="container mx-auto px-4 max-w-7xl text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">About {SITE.shortName}</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-6">{tAbout("title")}</h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            We are dedicated to improving healthcare in Nepal by providing top-quality medical equipment, reliable maintenance, and exceptional customer service.
+            {tAbout("subtitle")}
           </p>
         </div>
       </section>

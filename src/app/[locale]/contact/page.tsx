@@ -1,3 +1,4 @@
+﻿import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { SITE } from "@/config/site";
 
@@ -7,6 +8,7 @@ export const metadata = {
 };
 
 export default function Contact() {
+  const tContact = useTranslations("contact");
   return (
     <div className="bg-brand-gray min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -21,7 +23,7 @@ export default function Contact() {
           {/* Contact Information */}
           <div className="lg:w-1/3 space-y-8">
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h3 className="text-2xl font-bold text-brand-navy mb-6">Get in Touch</h3>
+              <h3 className="text-2xl font-bold text-brand-navy mb-6">{tContact("title")}</h3>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -72,32 +74,32 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:w-2/3">
             <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-100">
-              <h3 className="text-2xl font-bold text-brand-navy mb-6">Send us a Message</h3>
+              <h3 className="text-2xl font-bold text-brand-navy mb-6">Send us a {tContact("formMessage")}</h3>
               
               <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-bold text-brand-navy mb-2">Full Name</label>
+                    <label htmlFor="name" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formName")}</label>
                     <input type="text" id="name" className="w-full px-4 py-3 bg-brand-gray border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="John Doe" />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-bold text-brand-navy mb-2">Email Address</label>
+                    <label htmlFor="email" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formEmail")}</label>
                     <input type="email" id="email" className="w-full px-4 py-3 bg-brand-gray border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="john@example.com" />
                   </div>
                 </div>
                 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-bold text-brand-navy mb-2">Subject</label>
+                  <label htmlFor="subject" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formSubject")}</label>
                   <input type="text" id="subject" className="w-full px-4 py-3 bg-brand-gray border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="How can we help you?" />
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-bold text-brand-navy mb-2">Message</label>
+                  <label htmlFor="message" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formMessage")}</label>
                   <textarea id="message" rows={5} className="w-full px-4 py-3 bg-brand-gray border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors resize-none" placeholder="Write your message here..."></textarea>
                 </div>
                 
                 <button type="submit" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md w-full md:w-auto">
-                  Send Message
+                  Send {tContact("formMessage")}
                 </button>
               </form>
             </div>
@@ -118,3 +120,4 @@ export default function Contact() {
     </div>
   );
 }
+
