@@ -70,79 +70,78 @@ export function LoginModal() {
           >
 
             {/* Left Panel (Marketing) */}
-            <div className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-8 lg:p-10 relative overflow-hidden">
+            <div className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-8 relative overflow-hidden">
               <div className="relative z-10 flex flex-col h-full">
                 {/* Logo */}
-                <div className="flex items-center space-x-2.5 mb-8">
+                <div className="flex items-center space-x-2 mb-6">
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={48} 
-                    height={48} 
-                    className="w-10 h-10 object-contain"
+                    width={40} 
+                    height={40} 
+                    className="w-8 h-8 object-contain"
                   />
                   <div className="flex flex-col">
-                    <span className="text-[#0d52bc] font-black tracking-widest leading-none text-sm lg:text-base">NEOMEDITECH</span>
-                    <span className="text-slate-400 font-semibold text-[8px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
+                    <span className="text-[#0d52bc] font-black tracking-widest leading-none text-xs lg:text-sm">NEOMEDITECH</span>
+                    <span className="text-slate-400 font-semibold text-[7px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
                   </div>
                 </div>
                 
-                <h2 className="text-3xl lg:text-[34px] font-extrabold text-brand-navy leading-tight mb-2">
+                <h2 className="text-2xl lg:text-[28px] font-extrabold text-brand-navy leading-tight mb-2">
                   Quality Equipment.<br />
                   <span className="text-[#0d52bc]">Better </span><span className="text-[#10b981]">Outcomes.</span>
                 </h2>
                 
-                <p className="text-xs lg:text-sm text-slate-600 mb-6 max-w-[90%]">
+                <p className="text-[11px] lg:text-xs text-slate-600 mb-5 max-w-[95%] leading-relaxed">
                   Trusted by hospitals and healthcare professionals across Nepal for reliable biomedical solutions.
                 </p>
 
-                <div className="space-y-4 mb-2">
+                <div className="space-y-3 mb-2 relative z-20">
                   <div className="flex items-start space-x-3">
                     <div className="text-[#0d52bc] mt-0.5">
-                      <ShieldCheck size={20} strokeWidth={2} />
+                      <ShieldCheck size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-xs lg:text-sm text-brand-navy">100% Genuine Equipment</h4>
-                      <p className="text-[11px] lg:text-xs text-slate-500 mt-0.5">All equipment is original and quality certified.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">100% Genuine Equipment</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">All equipment is original and quality certified.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="text-[#0d52bc] mt-0.5">
-                      <Headset size={20} strokeWidth={2} />
+                      <Headset size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-xs lg:text-sm text-brand-navy">24/7 Expert Support</h4>
-                      <p className="text-[11px] lg:text-xs text-slate-500 mt-0.5">Our experts are always here to help you.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">24/7 Expert Support</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">Our experts are always here to help you.</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <div className="text-[#10b981] mt-0.5">
-                      <Truck size={20} strokeWidth={2} />
+                      <Truck size={18} strokeWidth={2} />
                     </div>
                     <div>
-                      <h4 className="font-bold text-xs lg:text-sm text-brand-navy">Nationwide Delivery</h4>
-                      <p className="text-[11px] lg:text-xs text-slate-500 mt-0.5">Fast and safe delivery across Nepal.</p>
+                      <h4 className="font-bold text-[11px] lg:text-xs text-brand-navy">Nationwide Delivery</h4>
+                      <p className="text-[10px] lg:text-[11px] text-slate-500 mt-0.5">Fast and safe delivery across Nepal.</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Product Platforms & Badge */}
-                <div className="mt-auto flex-1 relative flex items-end justify-center w-full min-h-[200px] pt-4">
+                <div className="mt-auto flex-1 relative flex items-end justify-center w-full min-h-[160px] lg:min-h-[200px] pt-4">
                   <img 
                     src="/login-podium-transparent.png" 
                     alt="Neomeditech Equipment" 
-                    className="w-[115%] h-auto object-contain relative z-10 drop-shadow-xl"
-                    style={{ maxWidth: '115%', marginLeft: '-7.5%', marginBottom: '-5%' }}
+                    className="w-full max-h-[180px] lg:max-h-[240px] object-contain object-bottom relative z-10 drop-shadow-xl"
                   />
 
                   {/* Floating Badge */}
-                  <div className="absolute bottom-4 left-0 bg-white p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-3 z-30 min-w-[200px]">
+                  <div className="absolute bottom-2 lg:bottom-4 left-0 bg-white/95 p-2.5 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2.5 z-30 min-w-[180px] lg:min-w-[200px] border border-slate-100">
                     <div className="text-[#10b981] bg-[#10b981]/10 p-1.5 rounded-full">
-                      <ShieldCheck size={16} strokeWidth={2.5} />
+                      <ShieldCheck size={14} strokeWidth={2.5} />
                     </div>
                     <div>
-                      <h5 className="text-[11px] font-bold text-brand-navy leading-tight">Certified Biomedical Experts</h5>
-                      <p className="text-[9px] text-slate-500 leading-tight mt-0.5">Backed by years of industry experience.</p>
+                      <h5 className="text-[10px] lg:text-[11px] font-bold text-brand-navy leading-tight">Certified Biomedical Experts</h5>
+                      <p className="text-[8px] lg:text-[9px] text-slate-500 leading-tight mt-0.5">Backed by years of industry experience.</p>
                     </div>
                   </div>
                 </div>
