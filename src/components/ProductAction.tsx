@@ -58,7 +58,7 @@ export default function ProductAction({ product }: { product: Product }) {
         }`}
       >
         <ShoppingCart size={18} />
-        <span>{addedState ? '{tShop("addToOrder")} ✓' : '{tShop("addToOrder")}'}</span>
+        <span>{addedState ? `${tShop("addToOrder")} ✓` : tShop("addToOrder")}</span>
       </motion.button>
     </div>
   );
