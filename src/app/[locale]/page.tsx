@@ -115,12 +115,7 @@ export default function Home() {
                   <ArrowRight size={18} className="ml-2" />
                 </Link>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
-                <Link href="#" className="bg-white hover:bg-slate-50 text-[#0066FF] border-2 border-[#0066FF] px-8 py-3.5 rounded-lg font-bold transition-colors shadow-sm flex items-center justify-center w-full">
-                  Watch Our Video
-                  <Play size={18} className="ml-2 fill-current" />
-                </Link>
-              </motion.div>
+
             </motion.div>
           </div>
 
