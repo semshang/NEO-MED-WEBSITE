@@ -121,6 +121,16 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
+      const version = localStorage.getItem("neo_version");
+      if (version !== "v2") {
+        // Clear old data to enforce clean slate
+        localStorage.removeItem("neo_products");
+        localStorage.removeItem("neo_orders");
+        localStorage.removeItem("neo_messages");
+        localStorage.removeItem("neo_seen_notifications");
+        localStorage.setItem("neo_version", "v2");
+      }
+
       const savedProducts = localStorage.getItem("neo_products");
       if (savedProducts) setProducts(JSON.parse(savedProducts));
       
