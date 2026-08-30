@@ -59,10 +59,10 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-4 lg:pt-6 pb-4 lg:pb-8 bg-white">
+      <section className="relative flex items-center justify-start overflow-hidden pt-4 lg:pt-6 pb-4 lg:pb-8 bg-gradient-to-r from-white via-[#f4f9fd] to-[#e8f4fd]">
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12">
-          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left">
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between">
+          <div className="w-full lg:w-[55%] xl:w-[50%] max-w-2xl z-10 text-center lg:text-left">
             {/* Badge */}
             <motion.div 
               variants={heroBadgeVariant}
@@ -129,7 +129,7 @@ export default function Home() {
             initial={{ opacity: 0, x: -100, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-            className="w-full lg:w-[55%] flex justify-center lg:justify-end relative mt-12 lg:mt-0 z-10"
+            className="w-full lg:w-[65%] flex justify-center lg:justify-end relative mt-12 lg:mt-0 z-0 lg:-ml-24 xl:-ml-32 pointer-events-none"
           >
             <motion.div
               animate={{ x: [0, 20, 0] }}
