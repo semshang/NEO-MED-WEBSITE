@@ -395,7 +395,7 @@ export function LoginModal() {
                   </>
                 )}
 
-                <motion.div variants={formItemVariants} className="mt-8 text-center">
+                <motion.div variants={formItemVariants} className="mt-5 text-center">
                   <p className="text-xs text-slate-500 font-medium">
                     {mode === "login" ? tAuth("noAccount") : mode === "register" ? "Already have an account?" : "Remembered your password?"}{" "}
                     <button 
