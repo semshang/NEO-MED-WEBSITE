@@ -75,8 +75,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/95 via-brand-navy/70 to-transparent z-10"></div>
 
         {/* Content */}
-        <div className="container mx-auto px-4 max-w-7xl relative z-20 pt-24 pb-24 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="w-full md:w-1/2 max-w-2xl z-10">
+        <div className="container mx-auto px-4 max-w-7xl relative z-20 pt-24 pb-24">
+          <div className="max-w-3xl">
             {/* Badge */}
             <motion.div 
               variants={heroBadgeVariant}
@@ -130,31 +130,6 @@ export default function Home() {
               </motion.div>
             </motion.div>
           </div>
-
-          {/* Right Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-            className="w-full md:w-1/2 flex justify-center md:justify-end relative mt-12 md:mt-0 z-10"
-          >
-            {/* Glow effect behind the image */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-brand-green blur-3xl opacity-20 rounded-full w-full h-full transform scale-90"></div>
-            
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full max-w-md aspect-[4/3] drop-shadow-2xl bg-white rounded-3xl p-4 border border-white/10"
-            >
-              <Image
-                src="/hero-monitor.jpg"
-                alt="Medical Equipment Monitor"
-                fill
-                className="object-contain rounded-2xl p-2"
-                priority
-              />
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
