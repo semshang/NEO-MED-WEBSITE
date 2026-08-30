@@ -8,10 +8,7 @@ import Link from "next/link";
 import { Package, User, MessageSquare, ArrowRight, CheckCircle2, ShoppingBag, Mail, Clock } from "lucide-react";
 import Image from "next/image";
 
-const MOCK_MESSAGES = [
-  { id: "MSG-001", subject: "Question about Infusion Pump warranty", date: "Aug 28, 2026", status: "Read by team" },
-  { id: "MSG-002", subject: "Bulk order discount inquiry", date: "Aug 30, 2026", status: "Received" }
-];
+const MOCK_MESSAGES: any[] = [];
 
 export default function MyAccount() {
   const { data: session, status } = useSession();

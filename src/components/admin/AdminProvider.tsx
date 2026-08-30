@@ -98,18 +98,9 @@ const initialProducts = RAW_PRODUCTS.map((p, i) => ({
   description: "Premium medical equipment."
 }));
 
-const initialOrders: Order[] = [
-  { id: "#ORD-089", customerName: "Rajendra Thapa", customerEmail: "rajendra@example.com", customerPhone: "+977 9800000001", date: "Aug 29, 2026", status: "New", total: 105000, adminNotes: "", items: [{ productId: 1, quantity: 2, price: 50000, name: initialProducts[0].name }] },
-  { id: "#ORD-088", customerName: "Sita Sharma", customerEmail: "sita@example.com", customerPhone: "+977 9800000002", date: "Aug 28, 2026", status: "Confirmed", total: 65000, adminNotes: "Called to confirm delivery address.", items: [{ productId: 2, quantity: 1, price: 65000, name: initialProducts[1].name }] },
-  { id: "#ORD-087", customerName: "Bikash Gurung", customerEmail: "bikash@example.com", customerPhone: "+977 9800000003", date: "Aug 27, 2026", status: "Delivered", total: 12000, adminNotes: "", items: [{ productId: 3, quantity: 1, price: 12000, name: initialProducts[2].name }] },
-  { id: "#ORD-086", customerName: "Anita Maharjan", customerEmail: "anita@example.com", customerPhone: "+977 9800000004", date: "Aug 25, 2026", status: "Delivered", total: 54000, adminNotes: "", items: [{ productId: 4, quantity: 1, price: 54000, name: initialProducts[3].name }] },
-  { id: "#ORD-085", customerName: "Prakash Shrestha", customerEmail: "prakash@example.com", customerPhone: "+977 9800000005", date: "Aug 22, 2026", status: "Processing", total: 200000, adminNotes: "Awaiting supplier restock for one item.", items: [{ productId: 5, quantity: 4, price: 50000, name: initialProducts[4].name }] },
-];
+const initialOrders: Order[] = [];
 
-const initialMessages: Message[] = [
-  { id: "MSG-001", senderName: "Sarah Jenkins", email: "sarah@example.com", subject: "Question about Infusion Pump warranty", body: "...", date: "Aug 28, 2026", unread: false },
-  { id: "MSG-002", senderName: "Sita Sharma", email: "sita@example.com", subject: "Bulk order discount inquiry", body: "...", date: "Aug 30, 2026", unread: true }
-];
+const initialMessages: Message[] = [];
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
@@ -117,9 +108,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [seenNotifications, setSeenNotifications] = useState<string[]>([]);
-  const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({
-    "rajendra@example.com": { vip: true, notes: "Kathmandu General Hospital - bulk buyer" }
-  });
+  const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({});
   const [settings, setSettings] = useState<Settings>({
     phone: "+977 9712011758, +977 9712011757",
     email: "contact@neomeditech.com.np",
