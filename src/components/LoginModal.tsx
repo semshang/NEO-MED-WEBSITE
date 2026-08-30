@@ -271,7 +271,7 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[120px] lg:min-h-[160px]">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-0">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
