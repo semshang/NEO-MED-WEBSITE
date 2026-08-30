@@ -93,7 +93,7 @@ const AdminContext = createContext<AdminContextType | null>(null);
 
 const initialProducts = RAW_PRODUCTS.map((p, i) => ({
   ...p,
-  stock: i % 5 === 0 ? 3 : (i % 7 === 0 ? 0 : 25),
+  stock: 25,
   price: 50000 + (i * 1000),
   description: "Premium medical equipment."
 }));
