@@ -77,9 +77,9 @@ export function LoginModal() {
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={40} 
+                    width={80} 
                     height={40} 
-                    className="w-8 h-8 object-contain"
+                    className="h-7 lg:h-8 w-auto object-contain"
                   />
                   <div className="flex flex-col">
                     <span className="font-black tracking-widest leading-none text-xs lg:text-sm">
@@ -176,9 +176,9 @@ export function LoginModal() {
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={40} 
+                    width={80} 
                     height={40} 
-                    className="w-8 h-8 object-contain"
+                    className="h-7 w-auto object-contain"
                   />
                   <div className="flex flex-col">
                     <span className="font-black tracking-widest leading-none text-sm">
