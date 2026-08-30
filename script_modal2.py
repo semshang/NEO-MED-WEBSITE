@@ -1,3 +1,4 @@
+code = """
 "use client";
 
 import { motion, AnimatePresence, Variants } from "framer-motion";
@@ -511,3 +512,7 @@ export function LoginModal() {
     </AnimatePresence>
   );
 }
+"""
+
+with open("src/components/LoginModal.tsx", "w", encoding="utf-8") as f:
+    f.write(code.strip())

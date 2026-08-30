@@ -1,3 +1,4 @@
+code = """
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -88,3 +89,7 @@ export const authOptions: NextAuthOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
+"""
+
+with open("src/app/api/auth/[...nextauth]/route.ts", "w", encoding="utf-8") as f:
+    f.write(code.strip())
