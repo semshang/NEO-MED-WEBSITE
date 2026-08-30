@@ -77,16 +77,16 @@ export function LoginModal() {
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={80} 
-                    height={40} 
-                    className="h-7 lg:h-8 w-auto object-contain"
+                    width={88} 
+                    height={44} 
+                    className="h-8 lg:h-9 w-auto object-contain"
                   />
                   <div className="flex flex-col">
-                    <span className="font-black tracking-widest leading-none text-xs lg:text-sm">
+                    <span className="font-black tracking-widest leading-none text-xs lg:text-[15px]">
                       <span className="text-[#0d52bc]">NEOMEDI</span>
                       <span className="text-[#10b981]">TECH</span>
                     </span>
-                    <span className="text-slate-400 font-semibold text-[7px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
+                    <span className="text-slate-400 font-semibold text-[7.5px] lg:text-[8px] tracking-[0.2em] uppercase mt-0.5">Biomedical Solutions</span>
                   </div>
                 </div>
                 
@@ -176,12 +176,12 @@ export function LoginModal() {
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={80} 
-                    height={40} 
-                    className="h-7 w-auto object-contain"
+                    width={88} 
+                    height={44} 
+                    className="h-8 w-auto object-contain"
                   />
                   <div className="flex flex-col">
-                    <span className="font-black tracking-widest leading-none text-sm">
+                    <span className="font-black tracking-widest leading-none text-[15px]">
                       <span className="text-[#0d52bc]">NEOMEDI</span>
                       <span className="text-[#10b981]">TECH</span>
                     </span>
