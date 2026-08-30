@@ -228,6 +228,7 @@ export function LoginModal() {
                     width={96} 
                     height={48} 
                     className="h-9 w-auto object-contain -mt-1.5"
+                    style={{ width: 'auto', height: 'auto' }}
                   />
                   <div className="flex flex-col">
                     <span className="font-black tracking-widest leading-none text-[15px]">

@@ -54,8 +54,8 @@ export default function Header() {
             alt="Neomeditech Logo" 
             width={80} 
             height={80} 
-            className="h-16 md:h-20 w-auto object-contain"
-            style={{ width: 'auto' }}
+            className="w-16 h-auto md:w-20 object-contain drop-shadow-md"
+            style={{ width: 'auto', height: 'auto' }}
             priority
           />
           <div className="hidden sm:flex flex-col justify-center">

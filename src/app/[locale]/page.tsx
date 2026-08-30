@@ -135,6 +135,7 @@ export default function Home() {
                 src="/hero-equipment.png"
                 alt="Premium Medical Equipment Monitor"
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 750px, 850px"
                 className="object-contain"
                 priority
               />

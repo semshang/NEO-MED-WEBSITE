@@ -20,6 +20,7 @@ export function AdminHeader() {
             width={70} 
             height={70}
             className="w-auto h-12"
+            style={{ width: 'auto', height: 'auto' }}
             priority
           />
           <div className="hidden sm:flex flex-col justify-center">

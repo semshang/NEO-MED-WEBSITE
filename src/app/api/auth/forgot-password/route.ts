@@ -5,8 +5,6 @@ import crypto from "crypto";
 import { Resend } from "resend";
 import { SITE } from "@/config/site";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
@@ -14,6 +12,12 @@ export async function POST(req: Request) {
     if (!email) {
       return NextResponse.json({ message: "Email is required" }, { status: 400 });
     }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.warn("RESEND_API_KEY is not set. Cannot send password reset email.");
+      return NextResponse.json({ message: "Email service not configured. Check server logs." }, { status: 500 });
+    }
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     await connectDB();
 
