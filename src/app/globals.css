@@ -30,6 +30,12 @@
   }
 }
 
+@layer components {
+  .input {
+    @apply w-full rounded-lg border border-slate-200 p-2.5 outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20;
+  }
+}
+
 @layer utilities {
   @keyframes blob-drift-1 {
     0% { transform: translate(0px, 0px) scale(1); }

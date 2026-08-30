@@ -5,6 +5,7 @@ import { useAdmin } from './admin/AdminProvider';
 import { ShoppingCart, X, Minus, Plus, Trash2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function CartOverlay() {
@@ -16,7 +17,9 @@ export default function CartOverlay() {
   if (pathname.includes('/admin')) return null;
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const estimatedTotal = cart.every((item) => item.price !== null)
+    ? cart.reduce((sum, item) => sum + ((item.price ?? 0) * item.quantity), 0)
+    : null;
 
   return (
     <>
@@ -86,11 +89,19 @@ export default function CartOverlay() {
                 ) : (
                   cart.map((item) => (
                     <div key={item.productId} className="flex gap-4 p-4 border border-slate-100 rounded-xl bg-white shadow-sm relative group">
-                      <img src={item.image} alt={item.name} className="w-20 h-20 object-contain rounded-lg bg-slate-50 border border-slate-100" />
+                      <div className="relative w-20 h-20 shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-slate-50">
+                        {item.image ? (
+                          <Image src={item.image} alt={item.name} fill sizes="80px" className="object-contain" />
+                        ) : (
+                          <ShoppingCart aria-hidden="true" className="m-6 text-slate-300" size={32} />
+                        )}
+                      </div>
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
                           <h3 className="font-bold text-brand-navy text-sm line-clamp-2 pr-6">{item.name}</h3>
-                          <p className="text-brand-blue font-medium text-sm mt-1">Rs {item.price.toLocaleString()}</p>
+                          <p className="text-brand-blue font-medium text-sm mt-1">
+                            {item.price === null ? 'Quote required' : `Rs ${item.price.toLocaleString()}`}
+                          </p>
                         </div>
                         
                         <div className="flex items-center justify-between mt-3">
@@ -126,7 +137,9 @@ export default function CartOverlay() {
                 <div className="p-6 border-t border-slate-100 bg-slate-50">
                   <div className="flex justify-between items-center mb-6">
                     <span className="font-medium text-slate-500">Estimated Subtotal</span>
-                    <span className="text-xl font-bold text-brand-navy">Rs {totalPrice.toLocaleString()}</span>
+                    <span className="text-xl font-bold text-brand-navy">
+                      {estimatedTotal === null ? 'Quote required' : `Rs ${estimatedTotal.toLocaleString()}`}
+                    </span>
                   </div>
                   <Link href="/checkout" onClick={() => setIsOpen(false)}>
                     <motion.button 

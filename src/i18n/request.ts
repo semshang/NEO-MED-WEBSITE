@@ -3,9 +3,10 @@ import { routing } from './routing';
 
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
+  const isSupportedLocale = (value: string): value is (typeof routing.locales)[number] => routing.locales.includes(value as (typeof routing.locales)[number]);
   
   // Ensure that a valid locale is used
-  if (!locale || !routing.locales.includes(locale as any)) {
+  if (!locale || !isSupportedLocale(locale)) {
     locale = routing.defaultLocale;
   }
  

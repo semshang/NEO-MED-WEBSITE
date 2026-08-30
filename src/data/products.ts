@@ -63,21 +63,12 @@ const rawProducts = [
   { id: 28, name: "Sony Thermal Printer And Head", category: "Imaging & Radiology Supplies" },
 ];
 
-const placeholderImages = [
-  "/products/oxygen-concentrator.png",
-  "/products/patient-monitor.png",
-  "/products/infusion-pump.png",
-  "/products/ecg-machine.jpg",
-  "/products/bp-cuff.jpg",
-  "/products/ultrasound-machine.jpg",
-  "/products/hospital-bed.jpg",
-  "/products/glucometer.jpg",
-  "/products/pulse-oximeter.jpg"
-];
-
-export const PRODUCTS = rawProducts.map((p, index) => ({
+export const PRODUCT_SEED = rawProducts.map((p) => ({
   ...p,
-  image: placeholderImages[index % placeholderImages.length],
-  // Keep the slugified path as a secondary reference if needed later
-  actualImagePath: `/products/${generateSlug(p.name)}.jpg`,
+  slug: generateSlug(p.name),
+  image: "",
+  stock: null,
+  price: null,
+  description: "Contact Neomeditech for verified specifications, availability, and a quotation.",
+  isActive: true,
 }));

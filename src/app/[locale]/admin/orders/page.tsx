@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { useAdmin, OrderStatus } from "@/components/admin/AdminProvider";
+import { useAdmin, type OrderStatus } from "@/components/admin/AdminProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Download, X, Check, FileText } from "lucide-react";
 
@@ -21,8 +21,23 @@ export default function OrdersPage() {
   const selectedOrder = orders.find(o => o.id === selectedOrderId);
 
   const exportCSV = () => {
-    console.log("Exporting CSV...", filteredOrders);
-    alert("Export triggered! Check console for simulated output.");
+    const csv = [
+      ["Order ID", "Customer", "Email", "Date", "Status", "Estimated total", "Items"],
+      ...filteredOrders.map((order) => [
+        order.id,
+        order.customerName,
+        order.customerEmail,
+        order.date,
+        order.status,
+        order.total === null ? "Quote required" : String(order.total),
+        order.items.map((item) => `${item.name} × ${item.quantity}`).join("; "),
+      ]),
+    ].map((row) => row.map((value) => `"${value.replaceAll('"', '""')}"`).join(",")).join("\n");
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    link.download = "neomeditech-orders.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
   };
 
   const getStatusColor = (status: string) => {
@@ -52,10 +67,10 @@ export default function OrdersPage() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 mb-6">
         <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row justify-between gap-4">
           <div className="flex overflow-x-auto space-x-2 pb-2 md:pb-0 hide-scrollbar">
-            {["All", "New", "Confirmed", "Processing", "Delivered", "Cancelled"].map(t => (
+            {(["All", "New", "Confirmed", "Processing", "Delivered", "Cancelled"] as const).map(t => (
               <button
                 key={t}
-                onClick={() => setFilter(t as any)}
+                onClick={() => setFilter(t)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${filter === t ? 'bg-brand-navy text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
               >
                 {t}
@@ -104,7 +119,9 @@ export default function OrdersPage() {
                     {order.items.map(it => it.name).join(", ")}
                   </td>
                   <td className="py-4 px-6 text-sm text-slate-500">{order.date}</td>
-                  <td className="py-4 px-6 text-sm font-medium">Rs {order.total.toLocaleString()}</td>
+                  <td className="py-4 px-6 text-sm font-medium">
+                    {order.total === null ? "Quote required" : `Rs ${order.total.toLocaleString()}`}
+                  </td>
                   <td className="py-4 px-6 text-sm">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                       {order.status}
@@ -181,12 +198,16 @@ export default function OrdersPage() {
                         <tr key={idx}>
                           <td className="py-3 px-4 text-brand-navy">{it.name}</td>
                           <td className="py-3 px-4 text-right text-slate-600">{it.quantity}</td>
-                          <td className="py-3 px-4 text-right font-medium">Rs {it.price.toLocaleString()}</td>
+                          <td className="py-3 px-4 text-right font-medium">
+                            {it.price === null ? "Quote required" : `Rs ${it.price.toLocaleString()}`}
+                          </td>
                         </tr>
                       ))}
                       <tr className="bg-slate-50 font-bold">
                         <td colSpan={2} className="py-3 px-4 text-right">Total:</td>
-                        <td className="py-3 px-4 text-right text-brand-blue">Rs {selectedOrder.total.toLocaleString()}</td>
+                        <td className="py-3 px-4 text-right text-brand-blue">
+                          {selectedOrder.total === null ? "Quote required" : `Rs ${selectedOrder.total.toLocaleString()}`}
+                        </td>
                       </tr>
                     </tbody>
                   </table>

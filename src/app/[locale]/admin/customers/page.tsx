@@ -11,15 +11,16 @@ export default function CustomersPage() {
   const [tempNotes, setTempNotes] = useState("");
 
   const customers = useMemo(() => {
-    const map = new Map<string, { email: string, name: string, phone: string, ordersCount: number, totalValue: number }>();
+    const map = new Map<string, { email: string; name: string; phone: string; ordersCount: number; totalValue: number; hasQuotedOrders: boolean }>();
     
     orders.forEach(o => {
       if (!map.has(o.customerEmail)) {
-        map.set(o.customerEmail, { email: o.customerEmail, name: o.customerName, phone: o.customerPhone, ordersCount: 0, totalValue: 0 });
+        map.set(o.customerEmail, { email: o.customerEmail, name: o.customerName, phone: o.customerPhone, ordersCount: 0, totalValue: 0, hasQuotedOrders: false });
       }
       const c = map.get(o.customerEmail)!;
       c.ordersCount += 1;
-      c.totalValue += o.total;
+      c.totalValue += o.total ?? 0;
+      c.hasQuotedOrders ||= o.total === null;
     });
 
     return Array.from(map.values()).map(c => ({
@@ -86,7 +87,9 @@ export default function CustomersPage() {
                   </td>
                   <td className="py-4 px-6 text-sm text-slate-600">{c.phone}</td>
                   <td className="py-4 px-6 text-sm text-center font-medium text-slate-700">{c.ordersCount}</td>
-                  <td className="py-4 px-6 text-sm text-right font-medium text-brand-navy">Rs {c.totalValue.toLocaleString()}</td>
+                  <td className="py-4 px-6 text-sm text-right font-medium text-brand-navy">
+                    {c.hasQuotedOrders ? "Quote required" : `Rs ${c.totalValue.toLocaleString()}`}
+                  </td>
                   <td className="py-4 px-6 text-sm">
                     {editingNotes === c.email ? (
                       <div className="flex items-center space-x-2">

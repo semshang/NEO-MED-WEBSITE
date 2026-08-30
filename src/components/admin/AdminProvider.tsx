@@ -1,70 +1,14 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PRODUCTS as RAW_PRODUCTS } from '@/data/products';
 
-export type OrderStatus = "New" | "Confirmed" | "Processing" | "Delivered" | "Cancelled";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useSession } from "next-auth/react";
+import { SITE } from "@/config/site";
+import type { CartItem, CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
 
-export interface OrderItem {
-  productId: number;
-  quantity: number;
-  price: number;
-  name: string;
-}
+export type { CartItem, CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
 
-export interface Order {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  date: string;
-  status: OrderStatus;
-  total: number;
-  items: OrderItem[];
-  adminNotes: string;
-  address?: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  category: string;
-  image: string;
-  stock: number;
-  price: number;
-  description: string;
-}
-
-export interface CartItem {
-  productId: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
-
-export interface CustomerMeta {
-  vip: boolean;
-  notes: string;
-}
-
-export interface Settings {
-  phone: string;
-  email: string;
-  whatsapp: string;
-  address: string;
-  notificationEmail: string;
-  lowStockThreshold: number;
-}
-
-export interface Message {
-  id: string;
-  senderName: string;
-  email: string;
-  subject: string;
-  body: string;
-  date: string;
-  unread: boolean;
-}
+type CustomerMetaResponse = CustomerMeta & { email: string };
+type OrderCustomer = { name: string; email: string; phone: string; address: string; notes: string };
 
 interface AdminContextType {
   orders: Order[];
@@ -74,256 +18,227 @@ interface AdminContextType {
   settings: Settings;
   cart: CartItem[];
   seenNotifications: string[];
+  isLoading: boolean;
+  error: string | null;
   markNotificationsSeen: (ids: string[]) => void;
-  updateOrderStatus: (orderId: string, status: OrderStatus) => void;
-  updateOrderNotes: (orderId: string, notes: string) => void;
-  addProduct: (p: Omit<Product, "id">) => void;
-  updateProduct: (id: number, p: Partial<Product>) => void;
-  deleteProduct: (id: number) => void;
-  updateCustomerMeta: (email: string, meta: Partial<CustomerMeta>) => void;
-  updateSettings: (s: Partial<Settings>) => void;
+  updateOrderStatus: (orderId: string, status: OrderStatus) => Promise<void>;
+  updateOrderNotes: (orderId: string, notes: string) => Promise<void>;
+  addProduct: (product: Omit<Product, "id" | "isActive">) => Promise<void>;
+  updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
+  updateCustomerMeta: (email: string, meta: Partial<CustomerMeta>) => Promise<void>;
+  updateSettings: (settings: Settings) => Promise<void>;
   addToCart: (product: Product, quantity: number) => void;
-  updateCartItem: (productId: number, quantity: number) => void;
-  removeFromCart: (productId: number) => void;
+  updateCartItem: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: string) => void;
   clearCart: () => void;
-  placeOrder: (customer: { name: string; email: string; phone: string; address: string; notes: string }) => string;
+  placeOrder: (customer: OrderCustomer) => Promise<string>;
 }
+
+const defaultSettings: Settings = {
+  phone: SITE.phone,
+  email: SITE.email,
+  whatsapp: SITE.whatsapp,
+  address: SITE.address,
+  notificationEmail: SITE.email,
+  lowStockThreshold: 5,
+};
 
 const AdminContext = createContext<AdminContextType | null>(null);
 
-const initialProducts = RAW_PRODUCTS.map((p, i) => ({
-  ...p,
-  stock: 25,
-  price: 50000 + (i * 1000),
-  description: "Premium medical equipment."
-}));
+function messageFromUnknown(value: unknown, fallback: string) {
+  if (value instanceof Error) return value.message;
+  return fallback;
+}
 
-const initialOrders: Order[] = [];
+async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(url, { cache: "no-store", ...init });
+  const body: unknown = await response.json().catch(() => null);
 
-const initialMessages: Message[] = [];
+  if (!response.ok) {
+    const message = typeof body === "object" && body !== null && "message" in body && typeof body.message === "string"
+      ? body.message
+      : "The request could not be completed.";
+    throw new Error(message);
+  }
 
-export function AdminProvider({ children }: { children: React.ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [orders, setOrders] = useState<Order[]>(initialOrders);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  return body as T;
+}
+
+export function AdminProvider({ children }: { children: ReactNode }) {
+  const { data: session, status } = useSession();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({});
+  const [settings, setSettings] = useState<Settings>(defaultSettings);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [seenNotifications, setSeenNotifications] = useState<string[]>([]);
-  const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({});
-  const [settings, setSettings] = useState<Settings>({
-    phone: "+977 9712011758, +977 9712011757",
-    email: "contact@neomeditech.com.np",
-    whatsapp: "+977 9712011758",
-    address: "Tarkeshwor-6, Kathmandu, Nepal",
-    notificationEmail: "contact@neomeditech.com.np",
-    lowStockThreshold: 5,
-  });
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const isAdmin = session?.user?.role === "admin";
+
+  const refreshData = useCallback(async () => {
     try {
-      const version = localStorage.getItem("neo_version");
-      if (version !== "v2") {
-        // Clear old data to enforce clean slate
-        localStorage.removeItem("neo_products");
-        localStorage.removeItem("neo_orders");
-        localStorage.removeItem("neo_messages");
-        localStorage.removeItem("neo_seen_notifications");
-        localStorage.setItem("neo_version", "v2");
+      setError(null);
+      const catalog = await requestJson<Product[]>("/api/products");
+      setProducts(catalog);
+
+      if (status !== "authenticated") {
+        setOrders([]);
+        setMessages([]);
+        setCustomerMeta({});
+        return;
       }
 
-      const savedProducts = localStorage.getItem("neo_products");
-      if (savedProducts) setProducts(JSON.parse(savedProducts));
-      
-      const savedOrders = localStorage.getItem("neo_orders");
-      if (savedOrders) setOrders(JSON.parse(savedOrders));
+      const orderRequest = requestJson<Order[]>("/api/orders");
+      const messageRequest = requestJson<Message[]>("/api/contact");
+      const [nextOrders, nextMessages] = await Promise.all([orderRequest, messageRequest]);
+      setOrders(nextOrders);
+      setMessages(nextMessages);
 
-      const savedMessages = localStorage.getItem("neo_messages");
-      if (savedMessages) setMessages(JSON.parse(savedMessages));
-
-      const savedSettings = localStorage.getItem("neo_settings");
-      if (savedSettings) setSettings(JSON.parse(savedSettings));
-
-      const savedCustomers = localStorage.getItem("neo_customers");
-      if (savedCustomers) setCustomerMeta(JSON.parse(savedCustomers));
-
-      const savedCart = localStorage.getItem("neo_cart");
-      if (savedCart) setCart(JSON.parse(savedCart));
-
-      const savedSeen = localStorage.getItem("neo_seen_notifications");
-      if (savedSeen) setSeenNotifications(JSON.parse(savedSeen));
-    } catch (e) {
-      console.error("Failed to load from local storage", e);
+      if (isAdmin) {
+        const [nextSettings, customers] = await Promise.all([
+          requestJson<Settings>("/api/settings"),
+          requestJson<CustomerMetaResponse[]>("/api/admin/customers"),
+        ]);
+        setSettings(nextSettings);
+        setCustomerMeta(Object.fromEntries(customers.map(({ email, vip, notes }) => [email, { vip, notes }])));
+      } else {
+        setCustomerMeta({});
+      }
+    } catch (loadError) {
+      setError(messageFromUnknown(loadError, "Unable to load live store data."));
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoaded(true);
+  }, [isAdmin, status]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsLoading(true);
+      void refreshData();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [refreshData]);
+
+  const updateOrder = useCallback(async (orderId: string, patch: Pick<Partial<Order>, "status" | "adminNotes">) => {
+    const order = await requestJson<Order>(`/api/orders/${orderId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    setOrders((current) => current.map((item) => (item.id === orderId ? order : item)));
   }, []);
 
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_products", JSON.stringify(products));
-  }, [products, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_orders", JSON.stringify(orders));
-  }, [orders, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_messages", JSON.stringify(messages));
-  }, [messages, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_seen_notifications", JSON.stringify(seenNotifications));
-  }, [seenNotifications, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_settings", JSON.stringify(settings));
-  }, [settings, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_customers", JSON.stringify(customerMeta));
-  }, [customerMeta, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-    localStorage.setItem("neo_cart", JSON.stringify(cart));
-  }, [cart, isLoaded]);
-
-  const updateOrderStatus = (orderId: string, status: OrderStatus) => {
-    setOrders(prev => prev.map(o => {
-      if (o.id === orderId) {
-        if (status === 'Confirmed' && o.status !== 'Confirmed') {
-          setProducts(prods => prods.map(p => {
-            const item = o.items.find(i => i.productId === p.id);
-            if (item) return { ...p, stock: Math.max(0, p.stock - item.quantity) };
-            return p;
-          }));
-        }
-        return { ...o, status };
-      }
-      return o;
-    }));
-  };
-
-  const updateOrderNotes = (orderId: string, notes: string) => {
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, adminNotes: notes } : o));
-  };
-
-  const addProduct = (p: Omit<Product, "id">) => {
-    const newId = Math.max(0, ...products.map(x => x.id)) + 1;
-    setProducts([{ ...p, id: newId }, ...products]);
-  };
-
-  const updateProduct = (id: number, p: Partial<Product>) => {
-    setProducts(prev => prev.map(x => x.id === id ? { ...x, ...p } : x));
-  };
-
-  const deleteProduct = (id: number) => {
-    setProducts(prev => prev.filter(x => x.id !== id));
-  };
-
-  const updateCustomerMeta = (email: string, meta: Partial<CustomerMeta>) => {
-    setCustomerMeta(prev => ({
-      ...prev,
-      [email]: { ...(prev[email] || { vip: false, notes: "" }), ...meta }
-    }));
-  };
-
-  const updateSettingsLocal = (s: Partial<Settings>) => {
-    setSettings(prev => ({ ...prev, ...s }));
-  };
-
-  const addToCart = (product: Product, quantity: number) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.productId === product.id);
-      if (existing) {
-        return prev.map(item => 
-          item.productId === product.id 
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...prev, { productId: product.id, name: product.name, price: product.price, quantity, image: product.image }];
+  const addProduct = useCallback(async (product: Omit<Product, "id" | "isActive">) => {
+    const created = await requestJson<Product>("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product),
     });
-  };
+    setProducts((current) => [...current, created].sort((left, right) => left.name.localeCompare(right.name)));
+  }, []);
 
-  const updateCartItem = (productId: number, quantity: number) => {
+  const updateProduct = useCallback(async (id: string, product: Partial<Product>) => {
+    const updated = await requestJson<Product>(`/api/products/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product),
+    });
+    setProducts((current) => current.map((item) => (item.id === id ? updated : item)));
+  }, []);
+
+  const deleteProduct = useCallback(async (id: string) => {
+    await requestJson<Product>(`/api/products/${id}`, { method: "DELETE" });
+    setProducts((current) => current.filter((item) => item.id !== id));
+    setCart((current) => current.filter((item) => item.productId !== id));
+  }, []);
+
+  const updateCustomerMeta = useCallback(async (email: string, patch: Partial<CustomerMeta>) => {
+    const updated = await requestJson<CustomerMetaResponse>("/api/admin/customers", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, ...patch }),
+    });
+    setCustomerMeta((current) => ({ ...current, [updated.email]: { vip: updated.vip, notes: updated.notes } }));
+  }, []);
+
+  const updateSettings = useCallback(async (nextSettings: Settings) => {
+    const updated = await requestJson<Settings>("/api/settings", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nextSettings),
+    });
+    setSettings(updated);
+  }, []);
+
+  const addToCart = useCallback((product: Product, quantity: number) => {
+    setCart((current) => {
+      const existing = current.find((item) => item.productId === product.id);
+      if (existing) {
+        return current.map((item) => item.productId === product.id ? { ...item, quantity: item.quantity + quantity } : item);
+      }
+      return [...current, { productId: product.id, name: product.name, price: product.price, quantity, image: product.image }];
+    });
+  }, []);
+
+  const removeFromCart = useCallback((productId: string) => {
+    setCart((current) => current.filter((item) => item.productId !== productId));
+  }, []);
+
+  const updateCartItem = useCallback((productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
-    setCart(prev => prev.map(item => item.productId === productId ? { ...item, quantity } : item));
-  };
+    setCart((current) => current.map((item) => item.productId === productId ? { ...item, quantity } : item));
+  }, [removeFromCart]);
 
-  const removeFromCart = (productId: number) => {
-    setCart(prev => prev.filter(item => item.productId !== productId));
-  };
+  const clearCart = useCallback(() => setCart([]), []);
 
-  const clearCart = () => setCart([]);
-
-  const placeOrder = (customer: { name: string; email: string; phone: string; address: string; notes: string }) => {
-    // 1. Input Validation
-    if (!customer.name || customer.name.length < 2 || customer.name.length > 100) throw new Error("Invalid name");
-    if (!customer.phone || customer.phone.length < 7 || customer.phone.length > 20) throw new Error("Invalid phone");
-    if (!customer.address || customer.address.length < 5 || customer.address.length > 200) throw new Error("Invalid address");
-    
-    // Email validation (optional but if provided must be valid)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (customer.email && !emailRegex.test(customer.email)) throw new Error("Invalid email format");
-
-    // 2. Data Isolation & Security - Non-sequential hard-to-guess IDs
-    const orderId = `#ORD-${crypto.randomUUID().split('-')[0].toUpperCase()}`;
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    // 3. Sanitization (basic manual stripping for now to prevent script injection in notes/names)
-    const sanitize = (str: string) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
-
-    const newOrder: Order = {
-      id: orderId,
-      customerName: sanitize(customer.name),
-      customerEmail: sanitize(customer.email),
-      customerPhone: sanitize(customer.phone),
-      address: sanitize(customer.address),
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      status: "New",
-      total,
-      adminNotes: customer.notes ? `Customer Notes: ${sanitize(customer.notes)}` : "",
-      items: cart.map(c => ({
-        productId: c.productId,
-        quantity: c.quantity,
-        price: c.price,
-        name: c.name
-      }))
-    };
-    
-    setOrders([newOrder, ...orders]);
-    clearCart();
-    return orderId;
-  };
-
-  const markNotificationsSeen = (ids: string[]) => {
-    setSeenNotifications(prev => {
-      const newSeen = new Set([...prev, ...ids]);
-      return Array.from(newSeen);
+  const placeOrder = useCallback(async (customer: OrderCustomer) => {
+    const order = await requestJson<Order>("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...customer, items: cart.map(({ productId, quantity }) => ({ productId, quantity })) }),
     });
-  };
+    setOrders((current) => [order, ...current]);
+    clearCart();
+    return order.id;
+  }, [cart, clearCart]);
 
-  return (
-    <AdminContext.Provider value={{
-      orders, products, messages, customerMeta, settings, cart, seenNotifications, markNotificationsSeen,
-      updateOrderStatus, updateOrderNotes, addProduct, updateProduct, deleteProduct, updateCustomerMeta, updateSettings: updateSettingsLocal,
-      addToCart, updateCartItem, removeFromCart, clearCart, placeOrder
-    }}>
-      {children}
-    </AdminContext.Provider>
-  );
+  const value = useMemo<AdminContextType>(() => ({
+    orders,
+    products,
+    messages,
+    customerMeta,
+    settings,
+    cart,
+    seenNotifications,
+    isLoading,
+    error,
+    markNotificationsSeen: (ids) => setSeenNotifications((current) => [...new Set([...current, ...ids])]),
+    updateOrderStatus: (orderId, statusValue) => updateOrder(orderId, { status: statusValue }),
+    updateOrderNotes: (orderId, notes) => updateOrder(orderId, { adminNotes: notes }),
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    updateCustomerMeta,
+    updateSettings,
+    addToCart,
+    updateCartItem,
+    removeFromCart,
+    clearCart,
+    placeOrder,
+  }), [addProduct, addToCart, cart, clearCart, customerMeta, deleteProduct, error, isLoading, messages, orders, placeOrder, products, removeFromCart, seenNotifications, settings, updateCartItem, updateCustomerMeta, updateOrder, updateProduct, updateSettings]);
+
+  return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
 }
 
-export const useAdmin = () => {
-  const ctx = useContext(AdminContext);
-  if (!ctx) throw new Error("useAdmin must be used within AdminProvider");
-  return ctx;
-};
+export function useAdmin() {
+  const context = useContext(AdminContext);
+  if (!context) throw new Error("useAdmin must be used within AdminProvider");
+  return context;
+}

@@ -9,19 +9,19 @@ import { motion } from "framer-motion";
 const FAQS = [
   {
     question: "Do you provide warranty on your medical equipment?",
-    answer: "Yes, all our medical equipment comes with a standard manufacturer's warranty. The duration varies by product, typically ranging from 1 to 3 years. We also offer extended warranty and AMC (Annual Maintenance Contract) options for hospitals and clinics."
+    answer: "Warranty coverage depends on the product and supplier. Please ask us for the applicable warranty terms before confirming an order."
   },
   {
     question: "How long does delivery take within Nepal?",
-    answer: "For locations within Kathmandu valley, we usually deliver within 24 hours. For deliveries outside the valley, it typically takes 2-5 business days depending on the location and accessibility."
+    answer: "Delivery timing depends on availability, destination, and the equipment requested. We will confirm an estimated delivery schedule with your quotation."
   },
   {
     question: "Do you offer repair and maintenance services?",
-    answer: "Absolutely. We have a dedicated team of trained biomedical engineers who handle installation, preventive maintenance, and repairs. Our technical support is available 24/7 for emergency situations."
+    answer: "Please contact us with your equipment and location details so we can confirm the support, installation, or maintenance options that apply."
   },
   {
     question: "Can individuals purchase equipment like Oxygen Concentrators and CPAP machines?",
-    answer: "Yes, we sell equipment for home care use to individuals as well. Our team will provide complete guidance and training on how to use the equipment safely at home."
+    answer: "Contact us with the intended use and product details. We will confirm suitability, availability, and any guidance available before an order is accepted."
   },
   {
     question: "How can I request a quote for bulk orders?",

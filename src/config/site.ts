@@ -4,9 +4,10 @@ export const SITE = {
   whatsapp: "9779712011758",
   phone: "+977 9712011758, +977 9712011757",
   email: "contact@neomeditech.com.np",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://neomeditech.com.np",
   address: "Tarkeshwor-6, Kathmandu, Nepal",
   fullAddress: "Tarkeshwor-6, Kathmandu, Nepal - Nationwide Delivery",
-  tagline: "Best Medical Equipment reseller in Nepal. Neomeditech provides affordable medical equipment throughout Nepal with 24/7 availability of services.",
+  tagline: "Medical equipment sourcing and quotation support for healthcare providers in Nepal.",
   social: {
     facebook: "https://facebook.com/neomeditechbiomedicalsolutions",
     instagram: "https://instagram.com/neomeditech",

@@ -2,17 +2,15 @@
 import { useTranslations } from "next-intl";
 
 import { useState } from "react";
-import Link from "next/link";
-import { MessageCircle, Search, Filter } from "lucide-react";
-import { motion } from "framer-motion";
-import { SITE } from "@/config/site";
+import Image from "next/image";
+import { Package, Search, Filter } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { CATEGORIES } from "@/data/products";
 import ProductAction from "@/components/ProductAction";
 
 export default function Shop() {
   const tShop = useTranslations("shop");
-  const tNav = useTranslations("nav");
   const { products } = useAdmin();
   const [activeCategory, setActiveCategory] = useState(tShop("allProducts"));
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +21,11 @@ export default function Shop() {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  const productVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  };
 
   return (
     <div className="bg-[#F5F7FA] min-h-screen pt-32 pb-20">
@@ -104,32 +107,17 @@ export default function Shop() {
                 {filteredProducts.map((product) => (
                   <motion.div 
                     key={product.id}
-                    variants={{
-                      hidden: { opacity: 0, y: 20 },
-                      visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as any } }
-                    }}
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
+                    variants={productVariants}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
                     className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <motion.div 
                         className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" as any }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                       >
-                        {/* Fallback span if image is missing, but try to render image first */}
-                        <img 
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-contain z-10"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
-                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 items-center justify-center text-center px-4">
-                          Image: {product.name}
-                        </span>
+                        {product.image ? <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-contain z-10" /> : <Package aria-hidden="true" size={40} className="text-slate-300" />}
                       </motion.div>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">

@@ -1,7 +1,7 @@
 "use client";
 import { AdminHeader } from "./AdminHeader";
 import { Link } from "@/i18n/routing";
-import { Phone, MapPin, Mail, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import Image from "next/image";
@@ -12,7 +12,6 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 import { motion } from "framer-motion";
-import { SITE } from "@/config/site";
 
 const NAV_LINKS = [
   { key: "home", href: "/" },
@@ -20,7 +19,7 @@ const NAV_LINKS = [
   { key: "about", href: "/about" },
   { key: "faq", href: "/faq" },
   { key: "contact", href: "/contact" },
-];
+] as const;
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,10 +74,10 @@ export default function Header() {
             return (
               <Link 
                 key={link.key}
-                href={link.href as any} 
+                href={link.href} 
                 className={`relative group py-2 transition-colors duration-200 ${isActive ? 'text-brand-blue' : 'hover:text-brand-blue'}`}
               >
-                {t(link.key as any)}
+                {t(link.key)}
                 {/* Active Indicator / Hover Underline */}
                 <span 
                   className={`absolute bottom-0 left-0 h-[2px] bg-brand-blue transition-all duration-200 ease-out ${
@@ -112,7 +111,7 @@ export default function Header() {
                 )}
                 <div className="flex flex-col">
                   <span className="text-sm font-bold text-brand-navy leading-none">
-                    {session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name?.split(' ')[0]}
+                    {session.user?.name?.split(' ')[0] || "Account"}
                   </span>
                   {session.user?.role === "admin" ? (
                     <Link href="/admin" className="text-[10px] text-brand-blue hover:underline uppercase tracking-wider font-bold">Admin</Link>
@@ -150,11 +149,11 @@ export default function Header() {
               return (
                 <Link 
                   key={link.key}
-                  href={link.href as any} 
+                  href={link.href} 
                   className={`transition-colors ${isActive ? 'text-brand-blue font-bold' : 'hover:text-brand-blue'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t(link.key as any)}
+                  {t(link.key)}
                 </Link>
               );
             })}
@@ -171,7 +170,7 @@ export default function Header() {
                     <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
                   )}
                   <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors text-slate-500">
-                    {tAuth('logout')} ({session.user?.email === "semshangtmg46@gmail.com" ? "Semshang" : session.user?.name})
+                    {tAuth('logout')} ({session.user?.name || session.user?.email})
                   </button>
                 </>
               ) : (

@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 export default function ProductAction({ product }: { product: Product }) {
   const tShop = useTranslations("shop");
   const [qty, setQty] = useState(1);
-  const { addToCart, cart } = useAdmin();
+  const { addToCart } = useAdmin();
   const [addedState, setAddedState] = useState(false);
 
   const handleAdd = () => {

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShieldCheck, Truck, Clock, MessageSquare, Star, Play, FlaskConical, Users, Globe, Heart } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, ShieldCheck, MessageSquare, FlaskConical, Users, Globe, Heart, Package } from "lucide-react";
+import { motion, type Variants } from "framer-motion";
 import { SITE } from "@/config/site";
 import { useTranslations } from "next-intl";
 import { useAdmin } from "@/components/admin/AdminProvider";
@@ -11,12 +11,12 @@ import ProductAction from '@/components/ProductAction';
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
-const fadeUpVariant = {
+const fadeUpVariant: Variants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as any } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -26,30 +26,28 @@ const staggerContainer = {
   }
 };
 
-const heroBadgeVariant = {
+const heroBadgeVariant: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" as any } }
+  visible: { opacity: 1, transition: { duration: 0.6, delay: 0.1, ease: "easeOut" } }
 };
 
-const heroHeadlineVariant = {
+const heroHeadlineVariant: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" as any } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2, ease: "easeOut" } }
 };
 
-const heroSubtextVariant = {
+const heroSubtextVariant: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" as any } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35, ease: "easeOut" } }
 };
 
-const heroButtonsVariant = {
+const heroButtonsVariant: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" as any } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.5, ease: "easeOut" } }
 };
 
 export default function Home() {
   const tHero = useTranslations("hero");
-  const tTrust = useTranslations("trust");
-  const tShop = useTranslations("shop");
   const { products } = useAdmin();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
@@ -73,7 +71,7 @@ export default function Home() {
               <div className="bg-[#33CC33] rounded-full p-1 shrink-0">
                 <ShieldCheck size={12} className="text-white" />
               </div>
-              <span>Trusted by 500+ hospitals across Nepal</span>
+              <span>Biomedical equipment support for healthcare providers in Nepal</span>
             </motion.div>
 
             {/* Headline */}
@@ -81,7 +79,7 @@ export default function Home() {
               variants={heroHeadlineVariant}
               initial="hidden"
               animate="visible"
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 flex flex-col items-center lg:items-start"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 flex flex-col items-center lg:items-start"
             >
               <span className="text-brand-navy">Advanced Technology.</span>
               <span className="text-brand-navy mt-1">Reliable Care.</span>
@@ -99,7 +97,7 @@ export default function Home() {
               animate="visible"
               className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-lg mb-8 mx-auto lg:mx-0 font-medium"
             >
-              Neomeditech provides innovative, high-quality medical devices designed to improve patient care and healthcare professionals' experience across Nepal.
+              Neomeditech provides innovative, high-quality medical devices designed to improve patient care and healthcare professionals&apos; experience across Nepal.
             </motion.p>
 
             {/* Buttons */}
@@ -220,7 +218,7 @@ export default function Home() {
               {products.slice(0, 6).map((product) => (
                 <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
                   <motion.div 
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
                     className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
@@ -230,21 +228,11 @@ export default function Home() {
                       <motion.div 
                         className="w-full h-full flex items-center justify-center relative"
                         whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" as any }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                       >
-                        {/* Try to render image, fallback to text if missing */}
-                        <img 
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-contain z-10"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
-                        <span className="text-slate-400 text-sm relative z-0 hidden absolute inset-0 items-center justify-center text-center px-4">
-                          Image: {product.name}
-                        </span>
+                        {product.image ? (
+                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain z-10" />
+                        ) : <Package aria-hidden="true" size={40} className="text-slate-300" />}
                       </motion.div>
                     </div>
                     <div className="p-6 flex flex-col flex-grow">
@@ -269,7 +257,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Request process */}
       <section className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4 max-w-7xl">
           <motion.div 
@@ -279,8 +267,8 @@ export default function Home() {
             variants={fadeUpVariant}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold text-brand-navy mb-4">What Our Clients Say</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Don&apos;t just take our word for it. Here is what hospitals and clinics have to say about our services.</p>
+            <h2 className="text-3xl font-bold text-brand-navy mb-4">Make an informed equipment request</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">Our team can help confirm specifications, availability, delivery options, and the appropriate commercial terms.</p>
           </motion.div>
           
           <motion.div 
@@ -290,28 +278,12 @@ export default function Home() {
             viewport={{ once: true, margin: "-50px" }}
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {[1, 2, 3].map((item) => (
-              <motion.div key={item} variants={fadeUpVariant} className="bg-white p-8 rounded-3xl border border-gray-200 shadow-md hover:shadow-lg transition-shadow relative">
-                <MessageSquare className="text-slate-300 absolute top-8 right-8" size={40} />
-                <div className="flex text-brand-green mb-6">
-                  <Star size={18} fill="currentColor" />
-                  <Star size={18} fill="currentColor" />
-                  <Star size={18} fill="currentColor" />
-                  <Star size={18} fill="currentColor" />
-                  <Star size={18} fill="currentColor" />
-                </div>
-                <p className="text-slate-700 italic mb-8 relative z-10 leading-relaxed">
-                  &quot;The quality of equipment provided by Neomeditech is outstanding. Their prompt service and professional support team make them our preferred vendor.&quot;
-                </p>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-white border border-slate-200 rounded-full flex items-center justify-center text-brand-navy font-bold shadow-sm">
-                    DR
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-brand-navy">Dr. Ram Sharma</h4>
-                    <p className="text-sm text-slate-500">Kathmandu General Hospital</p>
-                  </div>
-                </div>
+            {["Share your equipment requirements", "Receive a verified quotation", "Confirm delivery and support"].map((step, index) => (
+              <motion.div key={step} variants={fadeUpVariant} className="bg-white p-8 rounded-3xl border border-gray-200 shadow-md relative">
+                <MessageSquare className="text-brand-green absolute top-8 right-8" size={36} />
+                <p className="text-sm font-bold text-brand-green">STEP {index + 1}</p>
+                <h3 className="mt-3 text-xl font-bold text-brand-navy">{step}</h3>
+                <p className="mt-3 text-slate-600">Contact Neomeditech so the team can confirm the details relevant to your facility before you make a decision.</p>
               </motion.div>
             ))}
           </motion.div>

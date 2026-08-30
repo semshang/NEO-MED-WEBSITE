@@ -10,7 +10,8 @@ export default function SettingsPage() {
   const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
-    setForm(settings);
+    const timer = window.setTimeout(() => setForm(settings), 0);
+    return () => window.clearTimeout(timer);
   }, [settings]);
 
   const handleSubmit = (e: React.FormEvent) => {

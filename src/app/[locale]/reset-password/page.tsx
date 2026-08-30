@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import { SITE } from "@/config/site";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 
 function ResetPasswordForm() {
   const [newPassword, setNewPassword] = useState("");
@@ -47,15 +48,16 @@ function ResetPasswordForm() {
         body: JSON.stringify({ token, email, newPassword })
       });
       
-      const data = await res.json();
+      const data: unknown = await res.json();
       
       if (!res.ok) {
-        throw new Error(data.message || "Failed to reset password.");
+        const message = typeof data === "object" && data && "message" in data && typeof data.message === "string" ? data.message : "Failed to reset password.";
+        throw new Error(message);
       }
       
       setIsSuccess(true);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Failed to reset password.");
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +140,7 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-[#eff5f9] flex flex-col items-center justify-center p-4">
       <Link href="/" className="mb-8 block">
-        <img src="/logo-transparent.png" alt={SITE.name} className="h-12 w-auto" />
+        <Image src="/logo-transparent.png" alt={SITE.name} width={192} height={48} className="h-12 w-auto" priority />
       </Link>
       <Suspense fallback={<div className="animate-pulse w-96 h-96 bg-slate-200 rounded-3xl" />}>
         <ResetPasswordForm />

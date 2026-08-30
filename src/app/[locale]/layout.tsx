@@ -16,8 +16,23 @@ import { routing } from "@/i18n/routing";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} | Premium Medical Equipment`,
-  description: "Your trusted partner in providing premium medical and hospital equipment in Nepal.",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: `${SITE.name} | Medical Equipment in Nepal`,
+    template: "%s | Neomeditech",
+  },
+  description: SITE.tagline,
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    title: `${SITE.name} | Medical Equipment in Nepal`,
+    description: SITE.tagline,
+  },
+  twitter: {
+    card: "summary",
+    title: SITE.name,
+    description: SITE.tagline,
+  },
 };
 
 export function generateStaticParams() {

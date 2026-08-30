@@ -3,7 +3,7 @@ import { Target, Award, Users, ThumbsUp } from "lucide-react";
 import { SITE } from "@/config/site";
 
 export const metadata = {
-  title: `About Us | ${SITE.name}`,
+  title: "About Us",
   description: `Learn about ${SITE.name}, your trusted partner for biomedical equipment in Nepal.`,
 };
 
@@ -27,16 +27,16 @@ export default function About() {
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="md:w-1/2">
               <div className="aspect-video bg-white border border-slate-200 rounded-3xl flex items-center justify-center text-slate-400 shadow-sm relative overflow-hidden">
-                <span className="relative z-10">Company Team Image</span>
+                <span className="relative z-10 font-bold text-brand-navy">Neomeditech Biomedical Solutions</span>
               </div>
             </div>
             <div className="md:w-1/2 space-y-6">
               <h2 className="text-3xl font-bold text-brand-navy">Our Story</h2>
               <p className="text-slate-600 leading-relaxed text-lg">
-                Founded with a mission to bridge the gap in quality healthcare equipment in Nepal, {SITE.name} has grown into a trusted partner for hospitals, clinics, and individual patients across the country.
+                {SITE.name} helps healthcare providers explore medical-equipment options and request quotations for their facilities.
               </p>
               <p className="text-slate-600 leading-relaxed text-lg">
-                We understand that reliable medical equipment is a matter of life and death. That&apos;s why we meticulously source our products from globally renowned manufacturers and maintain a team of highly skilled biomedical engineers to ensure every piece of equipment functions perfectly.
+                We encourage customers to confirm specifications, availability, warranty, delivery, and support requirements with our team before making a purchase decision.
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function About() {
                 <Target size={32} />
               </div>
               <h3 className="text-xl font-bold text-brand-navy mb-3">Reliability</h3>
-              <p className="text-slate-600">We ensure 24/7 support and timely delivery to be there when you need us most.</p>
+              <p className="text-slate-600">We communicate confirmed requirements, availability, and delivery options before an order is accepted.</p>
             </div>
             
             <div className="p-8 bg-white rounded-3xl shadow-md border border-gray-200 text-center hover:shadow-lg transition-shadow">

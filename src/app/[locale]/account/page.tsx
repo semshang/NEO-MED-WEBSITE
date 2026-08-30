@@ -1,18 +1,16 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import Link from "next/link";
 import { Package, User, MessageSquare, ArrowRight, CheckCircle2, ShoppingBag, Mail, Clock } from "lucide-react";
 import Image from "next/image";
 
-const MOCK_MESSAGES: any[] = [];
-
 export default function MyAccount() {
   const { data: session, status } = useSession();
-  const { orders } = useAdmin();
+  const { orders, messages } = useAdmin();
   const [activeTab, setActiveTab] = useState("orders");
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
@@ -23,25 +21,27 @@ export default function MyAccount() {
   });
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("neomeditech_profile");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setProfile({
-          name: parsed.name || session?.user?.name || "",
-          phone: parsed.phone || "",
-          address: parsed.address || ""
-        });
-      } catch (e) {}
-    } else if (session?.user?.name) {
-      setProfile(prev => ({ ...prev, name: session.user!.name! }));
-    }
-  }, [session]);
+  const loadProfile = useCallback(async () => {
+    const response = await fetch("/api/account/profile", { cache: "no-store" });
+    if (!response.ok) return;
+    const data: { name: string; phone: string; address: string } = await response.json();
+    setProfile(data);
+  }, []);
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    const timer = window.setTimeout(() => void loadProfile(), 0);
+    return () => window.clearTimeout(timer);
+  }, [loadProfile, status]);
+
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    localStorage.setItem("neomeditech_profile", JSON.stringify(profile));
+    const response = await fetch("/api/account/profile", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(profile),
+    });
+    if (!response.ok) return;
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 3000);
   };
@@ -162,7 +162,7 @@ export default function MyAccount() {
                             <p className="text-sm text-slate-500">{order.date} &bull; {order.items.length} {order.items.length === 1 ? 'item' : 'items'}</p>
                           </div>
                           <div className="mt-4 sm:mt-0 flex items-center justify-between sm:justify-end sm:space-x-6">
-                            <span className="font-bold text-brand-navy text-lg">Rs. {order.total.toLocaleString()}</span>
+                            <span className="font-bold text-brand-navy text-lg">{order.total === null ? "Quote required" : `Rs. ${order.total.toLocaleString()}`}</span>
                             <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
                               <ArrowRight size={16} className={`transform transition-transform ${expandedOrder === order.id ? 'rotate-90' : ''}`} />
                             </div>
@@ -191,7 +191,7 @@ export default function MyAccount() {
                                           <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
                                         </div>
                                       </div>
-                                      <span className="font-bold text-brand-navy whitespace-nowrap ml-4">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                                      <span className="font-bold text-brand-navy whitespace-nowrap ml-4">{item.price === null ? "Quote required" : `Rs. ${(item.price * item.quantity).toLocaleString()}`}</span>
                                     </div>
                                   ))}
                                 </div>
@@ -303,7 +303,7 @@ export default function MyAccount() {
                 >
                   <h2 className="text-2xl font-bold text-brand-navy mb-6">My Messages</h2>
                   
-                  {MOCK_MESSAGES.length === 0 ? (
+                  {messages.length === 0 ? (
                     <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-gray-200">
                       <MessageSquare size={48} className="text-slate-300 mx-auto mb-4" />
                       <h3 className="text-xl font-bold text-brand-navy mb-2">You haven&apos;t sent us any messages yet</h3>
@@ -314,16 +314,16 @@ export default function MyAccount() {
                     </div>
                   ) : (
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                      {MOCK_MESSAGES.map((msg, idx) => (
-                        <div key={msg.id} className={`p-6 flex flex-col sm:flex-row sm:items-center justify-between ${idx !== MOCK_MESSAGES.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                      {messages.map((msg, idx) => (
+                        <div key={msg.id} className={`p-6 flex flex-col sm:flex-row sm:items-center justify-between ${idx !== messages.length - 1 ? 'border-b border-gray-100' : ''}`}>
                           <div>
                             <h3 className="font-bold text-brand-navy text-lg mb-1">{msg.subject}</h3>
                             <p className="text-sm text-slate-500">{msg.date} &bull; Ticket: {msg.id}</p>
                           </div>
                           <div className="mt-4 sm:mt-0">
-                            <span className={`px-3 py-1.5 rounded-full text-xs font-bold inline-flex items-center ${msg.status === 'Received' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
-                              {msg.status === 'Received' ? <Clock size={12} className="mr-1.5" /> : <CheckCircle2 size={12} className="mr-1.5" />}
-                              {msg.status}
+                            <span className={`px-3 py-1.5 rounded-full text-xs font-bold inline-flex items-center ${msg.unread ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
+                              {msg.unread ? <Clock size={12} className="mr-1.5" /> : <CheckCircle2 size={12} className="mr-1.5" />}
+                              {msg.unread ? "Received" : "Read"}
                             </span>
                           </div>
                         </div>

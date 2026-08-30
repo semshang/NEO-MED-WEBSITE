@@ -7,6 +7,8 @@ export interface IUser extends Document {
   role: "admin" | "customer";
   resetToken?: string;
   resetTokenExpiry?: Date;
+  phone?: string;
+  address?: string;
   createdAt: Date;
 }
 
@@ -18,6 +20,8 @@ const UserSchema: Schema = new Schema(
     role: { type: String, enum: ["admin", "customer"], default: "customer" },
     resetToken: { type: String },
     resetTokenExpiry: { type: Date },
+    phone: { type: String, maxlength: 24 },
+    address: { type: String, maxlength: 300 },
   },
   { timestamps: true }
 );

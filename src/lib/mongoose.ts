@@ -6,11 +6,14 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
 }
+
+const globalWithMongoose = globalThis as typeof globalThis & { mongoose?: MongooseCache };
+const cached = globalWithMongoose.mongoose ?? { conn: null, promise: null };
+globalWithMongoose.mongoose = cached;
 
 async function connectDB() {
   if (cached.conn) {

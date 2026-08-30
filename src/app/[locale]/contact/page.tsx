@@ -1,14 +1,16 @@
 import { useTranslations } from "next-intl";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { SITE } from "@/config/site";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata = {
-  title: "Contact Us | Neomeditech Biomedical Solutions",
+  title: "Contact Us",
   description: "Get in touch with Neomeditech Biomedical Solutions for inquiries, support, or quotes.",
 };
 
 export default function Contact() {
   const tContact = useTranslations("contact");
+  const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.address)}`;
   return (
     <div className="bg-[#F5F7FA] min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -63,8 +65,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="font-bold text-brand-navy">Business Hours</h4>
-                    <p className="text-slate-600 mt-1">Sunday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p className="text-slate-600">Saturday: Closed (24/7 Support Available for Emergencies)</p>
+                    <p className="text-slate-600 mt-1">Please contact us to confirm current business hours and support availability.</p>
                   </div>
                 </div>
               </div>
@@ -76,45 +77,20 @@ export default function Contact() {
             <div className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-200">
               <h3 className="text-2xl font-bold text-brand-navy mb-6">Send us a {tContact("formMessage")}</h3>
               
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formName")}</label>
-                    <input type="text" id="name" className="w-full px-4 py-3 bg-white border border-gray-300 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="John Doe" />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formEmail")}</label>
-                    <input type="email" id="email" className="w-full px-4 py-3 bg-white border border-gray-300 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="john@example.com" />
-                  </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formSubject")}</label>
-                  <input type="text" id="subject" className="w-full px-4 py-3 bg-white border border-gray-300 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors" placeholder="How can we help you?" />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-bold text-brand-navy mb-2">{tContact("formMessage")}</label>
-                  <textarea id="message" rows={5} className="w-full px-4 py-3 bg-white border border-gray-300 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue transition-colors resize-none" placeholder="Write your message here..."></textarea>
-                </div>
-                
-                <button type="submit" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-8 py-4 rounded-xl font-bold transition-opacity shadow-md w-full md:w-auto">
-                  Send {tContact("formMessage")}
-                </button>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </div>
 
-        {/* Embedded Map Placeholder */}
+        {/* Location link avoids loading a third-party map until the visitor chooses to open it. */}
         <div className="mt-16">
-          <div className="w-full h-96 bg-slate-200 rounded-3xl overflow-hidden relative shadow-sm border border-slate-200 flex items-center justify-center">
+          <a href={mapSearchUrl} target="_blank" rel="noreferrer" className="w-full min-h-56 bg-slate-100 rounded-3xl overflow-hidden relative shadow-sm border border-slate-200 flex items-center justify-center hover:bg-slate-200 transition-colors">
             <div className="text-center">
-              <MapPin size={48} className="mx-auto text-slate-400 mb-4" />
-              <p className="text-slate-500 font-medium">Google Maps Embed Placeholder</p>
-              <p className="text-slate-400 text-sm mt-2">Replace with actual iframe in production</p>
+              <MapPin size={48} className="mx-auto text-brand-green mb-4" />
+              <p className="text-brand-navy font-bold">Find Neomeditech on Google Maps</p>
+              <p className="text-slate-500 text-sm mt-2">{SITE.address}</p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>

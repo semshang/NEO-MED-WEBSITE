@@ -19,7 +19,7 @@ export default function AdminDashboard() {
   const totalCustomers = new Set(orders.map(o => o.customerEmail)).size;
 
   const stats = [
-    { name: "Total Orders", value: totalOrders.toString(), icon: ShoppingBag, change: "+5 this week", color: "text-brand-navy" },
+    { name: "Total Orders", value: totalOrders.toString(), icon: ShoppingBag, color: "text-brand-navy" },
     { name: "Pending Orders", value: pendingOrders.toString(), icon: Clock, highlight: pendingOrders > 0, color: pendingOrders > 0 ? "text-amber-500" : "text-brand-navy" },
     { name: "Total Products", value: totalProducts.toString(), icon: Package, color: "text-brand-navy" },
     { name: "Total Customers", value: totalCustomers.toString(), icon: Users, color: "text-brand-navy" },
@@ -57,22 +57,18 @@ export default function AdminDashboard() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.4, ease: "easeOut" as any }}
+              transition={{ duration: 0.4, ease: "easeOut" as const }}
               className="relative"
             >
               <motion.button 
                 initial={{ boxShadow: "0 0 0 0 rgba(27, 110, 194, 0)" }}
                 animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(255, 255, 255, 0.4)", "0 0 0 10px rgba(255, 255, 255, 0)"] }}
-                transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" as any }}
+                transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" as const }}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="focus:outline-none rounded-full ring-4 ring-white/20 focus:ring-white transition-all block bg-white"
               >
                 {session?.user?.image ? (
-                  <img 
-                    src={session.user.image} 
-                    alt="Admin Avatar" 
-                    className="w-16 h-16 rounded-full object-cover shadow-sm"
-                  />
+                  <span className="w-16 h-16 rounded-full bg-brand-blue text-white flex items-center justify-center text-xl font-bold shadow-sm">{session.user?.name?.charAt(0) || "A"}</span>
                 ) : (
                   <div className="w-16 h-16 rounded-full bg-brand-blue text-white flex items-center justify-center text-xl font-bold shadow-sm">
                     {session?.user?.name ? session.user.name.charAt(0) : "A"}
@@ -101,7 +97,7 @@ export default function AdminDashboard() {
               <motion.h1 
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as any }}
+                transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as const }}
                 className="text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-sm"
               >
                 Welcome back, {session?.user?.name || "Admin"}
@@ -109,7 +105,7 @@ export default function AdminDashboard() {
               <motion.p 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as any }}
+                transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as const }}
                 className="text-white/90 text-sm md:text-base mt-2 font-medium"
               >
                 Here is what is happening today &mdash; {today}
@@ -126,7 +122,7 @@ export default function AdminDashboard() {
             key={stat.name}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 + (i * 0.05), ease: "easeOut" as any }}
+            transition={{ duration: 0.4, delay: 0.3 + (i * 0.05), ease: "easeOut" as const }}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 border border-gray-200 hover:border-brand-blue/30 p-6 flex flex-col justify-between transition-all duration-300 group"
           >
             <div className="flex justify-between items-start mb-4">
@@ -137,12 +133,6 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h3 className={`text-4xl font-bold tracking-tight ${stat.color}`}>{stat.value}</h3>
-              {stat.change && (
-                <p className="text-brand-green text-sm font-bold mt-2 flex items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-green mr-2 animate-pulse"></span>
-                  {stat.change}
-                </p>
-              )}
             </div>
           </motion.div>
         ))}
@@ -155,7 +145,7 @@ export default function AdminDashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" as any }}
+          transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" as const }}
           className="lg:col-span-2 bg-white rounded-2xl shadow-md hover:shadow-lg border border-gray-200 overflow-hidden transition-shadow duration-300"
         >
           <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
@@ -206,7 +196,7 @@ export default function AdminDashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.55, ease: "easeOut" as any }}
+          transition={{ duration: 0.4, delay: 0.55, ease: "easeOut" as const }}
           className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 h-full"
         >
           <Link href="/admin/products" className="flex-1 bg-white rounded-2xl shadow-md border border-gray-200 p-6 flex flex-col items-center justify-center text-center hover:shadow-xl hover:-translate-y-1 transition-all hover:border-brand-blue/30 group min-h-[160px]">

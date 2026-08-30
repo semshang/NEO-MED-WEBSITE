@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-navy text-slate-300 pt-16 pb-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand & About */}
           <div className="space-y-4">
             <p className="text-sm text-slate-400 mt-4 leading-relaxed">
@@ -79,8 +79,8 @@ export default function Footer() {
         <div className="border-t border-slate-800 pt-8 mt-12 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
           <p>&copy; {new Date().getFullYear()} {SITE.shortName} Biomedical Solutions. All rights reserved.</p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            <Link href="#" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
-            <Link href="#" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
+            <Link href="/privacy-policy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

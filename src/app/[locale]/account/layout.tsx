@@ -1,6 +1,9 @@
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { redirect } from "@/i18n/routing";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "My Account", robots: { index: false, follow: false } };
 
 export default async function AccountLayout({
   children,

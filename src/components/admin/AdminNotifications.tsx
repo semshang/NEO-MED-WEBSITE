@@ -5,7 +5,6 @@ import { Bell, ShoppingBag, Mail, AlertTriangle, CheckCircle2 } from "lucide-rea
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdmin } from "./AdminProvider";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface NotificationItem {
   id: string;
@@ -18,15 +17,7 @@ interface NotificationItem {
 export function AdminNotifications() {
   const { orders, messages, products, settings, seenNotifications, markNotificationsSeen } = useAdmin();
   const [isOpen, setIsOpen] = useState(false);
-  const [hasNew, setHasNew] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
-
-  // Close dropdown on route change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   // Handle clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -49,7 +40,7 @@ export function AdminNotifications() {
         type: 'order',
         title: `New order ${order.id} from ${order.customerName}`,
         link: '/admin/orders',
-        date: new Date(order.date).getTime() || Date.now(),
+        date: new Date(order.date).getTime() || 0,
       });
     }
   });
@@ -62,20 +53,20 @@ export function AdminNotifications() {
         type: 'message',
         title: `New message from ${msg.senderName}: ${msg.subject}`,
         link: '/admin/messages',
-        date: new Date(msg.date).getTime() || Date.now(),
+        date: new Date(msg.date).getTime() || 0,
       });
     }
   });
 
   // 3. Low Stock
   products.forEach(product => {
-    if (product.stock < settings.lowStockThreshold) {
+    if (product.stock !== null && product.stock < settings.lowStockThreshold) {
       notifications.push({
         id: `stock-${product.id}`,
         type: 'stock',
         title: `${product.name} is low on stock (${product.stock} left)`,
         link: '/admin/products',
-        date: Date.now() - 3600000, // mock as slightly older
+        date: 0,
       });
     }
   });
@@ -85,15 +76,6 @@ export function AdminNotifications() {
 
   // Unread count
   const unreadCount = notifications.filter(n => !seenNotifications.includes(n.id)).length;
-
-  // Trigger shake animation when unreadCount increases
-  useEffect(() => {
-    if (unreadCount > 0) {
-      setHasNew(true);
-      const timer = setTimeout(() => setHasNew(false), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [unreadCount]);
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -107,11 +89,7 @@ export function AdminNotifications() {
   };
 
   const getRelativeTime = (timestamp: number) => {
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-    const daysDifference = Math.round((timestamp - Date.now()) / (1000 * 60 * 60 * 24));
-    
-    if (daysDifference === 0) return "Today";
-    if (daysDifference > -7) return rtf.format(daysDifference, 'day');
+    if (timestamp === 0) return "Stock alert";
     return new Date(timestamp).toLocaleDateString();
   };
 
@@ -119,8 +97,6 @@ export function AdminNotifications() {
     <div className="relative" ref={dropdownRef}>
       <motion.button
         onClick={handleOpen}
-        animate={hasNew ? { rotate: [0, -10, 10, -10, 10, 0] } : {}}
-        transition={{ duration: 0.5 }}
         className="relative p-2 text-slate-400 hover:text-brand-blue hover:bg-brand-blue/5 rounded-full transition-colors focus:outline-none"
       >
         <Bell size={20} />
@@ -167,6 +143,7 @@ export function AdminNotifications() {
                       <Link 
                         key={notification.id}
                         href={notification.link}
+                        onClick={() => setIsOpen(false)}
                         className={`p-4 flex items-start gap-3 hover:bg-slate-50 transition-colors ${isUnread ? 'bg-brand-blue/5' : ''}`}
                       >
                         <div className={`mt-0.5 p-2 rounded-full shrink-0 ${

@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { ShieldCheck, Headset, Truck, Shield, X, Globe, ChevronDown, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, User } from "lucide-react";
+import { Shield, X, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState, FormEvent } from "react";
@@ -16,16 +16,11 @@ const modalVariants: Variants = {
     scale: 1,
     transition: { 
       duration: 0.3, 
-      ease: "easeOut" as any,
+      ease: "easeOut",
       staggerChildren: 0.1 
     }
   },
   exit: { opacity: 0, scale: 0.95, transition: { duration: 0.2 } }
-};
-
-const leftPanelVariants: Variants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" as any } }
 };
 
 const rightPanelVariants: Variants = {
@@ -42,15 +37,13 @@ const rightPanelVariants: Variants = {
 
 const formItemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as any } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };
 
 type AuthMode = "login" | "register" | "forgot";
 
 export function LoginModal() {
   const tAuth = useTranslations("auth");
-  const tHero = useTranslations("hero");
-  const tTrust = useTranslations("trust");
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -70,18 +63,22 @@ export function LoginModal() {
 
   useEffect(() => {
     if (searchParams.get("login") === "true") {
-      setIsOpen(true);
-      setMode("login");
-      setError("");
-      setSuccessMsg("");
+      const timer = window.setTimeout(() => {
+        setIsOpen(true);
+        setMode("login");
+        setError("");
+        setSuccessMsg("");
+      }, 0);
       document.body.style.overflow = "hidden";
+      return () => {
+        window.clearTimeout(timer);
+        document.body.style.overflow = "unset";
+      };
     } else {
-      setIsOpen(false);
+      const timer = window.setTimeout(() => setIsOpen(false), 0);
       document.body.style.overflow = "unset";
+      return () => window.clearTimeout(timer);
     }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
   }, [searchParams]);
 
   const closeModal = () => {
@@ -144,10 +141,11 @@ export function LoginModal() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email, password }),
         });
-        const data = await res.json();
+        const data: unknown = await res.json();
         
         if (!res.ok) {
-          throw new Error(data.message || "Registration failed");
+          const message = typeof data === "object" && data && "message" in data && typeof data.message === "string" ? data.message : "Registration failed";
+          throw new Error(message);
         }
         
         // Auto sign-in after registration
@@ -165,8 +163,8 @@ export function LoginModal() {
           router.push(callbackUrl);
           router.refresh();
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Registration failed");
       }
       setIsLoading(false);
     } else if (mode === "forgot") {
@@ -182,7 +180,7 @@ export function LoginModal() {
         } else {
           setError("Failed to send reset link.");
         }
-      } catch (err) {
+      } catch {
         setError("An error occurred. Please try again.");
       }
       setIsLoading(false);
@@ -278,7 +276,7 @@ export function LoginModal() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-                          placeholder="John Doe"
+                          placeholder="Your full name"
                           required
                         />
                       </div>
