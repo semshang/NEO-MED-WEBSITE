@@ -201,12 +201,12 @@ export function LoginModal() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto max-h-[98vh] md:max-h-[95vh]"
+            className="relative w-full max-w-[850px] h-[95vh] md:h-[580px] bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto shrink-0"
           >
             
 
             {/* Left Panel - Marketing */}
-              <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-gradient-to-b from-[#eff5f9] to-[#e1edf4] p-6 lg:p-8 relative overflow-hidden">
+              <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-gradient-to-b from-[#eff5f9] to-[#e1edf4] pt-8 lg:pt-10 px-6 lg:px-8 pb-0 relative overflow-hidden">
                 
                 {/* Background decorative elements (faint circles) */}
                 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -239,14 +239,14 @@ export function LoginModal() {
                   </div>
   
                   {/* Trust Points (Block centered, items left-aligned) */}
-                  <div className="mx-auto w-fit space-y-3 lg:space-y-4 mb-2 lg:mb-4">
+                  <div className="mx-auto w-fit space-y-3 lg:space-y-4 mb-2 lg:mb-6">
                     <div className="flex items-center space-x-3">
                       <div className="bg-white rounded-full p-1.5 shadow-sm text-brand-blue shrink-0">
                         <ShieldCheck size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-[13px] leading-none">{tTrust("genuine")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-1 leading-none">{tTrust("genuineDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("genuine")}</h4>
+                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("genuineDesc")}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -254,8 +254,8 @@ export function LoginModal() {
                         <Headset size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-[13px] leading-none">{tTrust("support")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-1 leading-none">{tTrust("supportDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("support")}</h4>
+                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("supportDesc")}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -263,14 +263,14 @@ export function LoginModal() {
                         <Truck size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-brand-navy text-[11px] lg:text-[13px] leading-none">{tTrust("delivery")}</h4>
-                        <p className="text-slate-500 text-[10px] lg:text-xs mt-1 leading-none">{tTrust("deliveryDesc")}</p>
+                        <h4 className="font-bold text-brand-navy text-xs lg:text-sm leading-none">{tTrust("delivery")}</h4>
+                        <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5 leading-none">{tTrust("deliveryDesc")}</p>
                       </div>
                     </div>
                   </div>
                   
                   {/* Image (Huge, Flex-1, pushed to edges) */}
-                  <div className="w-full flex-1 flex justify-center items-end min-h-[160px] relative -mx-4 lg:-mx-8 px-4 lg:px-8">
+                  <div className="w-full mt-auto flex justify-center items-end h-[220px] relative -mx-4 lg:-mx-8 px-4 lg:px-8">
                     <motion.img 
                       initial={{ y: 0 }}
                       animate={{ y: [-5, 5, -5] }}
@@ -281,12 +281,12 @@ export function LoginModal() {
                     />
 
                     {/* Certified Badge (Absolute floating over bottom left of image) */}
-                    <div className="absolute bottom-2 left-6 lg:left-8 bg-white/95 p-2 lg:p-3 rounded-xl shadow-lg flex items-center space-x-2 lg:space-x-3 border border-slate-100 z-20">
+                    <div className="absolute bottom-6 left-6 lg:left-8 bg-white/95 p-2 lg:p-3 rounded-xl shadow-lg flex items-center space-x-2 lg:space-x-3 border border-slate-100 z-20">
                       <div className="bg-[#e6f8f3] p-1.5 lg:p-2 rounded-lg text-[#10b981] shrink-0">
                         <Shield size={16} className="lg:w-5 lg:h-5" />
                       </div>
                       <div>
-                        <div className="text-brand-navy font-bold text-[10px] lg:text-xs leading-none">{tTrust("certified")}</div>
+                        <div className="text-brand-navy font-bold text-xs lg:text-sm leading-none font-bold">{tTrust("certified")}</div>
                         <div className="text-slate-500 text-[9px] lg:text-[11px] mt-1 leading-none">{tTrust("certifiedDesc")}</div>
                       </div>
                     </div>
