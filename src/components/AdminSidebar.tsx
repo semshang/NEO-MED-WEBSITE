@@ -17,8 +17,8 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col py-6">
-      <nav className="space-y-3 px-4">
+    <div className="flex flex-col h-full py-6">
+      <nav className="flex flex-col h-full space-y-3 px-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -40,7 +40,7 @@ export function AdminSidebar() {
         })}
         
         {/* Sign Out pinned to bottom of nav items, with mb-20 to clear floating Next.js/chat widget */}
-        <div className="mt-8 mb-20">
+        <div className="mt-auto mb-20">
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
             className="group flex items-center space-x-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ease-out border-l-4 border-transparent text-slate-600 hover:bg-red-50 hover:text-red-600 hover:shadow-sm hover:border-red-200 font-medium text-left"

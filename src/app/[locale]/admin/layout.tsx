@@ -6,11 +6,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex bg-[#F5F7FA] min-h-[calc(100vh-160px)]">
+    <div className="flex bg-[#F5F7FA] min-h-[calc(100vh-73px)]">
       {/* Sidebar - fixed to left side */}
       <div 
-        className="hidden lg:block fixed left-0 bottom-0 w-64 bg-white border-r border-slate-200 shadow-[4px_0_12px_rgba(0,0,0,0.03)] overflow-y-auto z-40"
-        style={{ top: '161px' }}
+        className="hidden lg:flex flex-col fixed left-0 bottom-0 w-64 bg-white border-r border-slate-200 shadow-[4px_0_12px_rgba(0,0,0,0.03)] z-40 overflow-y-auto"
+        style={{ top: '73px' }}
       >
         <AdminSidebar />
       </div>
