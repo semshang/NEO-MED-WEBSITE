@@ -207,7 +207,7 @@ export function LoginModal() {
 
             {/* Left Panel - Marketing */}
             <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-6 lg:p-8 relative overflow-hidden">
-              <div className="relative z-10 flex flex-col h-full">
+              <div className="relative z-10 flex flex-col h-full overflow-visible">
                 {/* Logo */}
                 <div className="flex items-center space-x-2.5 mb-4">
                   <Image 
@@ -265,7 +265,7 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex flex-col justify-end h-[170px] lg:h-[240px] shrink-0 mb-4 mt-2">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-0 max-h-[120px] lg:max-h-[180px] mb-6 mt-2 lg:mb-8">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
