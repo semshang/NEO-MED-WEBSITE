@@ -137,7 +137,7 @@ export default function Home() {
 
           {/* Right Image */}
           <motion.div
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
+            initial={{ opacity: 0, x: -100, scale: 0.9 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
             className="w-full md:w-[55%] lg:w-[60%] flex justify-center md:justify-end relative mt-16 md:mt-0 z-10"
@@ -146,12 +146,12 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-brand-green blur-3xl opacity-30 rounded-full w-full h-full transform scale-90"></div>
             
             <motion.div
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              animate={{ x: [0, 30, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="relative w-full max-w-[650px] xl:max-w-[750px] aspect-[4/3] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-20 scale-110 md:scale-125 lg:scale-110 origin-right"
             >
               <Image
-                src="/hero-monitor.png"
+                src="/login-podium-transparent.png"
                 alt="Premium Medical Equipment Monitor"
                 fill
                 className="object-contain"
