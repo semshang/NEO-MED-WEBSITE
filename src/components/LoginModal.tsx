@@ -201,7 +201,7 @@ export function LoginModal() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto max-h-[95vh] md:max-h-[85vh]"
+            className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden my-auto max-h-[98vh] md:max-h-[95vh]"
           >
             {/* Close Button */}
             <button 
@@ -243,35 +243,35 @@ export function LoginModal() {
 
                 <div className="space-y-3 mb-4 lg:mb-6">
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
+                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
                       <ShieldCheck size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-brand-navy text-xs lg:text-sm">{tTrust("genuine")}</h4>
-                      <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5">{tTrust("genuineDesc")}</p>
+                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("genuine")}</h4>
+                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("genuineDesc")}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
+                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-blue shrink-0">
                       <Headset size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-brand-navy text-xs lg:text-sm">{tTrust("support")}</h4>
-                      <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5">{tTrust("supportDesc")}</p>
+                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("support")}</h4>
+                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("supportDesc")}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
-                    <div className="bg-white p-1 lg:p-3 rounded-xl shadow-sm text-brand-green shrink-0">
+                    <div className="bg-white p-1.5 lg:p-3 rounded-xl shadow-sm text-brand-green shrink-0">
                       <Truck size={16} className="lg:w-5 lg:h-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-brand-navy text-xs lg:text-sm">{tTrust("delivery")}</h4>
-                      <p className="text-slate-500 text-[10px] lg:text-xs mt-0.5">{tTrust("deliveryDesc")}</p>
+                      <h4 className="font-bold text-brand-navy text-[10px] lg:text-sm">{tTrust("delivery")}</h4>
+                      <p className="text-slate-500 text-[9px] lg:text-xs leading-tight">{tTrust("deliveryDesc")}</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-[160px] lg:min-h-0 flex-shrink-0 lg:flex-shrink">
+                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end h-[200px] lg:h-[280px] shrink-0 mt-2">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
