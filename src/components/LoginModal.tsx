@@ -120,13 +120,13 @@ export function LoginModal() {
             <motion.div variants={leftPanelVariants} className="hidden md:flex flex-col w-1/2 bg-[#eff5f9] p-8 lg:p-10 relative overflow-hidden">
               <div className="relative z-10 flex flex-col h-full">
                 {/* Logo */}
-                <div className="flex items-center space-x-2 mb-6">
+                <div className="flex items-center space-x-2.5 mb-6">
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={88} 
-                    height={44} 
-                    className="h-8 lg:h-9 w-auto object-contain"
+                    width={96} 
+                    height={48} 
+                    className="h-9 lg:h-10 w-auto object-contain -mt-1.5 lg:-mt-2"
                   />
                   <div className="flex flex-col">
                     <span className="font-black tracking-widest leading-none text-xs lg:text-[15px]">
@@ -222,13 +222,13 @@ export function LoginModal() {
               <div className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
                 
                 {/* Mobile Logo (hidden on desktop) */}
-                <motion.div variants={formItemVariants} className="flex md:hidden items-center space-x-2 mb-6">
+                <motion.div variants={formItemVariants} className="flex md:hidden items-center space-x-2.5 mb-6">
                   <Image 
                     src="/logo-transparent.png" 
                     alt="Neomeditech" 
-                    width={88} 
-                    height={44} 
-                    className="h-8 w-auto object-contain"
+                    width={96} 
+                    height={48} 
+                    className="h-9 w-auto object-contain -mt-1.5"
                   />
                   <div className="flex flex-col">
                     <span className="font-black tracking-widest leading-none text-[15px]">
