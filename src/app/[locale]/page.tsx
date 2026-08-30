@@ -59,10 +59,10 @@ export default function Home() {
   return (
     <div className="flex flex-col overflow-hidden">
       {/* Hero Section */}
-      <section className="relative flex items-center justify-start overflow-hidden pt-8 lg:pt-12 pb-4 lg:pb-8 bg-white">
+      <section className="relative flex items-center justify-start overflow-hidden pt-4 lg:pt-6 pb-4 lg:pb-8 bg-white">
         {/* Content */}
         <div className="container mx-auto px-4 max-w-7xl relative z-20 py-4 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12">
-          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left lg:pt-8">
+          <div className="w-full lg:w-[45%] xl:w-[40%] max-w-2xl z-10 text-center lg:text-left">
             {/* Badge */}
             <motion.div 
               variants={heroBadgeVariant}
