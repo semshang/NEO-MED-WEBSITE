@@ -234,7 +234,7 @@ export function LoginModal() {
                 
                 <h2 className="text-3xl lg:text-4xl font-black text-brand-navy mb-4 leading-tight">
                   {tAuth("qualityEquip")}<br />
-                  <span className="text-[#0d52bc]">{tAuth("betterOutcomes")}</span>
+                  <span className="text-[#0d52bc]">{tAuth("better")}</span><span className="text-[#10b981]">{tAuth("outcomes")}</span>
                 </h2>
                 
                 <p className="text-slate-600 text-sm lg:text-base mb-4 max-w-sm">
@@ -271,25 +271,26 @@ export function LoginModal() {
                   </div>
                 </div>
                 
-                <div className="mt-auto relative w-full flex-1 flex flex-col justify-end min-h-0">
+                {/* Absolutely positioned image to guarantee it stays large */}
+                <div className="absolute bottom-0 left-0 right-0 h-[220px] lg:h-[280px] pointer-events-none z-10">
                   <motion.img 
                     initial={{ y: 0 }}
                     animate={{ y: [-5, 5, -5] }}
                     transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
                     src="/login-podium-transparent.png" 
                     alt="Neomeditech Equipment" 
-                    className="w-full h-full object-contain object-bottom relative z-10 drop-shadow-xl"
+                    className="w-full h-full object-contain object-bottom drop-shadow-xl pl-8"
                   />
+                </div>
 
-                  {/* Floating Badge */}
-                  <div className="absolute bottom-2 lg:bottom-4 left-0 bg-white/95 p-2.5 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2.5 z-30 min-w-[180px] lg:min-w-[200px] border border-slate-100">
-                    <div className="bg-[#e6f8f3] p-1.5 rounded-lg text-[#10b981]">
-                      <Shield size={16} />
-                    </div>
-                    <div>
-                      <div className="text-brand-navy font-bold text-[11px] lg:text-xs leading-tight">{tTrust("certified")}</div>
-                      <div className="text-slate-500 text-[9px] lg:text-[10px] mt-0.5 leading-tight">{tTrust("certifiedDesc")}</div>
-                    </div>
+                {/* Floating Badge - absolute relative to left panel */}
+                <div className="absolute bottom-6 left-6 lg:bottom-8 lg:left-8 bg-white/95 p-2.5 lg:p-3 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center space-x-2.5 z-30 min-w-[180px] lg:min-w-[200px] border border-slate-100">
+                  <div className="bg-[#e6f8f3] p-1.5 rounded-lg text-[#10b981]">
+                    <Shield size={16} />
+                  </div>
+                  <div>
+                    <div className="text-brand-navy font-bold text-[11px] lg:text-xs leading-tight">{tTrust("certified")}</div>
+                    <div className="text-slate-500 text-[9px] lg:text-[10px] mt-0.5 leading-tight">{tTrust("certifiedDesc")}</div>
                   </div>
                 </div>
 

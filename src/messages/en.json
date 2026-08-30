@@ -1,114 +1,116 @@
 {
-    "nav":  {
-                "home":  "Home",
-                "shop":  "Shop",
-                "about":  "About Us",
-                "faq":  "FAQs",
-                "contact":  "Contact",
-                "getQuote":  "Get a Quote",
-                "language":  "Language"
-            },
-    "hero":  {
-                 "title":  "Advanced Biomedical Solutions for Nepal",
-                 "subtitle":  "Equipping hospitals and clinics with state-of-the-art medical devices. Reliable service, trusted expertise.",
-                 "explore":  "Explore Products",
-                 "contactUs":  "Contact Us",
-                 "support":  "24/7 Support",
-                 "supportDesc":  "Always available for emergency service",
-                 "ctaTitle":  "Need Medical Equipment for Your Clinic?",
-                 "ctaSubtitle":  "Get in touch with our experts today for customized solutions, bulk orders, and specialized biomedical equipment.",
-                 "getQuote":  "Get a Free Quote",
-                 "trustedByBadge":  "Trusted by 500+ hospitals across Nepal",
-                 "title1":  "Premium Medical",
-                 "titleHighlight":  "Equipment",
-                 "title2":  "You Can Trust"
-             },
-    "trust":  {
-                  "genuine":  "100% Genuine Equipment",
-                  "genuineDesc":  "All equipment is original and quality certified.",
-                  "support":  "24/7 Expert Support",
-                  "supportDesc":  "Our experts are always here to help you.",
-                  "delivery":  "Nationwide Delivery",
-                  "deliveryDesc":  "Fast and safe delivery across Nepal.",
-                  "certified":  "Certified Biomedical Experts",
-                  "certifiedDesc":  "Backed by years of industry experience."
-              },
-    "shop":  {
-                 "search":  "Search products...",
-                 "categories":  "Categories",
-                 "allProducts":  "All Products",
-                 "outOfStock":  "Out of Stock",
-                 "addToOrder":  "Add to Order",
-                 "viewDetails":  "View Details",
-                 "noProducts":  "No products found matching your search.",
-                 "category":  {
-                                  "patient-monitor":  "Patient Monitors",
-                                  "ventilator":  "Ventilators",
-                                  "defibrillator":  "Defibrillators",
-                                  "infusion-pump":  "Infusion Pumps",
-                                  "ecg":  "ECG Machines",
-                                  "ultrasound":  "Ultrasound Systems",
-                                  "anesthesia":  "Anesthesia Workstations",
-                                  "cpap":  "CPAP/BiPAP Devices",
-                                  "syringe-pump":  "Syringe Pumps",
-                                  "analyzer":  "Analyzers"
-                              }
-             },
-    "auth":  {
-                 "login":  "Sign In",
-                 "logout":  "Sign Out",
-                 "welcomeBack":  "Welcome Back",
-                 "signInToAccess":  "Sign in to access your account",
-                 "email":  "Email Address",
-                 "emailPlaceholder":  "Enter your email",
-                 "password":  "Password",
-                 "passwordPlaceholder":  "Enter your password",
-                 "forgotPassword":  "Forgot Password?",
-                 "rememberMe":  "Remember me",
-                 "continueWith":  "or continue with",
-                 "continueGoogle":  "Continue with Google",
-                 "noAccount":  "Don\u0027t have an account?",
-                 "createAccount":  "Create Account",
-                 "secureData":  "Your data is secure and encrypted",
-                 "qualityEquip":  "Quality Equipment.",
-                 "betterOutcomes":  "Better Outcomes.",
-                 "trustedBy":  "Trusted by hospitals and healthcare professionals across Nepal for reliable biomedical solutions."
-             },
-    "contact":  {
-                    "title":  "Contact Us",
-                    "subtitle":  "We\u0027d love to hear from you. Please fill out the form below.",
-                    "formName":  "Full Name",
-                    "formEmail":  "Email Address",
-                    "formPhone":  "Phone Number",
-                    "formSubject":  "Subject",
-                    "formMessage":  "Message",
-                    "submit":  "Send Message",
-                    "address":  "Address",
-                    "workingHours":  "Working Hours",
-                    "contactInfo":  "Our Contact Info"
-                },
-    "footer":  {
-                   "description":  "Leading provider of high-quality biomedical equipment and services in Nepal.",
-                   "quickLinks":  "Quick Links",
-                   "contactInfo":  "Contact Information",
-                   "rights":  "All rights reserved.",
-                   "privacy":  "Privacy Policy",
-                   "terms":  "Terms of Service"
-               },
-    "admin":  {
-                  "dashboard":  "Dashboard",
-                  "products":  "Products",
-                  "orders":  "Orders",
-                  "users":  "Users",
-                  "settings":  "Settings",
-                  "totalRevenue":  "Total Revenue",
-                  "activeOrders":  "Active Orders",
-                  "viewAll":  "View All"
-              },
-    "about":  {
-                  "title":  "About Neomeditech",
-                  "missionDesc":  "To equip every hospital and clinic in Nepal with reliable, state-of-the-art biomedical devices that empower healthcare professionals to save lives and improve patient outcomes.",
-                  "subtitle":  "We are dedicated to improving healthcare in Nepal by providing top-quality medical equipment, reliable maintenance, and exceptional customer service.",
-                  "mission":  "Our Mission"
-              }
+    "nav": {
+        "home": "Home",
+        "shop": "Shop",
+        "about": "About Us",
+        "faq": "FAQs",
+        "contact": "Contact",
+        "getQuote": "Get a Quote",
+        "language": "Language"
+    },
+    "hero": {
+        "title": "Advanced Biomedical Solutions for Nepal",
+        "subtitle": "Equipping hospitals and clinics with state-of-the-art medical devices. Reliable service, trusted expertise.",
+        "explore": "Explore Products",
+        "contactUs": "Contact Us",
+        "support": "24/7 Support",
+        "supportDesc": "Always available for emergency service",
+        "ctaTitle": "Need Medical Equipment for Your Clinic?",
+        "ctaSubtitle": "Get in touch with our experts today for customized solutions, bulk orders, and specialized biomedical equipment.",
+        "getQuote": "Get a Free Quote",
+        "trustedByBadge": "Trusted by 500+ hospitals across Nepal",
+        "title1": "Premium Medical",
+        "titleHighlight": "Equipment",
+        "title2": "You Can Trust"
+    },
+    "trust": {
+        "genuine": "100% Genuine Equipment",
+        "genuineDesc": "All equipment is original and quality certified.",
+        "support": "24/7 Expert Support",
+        "supportDesc": "Our experts are always here to help you.",
+        "delivery": "Nationwide Delivery",
+        "deliveryDesc": "Fast and safe delivery across Nepal.",
+        "certified": "Certified Biomedical Experts",
+        "certifiedDesc": "Backed by years of industry experience."
+    },
+    "shop": {
+        "search": "Search products...",
+        "categories": "Categories",
+        "allProducts": "All Products",
+        "outOfStock": "Out of Stock",
+        "addToOrder": "Add to Order",
+        "viewDetails": "View Details",
+        "noProducts": "No products found matching your search.",
+        "category": {
+            "patient-monitor": "Patient Monitors",
+            "ventilator": "Ventilators",
+            "defibrillator": "Defibrillators",
+            "infusion-pump": "Infusion Pumps",
+            "ecg": "ECG Machines",
+            "ultrasound": "Ultrasound Systems",
+            "anesthesia": "Anesthesia Workstations",
+            "cpap": "CPAP/BiPAP Devices",
+            "syringe-pump": "Syringe Pumps",
+            "analyzer": "Analyzers"
+        }
+    },
+    "auth": {
+        "login": "Sign In",
+        "logout": "Sign Out",
+        "welcomeBack": "Welcome Back",
+        "signInToAccess": "Sign in to access your account",
+        "email": "Email Address",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "forgotPassword": "Forgot Password?",
+        "rememberMe": "Remember me",
+        "continueWith": "or continue with",
+        "continueGoogle": "Continue with Google",
+        "noAccount": "Don't have an account?",
+        "createAccount": "Create Account",
+        "secureData": "Your data is secure and encrypted",
+        "qualityEquip": "Quality Equipment.",
+        "betterOutcomes": "Better Outcomes.",
+        "trustedBy": "Trusted by hospitals and healthcare professionals across Nepal for reliable biomedical solutions.",
+        "better": "Better ",
+        "outcomes": "Outcomes."
+    },
+    "contact": {
+        "title": "Contact Us",
+        "subtitle": "We'd love to hear from you. Please fill out the form below.",
+        "formName": "Full Name",
+        "formEmail": "Email Address",
+        "formPhone": "Phone Number",
+        "formSubject": "Subject",
+        "formMessage": "Message",
+        "submit": "Send Message",
+        "address": "Address",
+        "workingHours": "Working Hours",
+        "contactInfo": "Our Contact Info"
+    },
+    "footer": {
+        "description": "Leading provider of high-quality biomedical equipment and services in Nepal.",
+        "quickLinks": "Quick Links",
+        "contactInfo": "Contact Information",
+        "rights": "All rights reserved.",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
+    },
+    "admin": {
+        "dashboard": "Dashboard",
+        "products": "Products",
+        "orders": "Orders",
+        "users": "Users",
+        "settings": "Settings",
+        "totalRevenue": "Total Revenue",
+        "activeOrders": "Active Orders",
+        "viewAll": "View All"
+    },
+    "about": {
+        "title": "About Neomeditech",
+        "missionDesc": "To equip every hospital and clinic in Nepal with reliable, state-of-the-art biomedical devices that empower healthcare professionals to save lives and improve patient outcomes.",
+        "subtitle": "We are dedicated to improving healthcare in Nepal by providing top-quality medical equipment, reliable maintenance, and exceptional customer service.",
+        "mission": "Our Mission"
+    }
 }
