@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useAdmin } from '@/components/admin/AdminProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, ArrowRight, ShieldCheck, ArrowLeft, ShoppingCart } from 'lucide-react';
@@ -10,8 +11,27 @@ import { useRouter } from 'next/navigation';
 export default function CheckoutPage() {
   const { cart, placeOrder } = useAdmin();
   const router = useRouter();
+  const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [profile, setProfile] = useState({ name: "", email: "", phone: "", address: "" });
+
+  useEffect(() => {
+    const saved = localStorage.getItem("neomeditech_profile");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setProfile({
+          name: parsed.name || session?.user?.name || "",
+          email: session?.user?.email || "",
+          phone: parsed.phone || "",
+          address: parsed.address || ""
+        });
+      } catch (e) {}
+    } else if (session?.user) {
+      setProfile({ name: session.user.name || "", email: session.user.email || "", phone: "", address: "" });
+    }
+  }, [session]);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -103,22 +123,22 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Full Name *</label>
-                    <input name="name" required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="John Doe" />
+                    <input name="name" required type="text" defaultValue={profile.name} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="John Doe" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
-                    <input name="phone" required type="tel" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="+977 98XXXXXXXX" />
+                    <input name="phone" required type="tel" defaultValue={profile.phone} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="+977 98XXXXXXXX" />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">Email Address (Optional)</label>
-                  <input name="email" type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="john@example.com" />
+                  <input name="email" type="email" defaultValue={profile.email} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="john@example.com" />
                 </div>
 
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">Delivery Address *</label>
-                  <input name="address" required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="Hospital Name, Street, City" />
+                  <input name="address" required type="text" defaultValue={profile.address} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent transition-all" placeholder="Hospital Name, Street, City" />
                 </div>
 
                 <div>
