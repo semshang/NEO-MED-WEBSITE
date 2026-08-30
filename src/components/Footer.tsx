@@ -9,7 +9,7 @@ import { SITE } from "@/config/site";
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin")) return null;
+  if (pathname?.includes("/admin")) return null;
 
   return (
     <footer className="bg-brand-navy text-slate-300 pt-16 pb-8">

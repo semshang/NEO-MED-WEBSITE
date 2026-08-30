@@ -13,7 +13,7 @@ export default function CartOverlay() {
   const pathname = usePathname();
 
   // Don't show floating cart in admin panel
-  if (pathname.startsWith('/admin')) return null;
+  if (pathname.includes('/admin')) return null;
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);

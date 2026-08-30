@@ -1,4 +1,5 @@
 "use client";
+import { AdminHeader } from "./AdminHeader";
 import { Link } from "@/i18n/routing";
 import { Phone, MapPin, Mail, Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -37,6 +38,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (pathname?.startsWith('/admin')) {
+    return <AdminHeader />;
+  }
 
   return (
     <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-gray-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white/90 backdrop-blur-sm'}`}>
