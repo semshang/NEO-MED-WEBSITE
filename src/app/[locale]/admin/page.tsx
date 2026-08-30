@@ -125,7 +125,7 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 + (i * 0.05), ease: "easeOut" as any }}
-            className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 flex flex-col justify-between"
+            className="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col justify-between"
           >
             <div className="flex justify-between items-start mb-4">
               <p className="text-slate-500 font-medium">{stat.name}</p>
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" as any }}
-          className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden"
+          className="lg:col-span-2 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden"
         >
           <div className="p-6 border-b border-slate-100 flex justify-between items-center">
             <h2 className="text-lg font-bold text-brand-navy">Recent Orders</h2>

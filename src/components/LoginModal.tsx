@@ -269,7 +269,7 @@ export function LoginModal() {
                           type="text"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder="John Doe"
                           required
                         />
@@ -285,7 +285,7 @@ export function LoginModal() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                        className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                         placeholder={tAuth("emailPlaceholder")}
                         required
                       />
@@ -301,7 +301,7 @@ export function LoginModal() {
                           type={showPassword ? "text" : "password"}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder={tAuth("passwordPlaceholder")}
                           required
                         />
@@ -325,7 +325,7 @@ export function LoginModal() {
                           type={showPassword ? "text" : "password"}
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                          className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder="Confirm password"
                           required
                         />
@@ -381,7 +381,7 @@ export function LoginModal() {
                       <button 
                         onClick={handleGoogleSignIn}
                         disabled={isLoading}
-                        className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
+                        className="w-full bg-white border border-gray-300 hover:bg-slate-50 text-slate-700 font-bold py-2.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
                       >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.81 15.69 17.61V20.36H19.26C21.35 18.44 22.56 15.6 22.56 12.25Z" fill="#4285F4"/>

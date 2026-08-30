@@ -150,7 +150,7 @@ export default function Home() {
 
       {/* New Hero Bottom Trust Strip */}
       <div className="container mx-auto px-4 max-w-7xl relative z-30 -mt-12 lg:-mt-24 mb-12 sm:mb-16">
-        <div className="bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-slate-100">
+        <div className="bg-white rounded-2xl shadow-lg py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-gray-200">
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><FlaskConical size={26} strokeWidth={2} /></div>
             <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Innovative<br/>Medical Solutions</h4></div>
@@ -183,7 +183,7 @@ export default function Home() {
       </div>
 
       {/* Featured Products */}
-      <section className="py-20 bg-brand-gray">
+      <section className="py-20 bg-[#F5F7FA] border-t border-gray-200">
         <div className="container mx-auto px-4 max-w-7xl">
           <motion.div 
             initial="hidden"
@@ -225,7 +225,7 @@ export default function Home() {
                 <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
                   <motion.div 
                     whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
-                    className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <div className="absolute inset-0 bg-brand-navy/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10 duration-200">
@@ -274,7 +274,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4 max-w-7xl">
           <motion.div 
             initial="hidden"
@@ -295,7 +295,7 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
             {[1, 2, 3].map((item) => (
-              <motion.div key={item} variants={fadeUpVariant} className="bg-brand-gray p-8 rounded-3xl border border-slate-200 relative">
+              <motion.div key={item} variants={fadeUpVariant} className="bg-white p-8 rounded-3xl border border-gray-200 shadow-md hover:shadow-lg transition-shadow relative">
                 <MessageSquare className="text-slate-300 absolute top-8 right-8" size={40} />
                 <div className="flex text-brand-green mb-6">
                   <Star size={18} fill="currentColor" />
@@ -322,8 +322,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-brand-gray border-t border-slate-200 relative overflow-hidden">
+      {/* CTA / Newsletter */}
+      <section className="py-20 bg-[#F5F7FA] border-y border-gray-200 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-brand-blue to-brand-green rounded-full opacity-10 blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
         <motion.div 

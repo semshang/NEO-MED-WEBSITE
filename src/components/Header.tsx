@@ -39,7 +39,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-slate-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
+    <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-gray-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white/90 backdrop-blur-sm'}`}>
       {/* Main Navigation */}
       <div className="container mx-auto px-4 py-5 max-w-7xl flex justify-between items-center">
         {/* Logo */}

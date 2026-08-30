@@ -25,7 +25,7 @@ export default function Shop() {
   });
 
   return (
-    <div className="bg-brand-gray min-h-screen py-12">
+    <div className="bg-[#F5F7FA] min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Page Header */}
         <div className="mb-10 text-center md:text-left">
@@ -36,7 +36,7 @@ export default function Shop() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Filters */}
           <div className="lg:w-1/4">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 sticky top-24">
+            <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200 sticky top-24">
               <div className="flex justify-between items-center mb-6 lg:hidden" onClick={() => setShowMobileFilters(!showMobileFilters)}>
                 <h2 className="font-bold text-lg text-brand-navy">Filters</h2>
                 <Filter size={20} className="text-slate-500" />
@@ -48,7 +48,7 @@ export default function Shop() {
                   <input
                     type="text"
                     placeholder={tShop("search")}
-                    className="w-full pl-10 pr-4 py-3 bg-brand-gray border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 shadow-sm rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50 focus:border-brand-blue"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -82,7 +82,7 @@ export default function Shop() {
           {/* Product Grid */}
           <div className="lg:w-3/4">
             {filteredProducts.length === 0 ? (
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
+              <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-12 text-center">
                 <p className="text-slate-500 text-lg">No products found matching your criteria.</p>
                 <button 
                   onClick={() => {setActiveCategory(tShop("allProducts")); setSearchQuery("");}}
@@ -109,7 +109,7 @@ export default function Shop() {
                       visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as any } }
                     }}
                     whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" as any } }}
-                    className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all overflow-hidden border border-slate-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
                   >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <motion.div 
