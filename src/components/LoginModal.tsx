@@ -277,7 +277,7 @@ export function LoginModal() {
                     <ArrowRight size={16} />
                   </motion.button>
 
-                  <motion.div variants={formItemVariants} className="relative flex items-center py-4 lg:py-5">
+                  <motion.div variants={formItemVariants} className="relative flex items-center py-2 lg:py-2.5">
                     <div className="flex-grow border-t border-slate-100"></div>
                     <span className="flex-shrink-0 mx-4 text-slate-400 text-[10px] lg:text-[11px] font-medium">or continue with</span>
                     <div className="flex-grow border-t border-slate-100"></div>
