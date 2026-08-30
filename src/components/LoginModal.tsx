@@ -301,7 +301,7 @@ export function LoginModal() {
             </motion.div>
 
             {/* Right Panel - Form */}
-            <div className="w-full md:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col justify-center">
+            <div className="w-full md:w-1/2 p-5 sm:p-6 lg:p-8 flex flex-col justify-start md:justify-center overflow-y-auto custom-scrollbar">
               {/* Top Bar */}
               <div className="flex justify-end items-center mb-2 lg:mb-4 w-full pr-10">
                 <LanguageSwitcher />
