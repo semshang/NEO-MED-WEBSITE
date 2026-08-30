@@ -51,7 +51,7 @@ export default function AdminDashboard() {
   return (
     <div className="px-6 py-10 lg:px-10">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-br from-brand-navy via-brand-navy to-brand-blue rounded-3xl p-8 shadow-lg shadow-brand-blue/20 mb-10 relative">
+      <div className="bg-gradient-to-r from-[#1B6EC2] to-[#4CAF50] rounded-3xl p-8 shadow-lg shadow-brand-blue/20 mb-10 relative overflow-hidden">
         <div className="flex items-center justify-between relative z-10">
           <div className="flex items-center space-x-6">
             <motion.div 
@@ -102,7 +102,7 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" as any }}
-                className="text-2xl md:text-3xl font-bold text-white tracking-tight"
+                className="text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-sm"
               >
                 Welcome back, {session?.user?.name || "Admin"}
               </motion.h1>
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.25, ease: "easeOut" as any }}
-                className="text-brand-blue/30 text-white/80 text-sm md:text-base mt-2 font-medium"
+                className="text-white/90 text-sm md:text-base mt-2 font-medium"
               >
                 Here is what is happening today &mdash; {today}
               </motion.p>
