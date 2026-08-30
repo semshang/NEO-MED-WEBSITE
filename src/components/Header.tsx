@@ -40,32 +40,6 @@ export default function Header() {
 
   return (
     <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-slate-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-sm' : 'bg-white/80 backdrop-blur-sm'}`}>
-      {/* Top Bar */}
-      <div className="bg-brand-navy text-slate-200 py-2.5 px-4 text-sm font-medium">
-        <div className="container mx-auto flex justify-between items-center max-w-7xl">
-          <div className="flex items-center space-x-6 hidden md:flex">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                <Phone size={12} className="text-white" />
-              </div>
-              <span>{SITE.phone}</span>
-            </div>
-            <div className="flex items-center space-x-2.5">
-              <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                <Mail size={12} className="text-white" />
-              </div>
-              <span>{SITE.email}</span>
-            </div>
-          </div>
-          <div className="flex items-center justify-center md:justify-end space-x-2.5 w-full md:w-auto text-xs md:text-sm">
-            <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-              <MapPin size={12} className="text-white" />
-            </div>
-            <span>{SITE.address.split(',')[0]}, Nepal</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation */}
       <div className="container mx-auto px-4 py-5 max-w-7xl flex justify-between items-center">
         {/* Logo */}
