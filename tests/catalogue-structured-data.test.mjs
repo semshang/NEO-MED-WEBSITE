@@ -15,7 +15,12 @@ test("1. catalogue structured data uses CollectionPage and ItemList, and does NO
 
   assert.equal(jsonLd["@context"], "https://schema.org");
   assert.equal(jsonLd["@type"], "CollectionPage");
+  assert.equal(jsonLd.url, "https://neomeditech.com.np/shop");
   assert.equal(jsonLd.mainEntity["@type"], "ItemList");
+
+  // Verify default fallback when siteUrl is omitted
+  const defaultJsonLd = generateCatalogueJsonLd(PRODUCT_SEED);
+  assert.equal(defaultJsonLd.url, "https://neomeditech.com.np/shop");
 
   // Verify that no item is typed as "Product"
   const serialized = JSON.stringify(jsonLd);
@@ -31,8 +36,9 @@ test("2. numberOfItems matches the active product count and inactive products ar
     { name: "Implicitly Active Machine 4" },
   ];
 
-  const jsonLd = generateCatalogueJsonLd(sampleProducts, "https://www.neomeditech.com.np");
+  const jsonLd = generateCatalogueJsonLd(sampleProducts, "https://neomeditech.com.np");
 
+  assert.equal(jsonLd.url, "https://neomeditech.com.np/shop");
   assert.equal(jsonLd.mainEntity.numberOfItems, 3);
   assert.equal(jsonLd.mainEntity.itemListElement.length, 3);
   assert.deepEqual(
@@ -79,7 +85,7 @@ test("6. JSON-LD values are safely serialized against script tag injection", () 
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Medical <script>alert('xss')</script> Products",
-    url: "https://www.neomeditech.com.np/shop",
+    url: "https://neomeditech.com.np/shop",
   };
 
   const serialized = serializeJsonLd(dangerousData);

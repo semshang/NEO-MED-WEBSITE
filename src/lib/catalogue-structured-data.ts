@@ -1,3 +1,5 @@
+import { SITE } from "../config/site.ts";
+
 export interface CatalogueProduct {
   name: string;
   isActive?: boolean;
@@ -51,9 +53,9 @@ export function canEmitProductRichResult(product: CatalogueProduct): boolean {
  */
 export function generateCatalogueJsonLd(
   products: CatalogueProduct[],
-  siteUrl: string,
+  siteUrl?: string,
 ): CatalogueJsonLd {
-  const normalizedUrl = (siteUrl || "https://www.neomeditech.com.np").replace(/\/+$/, "");
+  const normalizedUrl = (siteUrl || SITE.url).replace(/\/+$/, "");
   const activeProducts = products.filter((p) => p.isActive !== false);
 
   return {
