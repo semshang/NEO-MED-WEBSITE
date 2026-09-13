@@ -62,12 +62,12 @@ export default function AdminDashboard() {
                 animate={{ boxShadow: ["0 0 0 0 rgba(27, 110, 194, 0)", "0 0 0 4px rgba(255, 255, 255, 0.4)", "0 0 0 10px rgba(255, 255, 255, 0)"] }}
                 transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" as const }}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="focus:outline-none rounded-full ring-4 ring-white/20 focus:ring-white transition-all block bg-white"
+                className="focus:outline-none rounded-full ring-4 ring-white/20 focus:ring-white transition-all block bg-white shrink-0"
               >
                 {session?.user?.image ? (
-                  <Image src={session.user.image} alt={session.user.name || "Profile"} width={64} height={64} className="w-16 h-16 rounded-full object-cover shadow-sm ring-2 ring-white/20" />
+                  <Image src={session.user.image} alt={session.user.name || "Profile"} width={64} height={64} className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-contain p-1 shadow-sm ring-2 ring-white/20 bg-white" />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-brand-blue text-white flex items-center justify-center text-xl font-bold shadow-sm">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-brand-blue text-white flex items-center justify-center text-xl font-bold shadow-sm">
                     {session?.user?.name ? session.user.name.charAt(0) : "A"}
                   </div>
                 )}

@@ -53,11 +53,11 @@ export default function Header() {
             style={{ width: 'auto', height: 'auto' }}
             priority
           />
-          <div className="hidden sm:flex flex-col justify-center">
-            <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green tracking-tight leading-none pb-0.5">
+          <div className="flex flex-col justify-center">
+            <span className="text-lg sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green tracking-tight leading-none pb-0.5">
               Neomeditech
             </span>
-            <span className="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green uppercase tracking-[0.2em] mt-0.5 leading-none">
+            <span className="text-[8px] sm:text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-0.5 leading-none">
               Biomedical Solutions
             </span>
           </div>

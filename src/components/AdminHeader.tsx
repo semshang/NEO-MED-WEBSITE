@@ -13,40 +13,40 @@ export function AdminHeader() {
     <header className="w-full sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200">
       <div className="container mx-auto px-6 py-3 max-w-full flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3">
+        <Link href="/" className="flex items-center space-x-2 sm:space-x-3 min-w-0">
           <Image
             src="/logo-transparent.png"
             alt="Neomeditech Logo"
             width={70}
             height={70}
-            className="w-auto h-12"
+            className="w-10 sm:w-12 h-auto shrink-0"
             style={{ width: 'auto', height: 'auto' }}
             priority
           />
-          <div className="hidden sm:flex flex-col justify-center">
-            <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green tracking-tight leading-none pb-0.5">
+          <div className="flex flex-col justify-center min-w-0">
+            <span className="text-sm sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green tracking-tight leading-none pb-0.5 truncate">
               Neomeditech
             </span>
-            <span className="text-[10px] font-bold text-brand-navy tracking-widest uppercase">
+            <span className="text-[8px] sm:text-[10px] font-bold text-brand-navy tracking-wider sm:tracking-widest uppercase truncate">
               Biomedical Solutions
             </span>
           </div>
         </Link>
 
         {/* Notifications & Profile & Auth */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
           <AdminNotifications />
-          <div className="h-6 border-l border-slate-200"></div>
+          <div className="h-5 sm:h-6 border-l border-slate-200"></div>
 
-          <div className="flex items-center space-x-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+          <div className="flex items-center space-x-2 sm:space-x-3 bg-slate-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-slate-100">
             {session?.user?.image ? (
-              <Image src={session.user.image} alt="Profile" width={28} height={28} className="rounded-full ring-2 ring-brand-blue/20" />
+              <Image src={session.user.image} alt="Profile" width={26} height={26} className="rounded-full ring-2 ring-brand-blue/20 object-contain bg-white" />
             ) : (
-              <div className="w-7 h-7 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-bold text-xs">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-brand-blue/10 text-brand-blue flex items-center justify-center font-bold text-xs">
                 {session?.user?.name?.charAt(0) || "A"}
               </div>
             )}
-            <div className="flex flex-col pr-2">
+            <div className="hidden xs:flex flex-col pr-1 sm:pr-2">
               <span className="text-xs font-bold text-brand-navy leading-none">
                 {session?.user?.name?.split(' ')[0] || "Admin"}
               </span>
@@ -55,10 +55,10 @@ export function AdminHeader() {
               </span>
             </div>
           </div>
-          <div className="h-6 border-l border-slate-200"></div>
+          <div className="h-5 sm:h-6 border-l border-slate-200"></div>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center space-x-2 text-sm font-bold text-slate-400 hover:text-red-600 transition-colors"
+            className="flex items-center space-x-1 sm:space-x-2 text-sm font-bold text-slate-400 hover:text-red-600 transition-colors p-1"
             title="Sign Out"
           >
             <LogOut size={18} />

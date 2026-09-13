@@ -95,13 +95,18 @@ export function AdminNotifications() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50 origin-top-right"
-          >
+          <>
+            <div
+              className="fixed inset-0 bg-black/20 z-40 sm:hidden"
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-x-4 top-16 sm:absolute sm:inset-auto sm:right-0 sm:top-full mt-2 w-auto sm:w-80 max-w-sm mx-auto sm:mx-0 bg-white rounded-2xl shadow-2xl sm:shadow-xl border border-slate-200 overflow-hidden z-50 origin-top sm:origin-top-right"
+            >
             <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
               <h3 className="font-bold text-brand-navy">Notifications</h3>
               {notifications.length > 0 && (
@@ -157,6 +162,7 @@ export function AdminNotifications() {
               )}
             </div>
           </motion.div>
+        </>
         )}
       </AnimatePresence>
     </div>
