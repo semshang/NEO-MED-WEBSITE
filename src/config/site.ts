@@ -4,7 +4,7 @@ export const SITE = {
   whatsapp: "9779712011758",
   phone: "+977 9712011758, +977 9712011757",
   email: "contact.neomeditech@gmail.com",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://neomeditech.com.np",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.neomeditech.com.np",
   address: "Tarkeshwor-6, Kathmandu, Nepal",
   fullAddress: "Tarkeshwor-6, Kathmandu, Nepal - Nationwide Delivery",
   tagline: "Medical equipment sourcing and quotation support for healthcare providers in Nepal.",
