@@ -7,12 +7,16 @@ import { motion, type Variants } from "framer-motion";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import { CATEGORIES } from "@/data/products";
 import ProductAction from "@/components/ProductAction";
+import { SITE } from "@/config/site";
+import { generateCatalogueJsonLd, serializeJsonLd } from "@/lib/catalogue-structured-data";
 
 export default function Shop() {
-    const { products } = useAdmin();
+  const { products } = useAdmin();
   const [activeCategory, setActiveCategory] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  const catalogueJsonLd = generateCatalogueJsonLd(products, SITE.url);
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory = activeCategory === "All Products" || product.category === activeCategory;
@@ -27,6 +31,10 @@ export default function Shop() {
 
   return (
     <div className="bg-[#F5F7FA] min-h-screen pt-12 pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(catalogueJsonLd) }}
+      />
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Page Header */}
         <div className="mb-10 text-center md:text-left">
@@ -114,35 +122,13 @@ export default function Shop() {
                   hidden: {}
                 }}
               >
-                {filteredProducts.map((product) => {
-                  const productJsonLd = {
-                    "@context": "https://schema.org",
-                    "@type": "Product",
-                    "name": product.name,
-                    "category": product.category,
-                    "description": product.description,
-                    "image": product.image ? (product.image.startsWith('http') ? product.image : `https://neomeditech.com.np${product.image}`) : undefined,
-                    ...(product.price ? {
-                      "offers": {
-                        "@type": "Offer",
-                        "priceCurrency": "NPR",
-                        "price": product.price,
-                        "availability": "https://schema.org/InStock"
-                      }
-                    } : {})
-                  };
-
-                  return (
-                    <motion.div
-                      key={product.id}
-                      variants={productVariants}
-                      whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
-                      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
-                    >
-                      <script
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-                      />
+                {filteredProducts.map((product) => (
+                  <motion.div
+                    key={product.id}
+                    variants={productVariants}
+                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
+                  >
                     <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
                       <motion.div
                         className="w-full h-full flex items-center justify-center relative"
@@ -161,7 +147,7 @@ export default function Shop() {
                       </div>
                     </div>
                   </motion.div>
-                )})}
+                ))}
               </motion.div>
             )}
           </div>
