@@ -11,10 +11,10 @@ import { AuthToast } from "@/components/AuthToast";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} | Medical Equipment in Nepal`,
-    template: "%s | Neomeditech",
+    default: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
+    template: "%s | Neomeditech Nepal",
   },
-  description: SITE.tagline,
+  description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
   keywords: [
     "Medical equipment in Nepal",
     "Medical equipment supplier Nepal",
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: SITE.name,
-    title: `${SITE.name} | Medical Equipment in Nepal`,
-    description: SITE.tagline,
+    title: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
+    description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
     url: SITE.url,
     locale: "en_US",
     images: [
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} | Medical Equipment in Nepal`,
-    description: SITE.tagline,
+    title: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
+    description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
     images: ["/hero-equipment.webp"],
   },
   other: {
