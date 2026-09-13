@@ -1,5 +1,7 @@
 import mongoose, { Schema, type Document } from "mongoose";
 
+import "server-only";
+
 export interface IProduct extends Document {
   name: string;
   slug: string;

@@ -1,21 +1,21 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Bell, ShoppingBag, Mail, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Bell, Mail, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdmin } from "./AdminProvider";
 import Link from "next/link";
 
 interface NotificationItem {
   id: string;
-  type: "order" | "message" | "stock";
+  type: "message" | "stock";
   title: string;
   link: string;
   date: number;
 }
 
 export function AdminNotifications() {
-  const { orders, messages, products, settings, seenNotifications, markNotificationsSeen } = useAdmin();
+  const { messages, products, settings, seenNotifications, markNotificationsSeen } = useAdmin();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   // Handle clicking outside
@@ -32,18 +32,6 @@ export function AdminNotifications() {
   // Derive notifications
   const notifications: NotificationItem[] = [];
 
-  // 1. New Orders
-  orders.forEach(order => {
-    if (order.status === 'New') {
-      notifications.push({
-        id: `order-${order.id}`,
-        type: 'order',
-        title: `New order ${order.id} from ${order.customerName}`,
-        link: '/admin/orders',
-        date: new Date(order.date).getTime() || 0,
-      });
-    }
-  });
 
   // 2. Unread Messages
   messages.forEach(msg => {
@@ -117,7 +105,7 @@ export function AdminNotifications() {
             <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
               <h3 className="font-bold text-brand-navy">Notifications</h3>
               {notifications.length > 0 && (
-                <button 
+                <button
                   onClick={() => markNotificationsSeen(notifications.map(n => n.id))}
                   className="text-xs font-bold text-brand-blue hover:text-blue-700 transition-colors"
                 >
@@ -140,18 +128,16 @@ export function AdminNotifications() {
                   {notifications.map(notification => {
                     const isUnread = !seenNotifications.includes(notification.id);
                     return (
-                      <Link 
+                      <Link
                         key={notification.id}
                         href={notification.link}
                         onClick={() => setIsOpen(false)}
                         className={`p-4 flex items-start gap-3 hover:bg-slate-50 transition-colors ${isUnread ? 'bg-brand-blue/5' : ''}`}
                       >
                         <div className={`mt-0.5 p-2 rounded-full shrink-0 ${
-                          notification.type === 'order' ? 'bg-blue-100 text-blue-600' :
                           notification.type === 'message' ? 'bg-purple-100 text-purple-600' :
                           'bg-amber-100 text-amber-600'
                         }`}>
-                          {notification.type === 'order' && <ShoppingBag size={16} />}
                           {notification.type === 'message' && <Mail size={16} />}
                           {notification.type === 'stock' && <AlertTriangle size={16} />}
                         </div>

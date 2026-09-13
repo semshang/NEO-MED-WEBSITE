@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { getApiSession } from "@/lib/api-auth";
 import connectDB from "@/lib/mongoose";
-import { isRecord, stringValue } from "@/lib/validation";
+import { stringValue } from "@/lib/validation";
+import { enforceRateLimit, privateJson, readJsonObject, requireSameOrigin } from "@/lib/request-security";
+import { hasOnlyKeys } from "@/lib/security-validation";
+import { logSecurityEvent } from "@/lib/security-log";
 import User from "@/models/User";
 
 export async function GET() {
@@ -9,16 +12,22 @@ export async function GET() {
   if (!session?.user?.email) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
   await connectDB();
-  const user = await User.findOne({ email: session.user.email.toLowerCase() });
+  const user = await User.findOne({ email: session.user.email.toLowerCase() }).select("name email phone address");
   if (!user) return NextResponse.json({ message: "Account not found" }, { status: 404 });
-  return NextResponse.json({ name: user.name, email: user.email, phone: user.phone ?? "", address: user.address ?? "" });
+  return privateJson({ name: user.name, email: user.email, phone: user.phone ?? "", address: user.address ?? "" });
 }
 
 export async function PATCH(request: Request) {
+  const originError = requireSameOrigin(request);
+  if (originError) return originError;
   const session = await getApiSession();
   if (!session?.user?.email) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  const body: unknown = await request.json();
-  if (!isRecord(body)) return NextResponse.json({ message: "Invalid profile" }, { status: 400 });
+  const rateLimit = await enforceRateLimit(request, "account-profile-update", 20, 15 * 60_000, session.user.email);
+  if (rateLimit) return rateLimit;
+  const parsed = await readJsonObject(request, 16 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
+  if (!hasOnlyKeys(body, ["name", "phone", "address"])) return NextResponse.json({ message: "Invalid profile" }, { status: 400 });
 
   const name = stringValue(body.name, 100);
   const phone = stringValue(body.phone, 24);
@@ -32,5 +41,6 @@ export async function PATCH(request: Request) {
     { new: true, runValidators: true }
   );
   if (!user) return NextResponse.json({ message: "Account not found" }, { status: 404 });
-  return NextResponse.json({ name: user.name, email: user.email, phone: user.phone ?? "", address: user.address ?? "" });
+  logSecurityEvent("account_profile_updated", { actor: session.user.email.toLowerCase() });
+  return privateJson({ name: user.name, email: user.email, phone: user.phone ?? "", address: user.address ?? "" });
 }

@@ -1,5 +1,7 @@
 import mongoose, { Schema, type Document } from "mongoose";
 
+import "server-only";
+
 export interface IContactMessage extends Document {
   customerId?: mongoose.Types.ObjectId;
   senderName: string;

@@ -1,4 +1,5 @@
 import mongoose, { Schema, type Document } from "mongoose";
+import "server-only";
 import { ORDER_STATUSES, type OrderStatus } from "@/lib/store-types";
 
 export interface IOrderItem {

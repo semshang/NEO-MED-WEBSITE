@@ -1,4 +1,5 @@
 import { SITE } from "@/config/site";
+import "server-only";
 import type { IContactMessage } from "@/models/ContactMessage";
 import type { IOrder } from "@/models/Order";
 import type { IProduct } from "@/models/Product";
@@ -18,7 +19,7 @@ export function serializeProduct(product: IProduct): Product {
   };
 }
 
-export function serializeOrder(order: IOrder): Order {
+export function serializeOrder(order: IOrder, isAdmin: boolean = false): Order {
   return {
     id: order.orderNumber,
     customerName: order.customerName,
@@ -34,7 +35,7 @@ export function serializeOrder(order: IOrder): Order {
       quantity: item.quantity,
       price: item.price,
     })),
-    adminNotes: order.adminNotes,
+    adminNotes: isAdmin ? order.adminNotes : "",
   };
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/i18n/routing";
+import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
@@ -14,10 +14,10 @@ export function AdminHeader() {
       <div className="container mx-auto px-6 py-3 max-w-full flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3">
-          <Image 
-            src="/logo-transparent.png" 
-            alt="Neomeditech Logo" 
-            width={70} 
+          <Image
+            src="/logo-transparent.png"
+            alt="Neomeditech Logo"
+            width={70}
             height={70}
             className="w-auto h-12"
             style={{ width: 'auto', height: 'auto' }}
@@ -37,7 +37,7 @@ export function AdminHeader() {
         <div className="flex items-center space-x-4">
           <AdminNotifications />
           <div className="h-6 border-l border-slate-200"></div>
-          
+
           <div className="flex items-center space-x-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
             {session?.user?.image ? (
               <Image src={session.user.image} alt="Profile" width={28} height={28} className="rounded-full ring-2 ring-brand-blue/20" />
@@ -56,8 +56,8 @@ export function AdminHeader() {
             </div>
           </div>
           <div className="h-6 border-l border-slate-200"></div>
-          <button 
-            onClick={() => signOut({ callbackUrl: "/" })} 
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center space-x-2 text-sm font-bold text-slate-400 hover:text-red-600 transition-colors"
             title="Sign Out"
           >

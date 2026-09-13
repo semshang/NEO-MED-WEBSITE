@@ -1,33 +1,29 @@
 "use client";
 import { AdminHeader } from "./AdminHeader";
-import { Link } from "@/i18n/routing";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import Image from "next/image";
 import { useEffect } from "react";
-import { usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useTranslations } from "next-intl";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 import { motion } from "framer-motion";
 
 const NAV_LINKS = [
-  { key: "home", href: "/" },
-  { key: "shop", href: "/shop" },
-  { key: "about", href: "/about" },
-  { key: "faq", href: "/faq" },
-  { key: "contact", href: "/contact" },
+  { key: "home", label: "Home", href: "/" },
+  { key: "shop", label: "Shop", href: "/shop" },
+  { key: "about", label: "About Us", href: "/about" },
+  { key: "faq", label: "FAQs", href: "/faq" },
+  { key: "contact", label: "Contact", href: "/contact" },
 ] as const;
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const t = useTranslations("nav");
-  const tAuth = useTranslations("auth");
-  const router = useRouter();
+      const router = useRouter();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -43,16 +39,16 @@ export default function Header() {
   }
 
   return (
-    <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b border-gray-200 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white/90 backdrop-blur-sm'}`}>
+    <header className={`w-full sticky top-0 z-50 transition-all duration-300 border-b-[3px] border-brand-blue/80 shadow-[0_8px_30px_rgba(0,102,255,0.15)] ${isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-white/95 backdrop-blur-sm'}`}>
       {/* Main Navigation */}
       <div className="container mx-auto px-4 py-5 max-w-7xl flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3">
-          <Image 
-            src="/logo-transparent.png" 
-            alt="Neomeditech Logo" 
-            width={80} 
-            height={80} 
+          <Image
+            src="/logo-transparent.png"
+            alt="Neomeditech Logo"
+            width={80}
+            height={80}
             className="w-16 h-auto md:w-20 object-contain drop-shadow-md"
             style={{ width: 'auto', height: 'auto' }}
             priority
@@ -72,14 +68,14 @@ export default function Header() {
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
-              <Link 
+              <Link
                 key={link.key}
-                href={link.href} 
+                href={link.href}
                 className={`relative group py-2 transition-colors duration-200 ${isActive ? 'text-brand-blue' : 'hover:text-brand-blue'}`}
               >
-                {t(link.key)}
+                {link.label}
                 {/* Active Indicator / Hover Underline */}
-                <span 
+                <span
                   className={`absolute bottom-0 left-0 h-[2px] bg-brand-blue transition-all duration-200 ease-out ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
@@ -93,11 +89,10 @@ export default function Header() {
         <div className="hidden xl:flex items-center space-x-4">
           <motion.div whileTap={{ scale: 0.97 }}>
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white px-6 py-2.5 rounded-full font-bold transition-opacity shadow-sm block text-center">
-              {t('getQuote')}
+              Get a Quote
             </Link>
           </motion.div>
-          
-          <LanguageSwitcher />
+
 
           {session ? (
             <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-slate-200">
@@ -126,13 +121,13 @@ export default function Header() {
             </div>
           ) : (
             <button onClick={() => router.push('?login=true', { scroll: false })} className="text-brand-navy hover:text-brand-blue font-bold px-4 py-2 transition-colors">
-              {tAuth('login')}
+              Sign In
             </button>
           )}
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button 
+        <button
           className="xl:hidden text-brand-navy"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
@@ -147,20 +142,20 @@ export default function Header() {
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               return (
-                <Link 
+                <Link
                   key={link.key}
-                  href={link.href} 
+                  href={link.href}
                   className={`transition-colors ${isActive ? 'text-brand-blue font-bold' : 'hover:text-brand-blue'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t(link.key)}
+                  {link.label}
                 </Link>
               );
             })}
             <Link href="/contact" className="bg-gradient-to-r from-brand-blue to-brand-green text-white text-center px-4 py-3 rounded-xl font-bold w-full mt-2 shadow-sm" onClick={() => setIsMenuOpen(false)}>
-              {t('getQuote')}
+              Get a Quote
             </Link>
-            
+
             <div className="pt-4 mt-4 border-t border-slate-100 flex flex-col space-y-4">
               {session ? (
                 <>
@@ -170,12 +165,12 @@ export default function Header() {
                     <Link href="/account" className="hover:text-brand-blue transition-colors font-bold" onClick={() => setIsMenuOpen(false)}>My Account</Link>
                   )}
                   <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors text-slate-500">
-                    {tAuth('logout')} ({session.user?.name || session.user?.email})
+                    Sign Out ({session.user?.name || session.user?.email})
                   </button>
                 </>
               ) : (
                 <button onClick={() => { router.push('?login=true', { scroll: false }); setIsMenuOpen(false); }} className="text-left hover:text-brand-blue transition-colors font-bold">
-                  {tAuth('continueGoogle')}
+                  Continue with Google
                 </button>
               )}
             </div>

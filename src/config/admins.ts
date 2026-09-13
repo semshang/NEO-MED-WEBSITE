@@ -1,7 +1,15 @@
 import "server-only";
 
-/** Server-only administrator allow-list. Set ADMIN_EMAILS as comma-separated addresses. */
-export const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "")
-  .split(",")
-  .map((email) => email.trim().toLowerCase())
-  .filter(Boolean);
+export function getAdminEmails(): Set<string> {
+  return new Set(
+    (process.env.ADMIN_EMAILS ?? "")
+      .split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean)
+  );
+}
+
+export function isAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return getAdminEmails().has(email.trim().toLowerCase());
+}

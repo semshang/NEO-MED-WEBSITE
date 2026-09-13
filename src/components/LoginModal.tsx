@@ -4,20 +4,19 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { Shield, X, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, User } from "lucide-react";
-import { useTranslations } from "next-intl";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useEffect, useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
+import { safeRedirectPath } from "@/lib/security-validation";
 
 const modalVariants: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     scale: 1,
-    transition: { 
-      duration: 0.3, 
+    transition: {
+      duration: 0.3,
       ease: "easeOut",
-      staggerChildren: 0.1 
+      staggerChildren: 0.1
     }
   },
   exit: { opacity: 0, scale: 0.95, transition: { duration: 0.2 } }
@@ -25,9 +24,9 @@ const modalVariants: Variants = {
 
 const rightPanelVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1, 
-    transition: { 
+  visible: {
+    opacity: 1,
+    transition: {
       duration: 0.4,
       staggerChildren: 0.1,
       delayChildren: 0.2
@@ -43,15 +42,14 @@ const formItemVariants: Variants = {
 type AuthMode = "login" | "register" | "forgot";
 
 export function LoginModal() {
-  const tAuth = useTranslations("auth");
-  const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<AuthMode>("login");
   const [showPassword, setShowPassword] = useState(false);
-  
+
   // Form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -66,8 +64,8 @@ export function LoginModal() {
       const timer = window.setTimeout(() => {
         setIsOpen(true);
         setMode("login");
-        setError("");
-        setSuccessMsg("");
+        setError(searchParams.get("verification") === "invalid" ? "That verification link is invalid or has expired." : "");
+        setSuccessMsg(searchParams.get("verification") === "verified" ? "Email verified. You can now sign in." : "");
       }, 0);
       document.body.style.overflow = "hidden";
       return () => {
@@ -85,21 +83,25 @@ export function LoginModal() {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("login");
     params.delete("callbackUrl");
+    params.delete("verification");
     const newPath = `${pathname}${params.toString() ? `?${params.toString()}` : ""}`;
     router.push(newPath, { scroll: false });
   };
 
-  const getSafeRedirect = (url: string | null) => {
-    if (!url) return "/account";
-    // Only allow absolute relative paths starting with a single slash
-    if (url.startsWith("/") && !url.startsWith("//")) return url;
-    return "/account";
-  };
-
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setIsLoading(true);
-    const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
-    signIn("google", { callbackUrl });
+    setError("");
+    try {
+      const callbackUrl = safeRedirectPath(searchParams.get("callbackUrl"));
+      const res = await signIn("google", { callbackUrl });
+      if (res?.error) {
+        setError("Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -109,32 +111,37 @@ export function LoginModal() {
     setIsLoading(true);
 
     if (mode === "login") {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
+        try {
+          const res = await signIn("credentials", {
+            redirect: false,
+            email,
+            password,
+          });
 
-      if (res?.error) {
-        setError("Invalid email or password");
-        setIsLoading(false);
-      } else {
-        const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
-        router.push(callbackUrl);
-        router.refresh();
-      }
-    } else if (mode === "register") {
+          if (res?.error) {
+            setError("Invalid email or password");
+          } else {
+            const callbackUrl = safeRedirectPath(searchParams.get("callbackUrl"));
+            router.push(callbackUrl);
+            router.refresh();
+          }
+        } catch {
+          setError("Something went wrong. Please try again.");
+        } finally {
+          setIsLoading(false);
+        }
+      } else if (mode === "register") {
       if (password !== confirmPassword) {
         setError("Passwords do not match");
         setIsLoading(false);
         return;
       }
-      if (password.length < 8) {
-        setError("Password must be at least 8 characters");
+      if (password.length < 12 || password.length > 128) {
+        setError("Password must be between 12 and 128 characters");
         setIsLoading(false);
         return;
       }
-      
+
       try {
         const res = await fetch("/api/auth/register", {
           method: "POST",
@@ -142,27 +149,19 @@ export function LoginModal() {
           body: JSON.stringify({ name, email, password }),
         });
         const data: unknown = await res.json();
-        
+
         if (!res.ok) {
           const message = typeof data === "object" && data && "message" in data && typeof data.message === "string" ? data.message : "Registration failed";
           throw new Error(message);
         }
-        
-        // Auto sign-in after registration
-        const signInRes = await signIn("credentials", {
-          redirect: false,
-          email,
-          password,
-        });
-        
-        if (signInRes?.error) {
-          setError("Account created, but auto-login failed. Please sign in.");
-          setMode("login");
-        } else {
-          const callbackUrl = getSafeRedirect(searchParams.get("callbackUrl"));
-          router.push(callbackUrl);
-          router.refresh();
-        }
+
+        const message = typeof data === "object" && data && "message" in data && typeof data.message === "string"
+          ? data.message
+          : "Check your email for a verification link before signing in.";
+        setMode("login");
+        setPassword("");
+        setConfirmPassword("");
+        setSuccessMsg(message);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : "Registration failed");
       }
@@ -174,7 +173,7 @@ export function LoginModal() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
         });
-        
+
         if (res.ok) {
           setSuccessMsg("If an account exists, a reset link has been sent to your email.");
         } else {
@@ -192,7 +191,7 @@ export function LoginModal() {
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
           {/* Backdrop */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -201,21 +200,18 @@ export function LoginModal() {
           />
 
           {/* Modal Container */}
-          <motion.div 
+          <motion.div
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden my-auto max-h-[95vh] shrink-0"
           >
-            
-
             {/* Right Panel - Form */}
             <div className="w-full p-6 sm:p-8 flex flex-col justify-start overflow-y-auto custom-scrollbar">
               {/* Top Bar */}
               <div className="flex justify-end items-center mb-1 lg:mb-2 w-full gap-4">
-                <LanguageSwitcher />
-                <button 
+                <button
                   onClick={closeModal}
                   className="w-8 h-8 lg:w-10 lg:h-10 bg-slate-100 hover:bg-slate-200 rounded-full flex items-center justify-center text-slate-500 transition-colors shrink-0"
                 >
@@ -224,14 +220,14 @@ export function LoginModal() {
               </div>
 
               <motion.div variants={rightPanelVariants} className="flex-1 flex flex-col justify-center w-full max-w-[360px] mx-auto mt-4">
-                
+
                 {/* Mobile Logo (hidden on desktop) */}
                 <motion.div variants={formItemVariants} className="flex md:hidden items-center space-x-2.5 mb-4">
-                  <Image 
-                    src="/logo-transparent.png" 
-                    alt="Neomeditech" 
-                    width={96} 
-                    height={48} 
+                  <Image
+                    src="/logo-transparent.png"
+                    alt="Neomeditech"
+                    width={96}
+                    height={48}
                     className="h-9 w-auto object-contain -mt-1.5"
                     style={{ width: 'auto', height: 'auto' }}
                   />
@@ -246,10 +242,10 @@ export function LoginModal() {
 
                 <motion.div variants={formItemVariants} className="mb-4">
                   <h3 className="text-xl lg:text-2xl font-black text-brand-navy mb-2">
-                    {mode === "login" ? tAuth("welcomeBack") : mode === "register" ? tAuth("createAccount") : "Reset Password"}
+                    {mode === "login" ? "Welcome Back" : mode === "register" ? "Create Account" : "Reset Password"}
                   </h3>
                   <p className="text-slate-500 text-sm">
-                    {mode === "login" ? tAuth("signInToAccess") : mode === "register" ? "Fill in your details to create an account" : "Enter your email to receive a reset link"}
+                    {mode === "login" ? "Sign in to access your account" : mode === "register" ? "Fill in your details to create an account" : "Enter your email to receive a reset link"}
                   </p>
                 </motion.div>
 
@@ -271,7 +267,7 @@ export function LoginModal() {
                       <label className="block text-xs font-bold text-brand-navy mb-1.5">Full Name</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input 
+                        <input
                           type="text"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
@@ -284,15 +280,15 @@ export function LoginModal() {
                   )}
 
                   <div>
-                    <label className="block text-xs font-bold text-brand-navy mb-1.5">{tAuth("email")}</label>
+                    <label className="block text-xs font-bold text-brand-navy mb-1.5">{"Email Address"}</label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                      <input 
+                      <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-                        placeholder={tAuth("emailPlaceholder")}
+                        placeholder={"Enter your email"}
                         required
                       />
                     </div>
@@ -300,18 +296,20 @@ export function LoginModal() {
 
                   {mode !== "forgot" && (
                     <div>
-                      <label className="block text-xs font-bold text-brand-navy mb-1.5">{tAuth("password")}</label>
+                      <label className="block text-xs font-bold text-brand-navy mb-1.5">{"Password"}</label>
                       <div className="relative">
                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input 
+                        <input
                           type={showPassword ? "text" : "password"}
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
+                          minLength={mode === "register" ? 12 : undefined}
+                          maxLength={128}
                           className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-                          placeholder={tAuth("passwordPlaceholder")}
+                          placeholder={"Enter your password"}
                           required
                         />
-                        <button 
+                        <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-blue transition-colors"
@@ -327,10 +325,12 @@ export function LoginModal() {
                       <label className="block text-xs font-bold text-brand-navy mb-1.5">Confirm Password</label>
                       <div className="relative">
                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                        <input 
+                        <input
                           type={showPassword ? "text" : "password"}
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
+                          minLength={12}
+                          maxLength={128}
                           className="w-full bg-white border border-gray-300 shadow-sm rounded-xl pl-11 pr-11 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                           placeholder="Confirm password"
                           required
@@ -343,19 +343,19 @@ export function LoginModal() {
                     <div className="flex items-center justify-between mt-2">
                       <label className="flex items-center space-x-2 cursor-pointer group">
                         <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-brand-blue focus:ring-brand-blue/20" />
-                        <span className="text-xs text-slate-500 font-medium group-hover:text-brand-navy transition-colors">{tAuth("rememberMe")}</span>
+                        <span className="text-xs text-slate-500 font-medium group-hover:text-brand-navy transition-colors">{"Remember me"}</span>
                       </label>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => setMode("forgot")}
                         className="text-xs font-bold text-brand-blue hover:text-brand-navy transition-colors"
                       >
-                        {tAuth("forgotPassword")}
+                        {"Forgot Password?"}
                       </button>
                     </div>
                   )}
 
-                  <button 
+                  <button
                     type="submit"
                     disabled={isLoading}
                     className="w-full bg-gradient-to-r from-brand-blue to-brand-green hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-4 flex items-center justify-center space-x-2 group disabled:opacity-70 disabled:cursor-not-allowed"
@@ -365,7 +365,7 @@ export function LoginModal() {
                     ) : (
                       <>
                         <span>
-                          {mode === "login" ? tAuth("login") : mode === "register" ? tAuth("createAccount") : "Send Reset Link"}
+                          {mode === "login" ? "Sign In" : mode === "register" ? "Create Account" : "Send Reset Link"}
                         </span>
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </>
@@ -378,13 +378,13 @@ export function LoginModal() {
                     <motion.div variants={formItemVariants} className="flex items-center justify-center space-x-4 my-4">
                       <div className="h-px bg-slate-200 flex-1"></div>
                       <span className="text-[10px] lg:text-xs text-slate-500 font-bold bg-white px-2">
-                        {tAuth("continueWith")}
+                        {"Or continue with"}
                       </span>
                       <div className="h-px bg-slate-200 flex-1"></div>
                     </motion.div>
 
                     <motion.div variants={formItemVariants} className="space-y-3">
-                      <button 
+                      <button
                         onClick={handleGoogleSignIn}
                         disabled={isLoading}
                         className="w-full bg-white border border-gray-300 hover:bg-slate-50 text-slate-700 font-bold py-2.5 rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
@@ -395,7 +395,7 @@ export function LoginModal() {
                           <path d="M5.92 14.21C5.7 13.55 5.58 12.86 5.58 12.15C5.58 11.44 5.7 10.75 5.92 10.09V7.23H2.22C1.48 8.71 1.05 10.39 1.05 12.15C1.05 13.91 1.48 15.59 2.22 17.07L5.92 14.21Z" fill="#FBBC05"/>
                           <path d="M12 5.62C13.62 5.62 15.06 6.18 16.2 7.27L19.34 4.13C17.46 2.37 14.97 1.3 12 1.3C7.72 1.3 4.02 3.65 2.22 7.23L5.92 10.09C6.78 7.53 9.17 5.62 12 5.62Z" fill="#EA4335"/>
                         </svg>
-                        <span>{tAuth("continueGoogle")}</span>
+                        <span>{"Continue with Google"}</span>
                       </button>
                     </motion.div>
                   </>
@@ -403,17 +403,17 @@ export function LoginModal() {
 
                 <motion.div variants={formItemVariants} className="mt-5 text-center">
                   <p className="text-xs text-slate-500 font-medium">
-                    {mode === "login" ? tAuth("noAccount") : mode === "register" ? "Already have an account?" : "Remembered your password?"}{" "}
-                    <button 
+                    {mode === "login" ? "Don't have an account?" : mode === "register" ? "Already have an account?" : "Remembered your password?"}{" "}
+                    <button
                       onClick={() => setMode(mode === "login" ? "register" : "login")}
                       className="text-brand-blue hover:text-brand-navy font-bold transition-colors"
                     >
-                      {mode === "login" ? tAuth("createAccount") : tAuth("login")}
+                      {mode === "login" ? "Create Account" : "Sign In"}
                     </button>
                   </p>
                   <p className="text-[10px] text-slate-400 mt-2 flex items-center justify-center space-x-1">
                     <Shield size={12} className="text-brand-green" />
-                    <span>{tAuth("secureData")}</span>
+                    <span>{"Your data is secure and encrypted"}</span>
                   </p>
                 </motion.div>
 

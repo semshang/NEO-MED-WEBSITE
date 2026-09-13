@@ -10,11 +10,14 @@ declare module "next-auth" {
 
   interface User {
     role: "admin" | "customer";
+    authVersion?: number;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     role: "admin" | "customer";
+    authVersion?: number;
+    invalidated?: boolean;
   }
 }

@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
-import { getApiSession, getAdminSession } from "@/lib/api-auth";
+import { getApiSession } from "@/lib/api-auth";
+import { isAdmin } from "@/lib/auth";
 import connectDB from "@/lib/mongoose";
 import { serializeOrder } from "@/lib/store";
 import { emailValue, isRecord, stringValue } from "@/lib/validation";
+import { enforceRateLimit, privateJson, readJsonObject, requireSameOrigin } from "@/lib/request-security";
+import { hasOnlyKeys, MAX_ORDER_ITEMS } from "@/lib/security-validation";
+import { logSecurityEvent } from "@/lib/security-log";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
+import mongoose from "mongoose";
 
 interface OrderInputItem {
   productId: string;
@@ -12,14 +17,20 @@ interface OrderInputItem {
 }
 
 function parseItems(value: unknown): OrderInputItem[] {
-  if (!Array.isArray(value)) return [];
+  if (!Array.isArray(value) || value.length === 0 || value.length > MAX_ORDER_ITEMS) return [];
 
-  return value.flatMap((item) => {
-    if (!isRecord(item)) return [];
+  const quantities = new Map<string, number>();
+  for (const item of value) {
+    if (!isRecord(item) || !hasOnlyKeys(item, ["productId", "quantity"])) return [];
     const productId = stringValue(item.productId, 64);
     const quantity = typeof item.quantity === "number" && Number.isInteger(item.quantity) ? item.quantity : 0;
-    return productId && quantity > 0 && quantity <= 100 ? [{ productId, quantity }] : [];
-  });
+    if (!mongoose.isObjectIdOrHexString(productId) || quantity <= 0 || quantity > 100) return [];
+    const combinedQuantity = (quantities.get(productId) ?? 0) + quantity;
+    if (combinedQuantity > 100) return [];
+    quantities.set(productId, combinedQuantity);
+  }
+
+  return [...quantities].map(([productId, quantity]) => ({ productId, quantity }));
 }
 
 export async function GET() {
@@ -29,19 +40,29 @@ export async function GET() {
   }
 
   await connectDB();
-  const query = (await getAdminSession()) ? {} : { customerEmail: session.user.email.toLowerCase() };
-  const orders = await Order.find(query).sort({ createdAt: -1 });
-  return NextResponse.json(orders.map(serializeOrder));
+  const admin = isAdmin(session);
+  const query = admin ? {} : { customerEmail: session.user.email.toLowerCase() };
+  const orders = await Order.find(query).sort({ createdAt: -1 }).limit(admin ? 500 : 100);
+  return privateJson(orders.map((order) => serializeOrder(order, admin)));
 }
 
 export async function POST(request: Request) {
+  const originError = requireSameOrigin(request);
+  if (originError) return originError;
   const session = await getApiSession();
   if (!session?.user?.email) {
     return NextResponse.json({ message: "Please sign in before sending an order request." }, { status: 401 });
   }
 
-  const body: unknown = await request.json();
-  if (!isRecord(body)) {
+  if (isAdmin(session)) return NextResponse.json({ message: "Administrators cannot place customer orders." }, { status: 403 });
+
+  const rateLimit = await enforceRateLimit(request, "order-create", 10, 60 * 60_000, session.user.email);
+  if (rateLimit) return rateLimit;
+
+  const parsed = await readJsonObject(request, 32 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
+  if (!hasOnlyKeys(body, ["name", "email", "phone", "address", "notes", "items"])) {
     return NextResponse.json({ message: "Invalid order data" }, { status: 400 });
   }
 
@@ -83,11 +104,12 @@ export async function POST(request: Request) {
   const total = orderItems.every((item) => item.price !== null)
     ? orderItems.reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0)
     : null;
-  const orderNumber = `ORD-${crypto.randomUUID().split("-")[0].toUpperCase()}`;
+  const orderCount = await Order.countDocuments();
+  const orderNumber = `ORD-${(orderCount + 1).toString().padStart(4, "0")}`;
 
   const order = await Order.create({
     orderNumber,
-    customerId: session.user.id || undefined,
+    customerId: session.user.id && mongoose.isObjectIdOrHexString(session.user.id) ? session.user.id : undefined,
     customerName,
     customerEmail: email,
     customerPhone,
@@ -97,5 +119,6 @@ export async function POST(request: Request) {
     items: orderItems,
   });
 
-  return NextResponse.json(serializeOrder(order), { status: 201 });
+  logSecurityEvent("order_created", { actor: email, orderId: order.orderNumber });
+  return privateJson(serializeOrder(order, false), { status: 201 });
 }

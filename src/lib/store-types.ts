@@ -13,14 +13,6 @@ export interface Product {
   isActive: boolean;
 }
 
-export interface CartItem {
-  productId: string;
-  name: string;
-  price: number | null;
-  quantity: number;
-  image: string;
-}
-
 export interface OrderItem {
   productId: string;
   quantity: number;

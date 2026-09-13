@@ -1,5 +1,7 @@
 import mongoose, { Schema, type Document } from "mongoose";
 
+import "server-only";
+
 export interface IStoreSettings extends Document {
   key: string;
   phone: string;

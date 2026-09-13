@@ -1,5 +1,7 @@
 import mongoose, { Schema, type Document } from "mongoose";
 
+import "server-only";
+
 export interface ICustomerMeta extends Document {
   email: string;
   vip: boolean;

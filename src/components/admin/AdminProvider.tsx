@@ -3,12 +3,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { SITE } from "@/config/site";
-import type { CartItem, CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
+import type { CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
 
-export type { CartItem, CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
+export type { CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
 
 type CustomerMetaResponse = CustomerMeta & { email: string };
-type OrderCustomer = { name: string; email: string; phone: string; address: string; notes: string };
 
 interface AdminContextType {
   orders: Order[];
@@ -16,7 +15,6 @@ interface AdminContextType {
   messages: Message[];
   customerMeta: Record<string, CustomerMeta>;
   settings: Settings;
-  cart: CartItem[];
   seenNotifications: string[];
   isLoading: boolean;
   error: string | null;
@@ -28,11 +26,7 @@ interface AdminContextType {
   deleteProduct: (id: string) => Promise<void>;
   updateCustomerMeta: (email: string, meta: Partial<CustomerMeta>) => Promise<void>;
   updateSettings: (settings: Settings) => Promise<void>;
-  addToCart: (product: Product, quantity: number) => void;
-  updateCartItem: (productId: string, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
-  clearCart: () => void;
-  placeOrder: (customer: OrderCustomer) => Promise<string>;
+  updateMessage: (id: string, update: Partial<Message>) => Promise<void>;
 }
 
 const defaultSettings: Settings = {
@@ -72,7 +66,6 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({});
   const [settings, setSettings] = useState<Settings>(defaultSettings);
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [seenNotifications, setSeenNotifications] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -153,7 +146,6 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const deleteProduct = useCallback(async (id: string) => {
     await requestJson<Product>(`/api/products/${id}`, { method: "DELETE" });
     setProducts((current) => current.filter((item) => item.id !== id));
-    setCart((current) => current.filter((item) => item.productId !== id));
   }, []);
 
   const updateCustomerMeta = useCallback(async (email: string, patch: Partial<CustomerMeta>) => {
@@ -165,6 +157,15 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setCustomerMeta((current) => ({ ...current, [updated.email]: { vip: updated.vip, notes: updated.notes } }));
   }, []);
 
+  const updateMessage = useCallback(async (id: string, patch: Partial<Message>) => {
+    const updated = await requestJson<Message>(`/api/contact/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    setMessages((current) => current.map((item) => (item.id === id ? updated : item)));
+  }, []);
+
   const updateSettings = useCallback(async (nextSettings: Settings) => {
     const updated = await requestJson<Settings>("/api/settings", {
       method: "PATCH",
@@ -174,48 +175,12 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setSettings(updated);
   }, []);
 
-  const addToCart = useCallback((product: Product, quantity: number) => {
-    setCart((current) => {
-      const existing = current.find((item) => item.productId === product.id);
-      if (existing) {
-        return current.map((item) => item.productId === product.id ? { ...item, quantity: item.quantity + quantity } : item);
-      }
-      return [...current, { productId: product.id, name: product.name, price: product.price, quantity, image: product.image }];
-    });
-  }, []);
-
-  const removeFromCart = useCallback((productId: string) => {
-    setCart((current) => current.filter((item) => item.productId !== productId));
-  }, []);
-
-  const updateCartItem = useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
-    setCart((current) => current.map((item) => item.productId === productId ? { ...item, quantity } : item));
-  }, [removeFromCart]);
-
-  const clearCart = useCallback(() => setCart([]), []);
-
-  const placeOrder = useCallback(async (customer: OrderCustomer) => {
-    const order = await requestJson<Order>("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...customer, items: cart.map(({ productId, quantity }) => ({ productId, quantity })) }),
-    });
-    setOrders((current) => [order, ...current]);
-    clearCart();
-    return order.id;
-  }, [cart, clearCart]);
-
   const value = useMemo<AdminContextType>(() => ({
     orders,
     products,
     messages,
     customerMeta,
     settings,
-    cart,
     seenNotifications,
     isLoading,
     error,
@@ -227,12 +192,8 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     deleteProduct,
     updateCustomerMeta,
     updateSettings,
-    addToCart,
-    updateCartItem,
-    removeFromCart,
-    clearCart,
-    placeOrder,
-  }), [addProduct, addToCart, cart, clearCart, customerMeta, deleteProduct, error, isLoading, messages, orders, placeOrder, products, removeFromCart, seenNotifications, settings, updateCartItem, updateCustomerMeta, updateOrder, updateProduct, updateSettings]);
+    updateMessage,
+  }), [addProduct, customerMeta, deleteProduct, error, isLoading, messages, orders, products, seenNotifications, settings, updateCustomerMeta, updateOrder, updateProduct, updateSettings, updateMessage]);
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;
 }
