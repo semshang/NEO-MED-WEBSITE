@@ -3,8 +3,11 @@ import { Target, Award, Users, ThumbsUp } from "lucide-react";
 import { SITE } from "@/config/site";
 
 export const metadata = {
-  title: "About Us",
-  description: `Learn about ${SITE.name}, your trusted partner for biomedical equipment in Nepal.`,
+  title: "About Us | Leading Medical Equipment Supplier in Nepal",
+  description: `Learn about ${SITE.name}, your trusted partner for biomedical equipment sourcing, hospital maintenance, and clinical support across Nepal.`,
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function About() {

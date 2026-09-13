@@ -3,8 +3,11 @@ import { SITE } from "@/config/site";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata = {
-  title: "Contact Us",
-  description: "Get in touch with Neomeditech Biomedical Solutions for inquiries, support, or quotes.",
+  title: "Contact & Quotation Inquiries in Kathmandu, Nepal",
+  description: "Contact Neomeditech Biomedical Solutions in Tarkeshwor-6, Kathmandu, Nepal. Sourcing, quotation, technical support, and equipment maintenance across all 77 districts.",
+  alternates: {
+    canonical: "/contact",
+  },
 };
 
 export default function Contact() {

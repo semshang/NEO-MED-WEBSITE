@@ -15,25 +15,64 @@ export const metadata: Metadata = {
     template: "%s | Neomeditech",
   },
   description: SITE.tagline,
+  keywords: [
+    "Medical equipment in Nepal",
+    "Medical equipment supplier Nepal",
+    "Biomedical solutions Nepal",
+    "Hospital equipment supplier Kathmandu",
+    "Oxygen concentrator price in Nepal",
+    "Patient monitor Nepal",
+    "ECG machine supplier Nepal",
+    "Biomedical engineering services Nepal",
+    "ICU equipment Kathmandu",
+    "Autoclave machine Nepal",
+    "Neomeditech",
+    "Neomeditech Biomedical Solutions",
+  ],
+  authors: [{ name: "Neomeditech Biomedical Solutions Pvt. Ltd.", url: SITE.url }],
+  creator: "Neomeditech Biomedical Solutions Pvt. Ltd.",
+  publisher: "Neomeditech Biomedical Solutions Pvt. Ltd.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: SITE.url,
+  },
   openGraph: {
     type: "website",
     siteName: SITE.name,
     title: `${SITE.name} | Medical Equipment in Nepal`,
     description: SITE.tagline,
+    url: SITE.url,
+    locale: "en_US",
     images: [
       {
         url: "/hero-equipment.webp",
         width: 1024,
         height: 768,
-        alt: "Neomeditech medical equipment",
+        alt: "Neomeditech medical equipment supplier Nepal",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: SITE.name,
+    title: `${SITE.name} | Medical Equipment in Nepal`,
     description: SITE.tagline,
     images: ["/hero-equipment.webp"],
+  },
+  other: {
+    "geo.region": "NP-BA",
+    "geo.placename": "Kathmandu",
+    "geo.position": "27.7667;85.3167",
+    "ICBM": "27.7667, 85.3167",
   },
 };
 
@@ -46,18 +85,65 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
     "name": SITE.name,
+    "alternateName": ["Neomeditech", "Neomeditech Nepal", "Neomeditech Biomedical"],
     "url": SITE.url,
+    "logo": `${SITE.url}/logo-transparent.png`,
+    "image": `${SITE.url}/hero-equipment.webp`,
+    "description": "Leading medical equipment supplier and biomedical engineering service provider in Kathmandu, Nepal. Sourcing, delivery, installation, and repair across all 77 districts.",
     "telephone": [
       "+977 9712011758",
       "+977 9712011757"
     ],
     "email": SITE.email,
+    "priceRange": "$$",
+    "currenciesAccepted": "NPR",
+    "paymentAccepted": "Cash, Bank Transfer, Fonepay, Cheque",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Tarkeshwor-6",
       "addressLocality": "Kathmandu",
-      "addressCountry": "Nepal"
+      "addressRegion": "Bagmati Province",
+      "postalCode": "44600",
+      "addressCountry": "NP"
     },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 27.7667,
+      "longitude": 85.3167
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    ],
+    "areaServed": [
+      { "@type": "Country", "name": "Nepal" },
+      { "@type": "City", "name": "Kathmandu" },
+      { "@type": "City", "name": "Lalitpur" },
+      { "@type": "City", "name": "Bhaktapur" },
+      { "@type": "City", "name": "Pokhara" },
+      { "@type": "City", "name": "Chitwan" },
+      { "@type": "City", "name": "Biratnagar" }
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+977 9712011758",
+        "contactType": "sales and customer support",
+        "areaServed": "NP",
+        "availableLanguage": ["en", "ne"]
+      }
+    ],
     "sameAs": [
       SITE.social.facebook,
       SITE.social.instagram,

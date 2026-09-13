@@ -7,8 +7,20 @@ import { motion } from "framer-motion";
 
 const FAQS = [
   {
+    "question": "Who is the leading medical equipment supplier in Kathmandu, Nepal?",
+    "answer": "Neomeditech Biomedical Solutions Pvt. Ltd. (based in Tarkeshwor-6, Kathmandu) is an authorized supplier of medical devices, hospital equipment, and biomedical engineering services across Nepal. We supply hospitals, nursing homes, diagnostics centers, and clinics with certified equipment, warranties, and after-sales maintenance."
+  },
+  {
+    "question": "What types of medical equipment do you supply in Nepal?",
+    "answer": "We supply a comprehensive catalog of medical machinery including medical-grade oxygen concentrators (5L & 10L), multi-parameter ICU patient monitors, 12-lead ECG machines, BiPAP/CPAP respiratory equipment, defibrillators, autoclaves and sterilizers, radiant baby warmers, CTG monitoring machines, and laboratory centrifuges."
+  },
+  {
+    "question": "Do you provide biomedical engineering repair, calibration, and hospital maintenance?",
+    "answer": "Yes. Our team of certified biomedical engineers provides on-site installation, clinical staff training, scheduled calibration, safety compliance verification, and rapid emergency repairs across Kathmandu Valley and all major cities in Nepal."
+  },
+  {
     "question": "Do you provide nationwide delivery across Nepal?",
-    "answer": "Yes, we offer secure delivery to all 77 districts. While we provide standard courier delivery for small medical supplies, heavy equipment (such as X-ray machines or hospital beds) is transported via specialized logistics partners to ensure safe handling. Delivery times typically range from 2–3 days within Kathmandu Valley to 5–7 days for remote areas."
+    "answer": "Yes, we offer secure delivery to all 77 districts across Nepal. While we provide standard courier delivery for small medical supplies, heavy equipment (such as ICU monitors, hospital furniture, and autoclaves) is transported via specialized logistics partners with safe handling. Delivery typically takes 2–3 days in Kathmandu Valley and 4–7 days nationwide."
   },
   {
     "question": "Are your products certified for clinical use?",
