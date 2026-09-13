@@ -3,9 +3,21 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSession } from "next-auth/react";
 import { SITE } from "@/config/site";
+import { PRODUCT_SEED } from "@/data/products";
 import type { CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
 
 export type { CustomerMeta, Message, Order, OrderStatus, Product, Settings } from "@/lib/store-types";
+
+const INITIAL_PRODUCTS: Product[] = PRODUCT_SEED.map((p) => ({
+  id: String(p.id),
+  name: p.name,
+  category: p.category,
+  image: p.image,
+  stock: p.stock,
+  price: p.price,
+  description: p.description,
+  isActive: p.isActive,
+}));
 
 type CustomerMetaResponse = CustomerMeta & { email: string };
 
@@ -61,7 +73,7 @@ async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
 
 export function AdminProvider({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [orders, setOrders] = useState<Order[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [customerMeta, setCustomerMeta] = useState<Record<string, CustomerMeta>>({});
