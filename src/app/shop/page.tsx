@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Package, Search, Filter } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import { useAdmin } from "@/components/admin/AdminProvider";
@@ -122,32 +123,57 @@ export default function Shop() {
                   hidden: {}
                 }}
               >
-                {filteredProducts.map((product) => (
-                  <motion.div
-                    key={product.id}
-                    variants={productVariants}
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50"
-                  >
-                    <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
-                      <motion.div
-                        className="w-full h-full flex items-center justify-center relative"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                      >
-                        {product.image ? <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-contain z-10" /> : <Package aria-hidden="true" size={40} className="text-slate-300" />}
-                      </motion.div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
-                      <h3 className="font-bold text-brand-navy mb-1 text-lg leading-tight line-clamp-2">{product.name}</h3>
-                        
-                      <div className="mt-auto pt-1">
-                        <ProductAction product={product} />
+                {filteredProducts.map((product) => {
+                  const productSlug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+                  return (
+                    <motion.div
+                      key={product.id}
+                      variants={productVariants}
+                      whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group hover:border-brand-green/50"
+                    >
+                      <Link href={`/products/${productSlug}`} className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100 block">
+                        <motion.div
+                          className="w-full h-full flex items-center justify-center relative"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                        >
+                          {product.image ? (
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                              className="object-contain z-10"
+                            />
+                          ) : (
+                            <Package aria-hidden="true" size={40} className="text-slate-300" />
+                          )}
+                        </motion.div>
+                      </Link>
+                      <div className="p-6 flex flex-col flex-grow">
+                        <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">
+                          {product.category}
+                        </div>
+                        <Link href={`/products/${productSlug}`} className="hover:text-brand-blue transition-colors">
+                          <h3 className="font-bold text-brand-navy mb-1 text-lg leading-tight line-clamp-2 hover:text-brand-blue transition-colors">
+                            {product.name}
+                          </h3>
+                        </Link>
+
+                        <div className="mt-auto pt-3 space-y-2">
+                          <Link
+                            href={`/products/${productSlug}`}
+                            className="w-full py-2 px-3 text-center text-xs font-semibold text-brand-blue hover:text-brand-navy border border-brand-blue/30 hover:border-brand-blue rounded-xl block transition-colors"
+                          >
+                            View Details
+                          </Link>
+                          <ProductAction product={product} />
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </motion.div>
             )}
           </div>

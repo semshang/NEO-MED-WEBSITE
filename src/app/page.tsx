@@ -202,35 +202,35 @@ export default function Home() {
             ref={emblaRef}
           >
             <div className="flex">
-              {products.slice(0, 6).map((product) => (
-                <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
-                  <Link href="/shop" className="block h-full">
-                    <motion.div 
-                    whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
-                  >
-                    <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
-                      
-                      <motion.div 
-                        className="w-full h-full flex items-center justify-center relative"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
+              {products.slice(0, 6).map((product) => {
+                const productSlug = product.slug || product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+                return (
+                  <div key={product.id} className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] lg:flex-[0_0_25%] pl-4 pr-4 py-4">
+                    <Link href={`/products/${productSlug}`} className="block h-full">
+                      <motion.div
+                        whileHover={{ scale: 1.03, transition: { duration: 0.2, ease: "easeOut" } }}
+                        className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden border border-gray-200 flex flex-col group cursor-pointer hover:border-brand-green/50 h-full"
                       >
-                        {product.image ? (
-                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain z-10" />
-                        ) : <Package aria-hidden="true" size={40} className="text-slate-300" />}
+                        <div className="bg-brand-gray aspect-square flex items-center justify-center relative overflow-hidden p-6 border-b border-slate-100">
+                          <motion.div
+                            className="w-full h-full flex items-center justify-center relative"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                          >
+                            {product.image ? (
+                              <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain z-10" />
+                            ) : <Package aria-hidden="true" size={40} className="text-slate-300" />}
+                          </motion.div>
+                        </div>
+                        <div className="p-6 flex flex-col flex-grow">
+                          <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
+                          <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">{product.name}</h3>
+                        </div>
                       </motion.div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <div className="text-xs font-bold text-brand-green mb-2 uppercase tracking-wider">{product.category}</div>
-                      <h3 className="font-bold text-brand-navy mb-2 text-lg line-clamp-2">{product.name}</h3>
-                        
-                      
-                    </div>
-                  </motion.div>
-                  </Link>
-                </div>
-              ))}
+                    </Link>
+                  </div>
+                );
+              })}
             </div>
           </motion.div>
           

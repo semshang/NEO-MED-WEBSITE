@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/config/site";
+import { getAllPublicProducts } from "@/lib/catalog";
+
+export const revalidate = 60;
 
 interface SitemapRoute {
   path: string;
@@ -17,11 +20,21 @@ const publicRoutes: SitemapRoute[] = [
   { path: "/terms-of-service", priority: 0.3, changeFrequency: "yearly" },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return publicRoutes.map((route) => ({
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticEntries: MetadataRoute.Sitemap = publicRoutes.map((route) => ({
     url: `${SITE.url}${route.path}`,
     lastModified: new Date(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
+
+  const products = await getAllPublicProducts();
+  const productEntries: MetadataRoute.Sitemap = products.map((product) => ({
+    url: `${SITE.url}/products/${product.slug}`,
+    lastModified: product.updatedAt || new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...staticEntries, ...productEntries];
 }

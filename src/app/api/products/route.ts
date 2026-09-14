@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { ensureCatalogSeeded } from "@/lib/catalog";
 import { requireAdminSession } from "@/lib/api-auth";
 import connectDB from "@/lib/mongoose";
@@ -78,6 +79,16 @@ export async function POST(request: Request) {
     });
 
     logSecurityEvent("admin_product_created", { actor: auth.session.user.email, productId: product.id });
+
+    try {
+      revalidatePath(`/products/${product.slug}`);
+      revalidatePath("/shop");
+      revalidatePath("/sitemap.xml");
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("Revalidation error after product create:", e);
+    }
+
     return privateJson(serializeProduct(product), { status: 201 });
   } catch (error) {
     await cleanupBlob(createdBlobUrl);

@@ -5,6 +5,7 @@ export type OrderStatus = (typeof ORDER_STATUSES)[number];
 export interface Product {
   id: string;
   name: string;
+  slug?: string;
   category: string;
   image: string;
   stock: number | null;

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/api-auth";
 import connectDB from "@/lib/mongoose";
 import { serializeProduct } from "@/lib/store";
@@ -73,6 +74,18 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
       return NextResponse.json({ message: "Product not found" }, { status: 404 });
     }
     logSecurityEvent("admin_product_updated", { actor: auth.session.user.email, productId: id });
+
+    try {
+      if (product.slug) {
+        revalidatePath(`/products/${product.slug}`);
+      }
+      revalidatePath("/shop");
+      revalidatePath("/sitemap.xml");
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("Revalidation error after product update:", e);
+    }
+
     return privateJson(serializeProduct(product));
   } catch (error) {
     await cleanupBlob(createdBlobUrl);
@@ -98,5 +111,17 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     await cleanupBlob(product.image);
   }
   logSecurityEvent("admin_product_removed", { actor: auth.session.user.email, productId: id });
+
+  try {
+    if (product.slug) {
+      revalidatePath(`/products/${product.slug}`);
+    }
+    revalidatePath("/shop");
+    revalidatePath("/sitemap.xml");
+    revalidatePath("/");
+  } catch (e) {
+    console.warn("Revalidation error after product delete:", e);
+  }
+
   return privateJson(serializeProduct(product));
 }

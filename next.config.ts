@@ -70,5 +70,41 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // Confirmed historical WooCommerce URLs with verified destination products
+      {
+        source: "/product/inkjet-x-ray-blue-medical-film",
+        destination: "/products/inkjet-x-ray-blue-medical-film",
+        permanent: true,
+      },
+      {
+        source: "/product/inkjet-x-ray-blue-medical-film/",
+        destination: "/products/inkjet-x-ray-blue-medical-film",
+        permanent: true,
+      },
+      {
+        source: "/product/oxygen-sensor",
+        destination: "/products/oxygen-sensor",
+        permanent: true,
+      },
+      {
+        source: "/product/oxygen-sensor/",
+        destination: "/products/oxygen-sensor",
+        permanent: true,
+      },
+      // Intentional catalogue index alias
+      {
+        source: "/products",
+        destination: "/shop",
+        permanent: true,
+      },
+      {
+        source: "/products/",
+        destination: "/shop",
+        permanent: true,
+      },
+    ];
+  },
 };
 export default nextConfig;

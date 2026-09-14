@@ -11,6 +11,7 @@ export type { CustomerMeta, Message, Order, OrderStatus, Product, Settings } fro
 const INITIAL_PRODUCTS: Product[] = PRODUCT_SEED.map((p) => ({
   id: String(p.id),
   name: p.name,
+  slug: p.slug,
   category: p.category,
   image: p.image,
   stock: p.stock,
@@ -33,7 +34,7 @@ interface AdminContextType {
   markNotificationsSeen: (ids: string[]) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => Promise<void>;
   updateOrderNotes: (orderId: string, notes: string) => Promise<void>;
-  addProduct: (product: Omit<Product, "id" | "isActive">) => Promise<void>;
+  addProduct: (product: Omit<Product, "id" | "isActive" | "slug">) => Promise<void>;
   updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
   updateCustomerMeta: (email: string, meta: Partial<CustomerMeta>) => Promise<void>;
@@ -137,7 +138,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setOrders((current) => current.map((item) => (item.id === orderId ? order : item)));
   }, []);
 
-  const addProduct = useCallback(async (product: Omit<Product, "id" | "isActive">) => {
+  const addProduct = useCallback(async (product: Omit<Product, "id" | "isActive" | "slug">) => {
     const created = await requestJson<Product>("/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

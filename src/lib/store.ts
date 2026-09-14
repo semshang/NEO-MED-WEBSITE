@@ -10,6 +10,7 @@ export function serializeProduct(product: IProduct): Product {
   return {
     id: product._id.toString(),
     name: product.name,
+    slug: product.slug,
     category: product.category,
     image: product.image,
     stock: product.stock,

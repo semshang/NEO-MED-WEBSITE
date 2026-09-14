@@ -17,7 +17,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-8">
           {/* Brand & About */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="text-sm text-slate-400 leading-relaxed"><h3 className="text-white font-bold mb-6 text-lg">Neomeditech Biomedical Solutions</h3><p className="lg:pr-12 xl:pr-20">Best Medical Equipment reseller in Nepal. Neomeditech Provides the affordable medical equipment throughout Nepal with 24/7 availability of services.</p></div>
+            <div className="text-sm text-slate-400 leading-relaxed"><h3 className="text-white font-bold mb-6 text-lg">Neomeditech Biomedical Solutions</h3><p className="lg:pr-12 xl:pr-20">Medical equipment supplier in Nepal. Neomeditech provides medical and hospital equipment throughout Nepal with technical service support.</p></div>
             <div className="flex space-x-4 pt-2">
               <a href={SITE.social.facebook} target="_blank" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
                 <FaFacebook size={22} />

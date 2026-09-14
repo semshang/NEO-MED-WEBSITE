@@ -11,10 +11,10 @@ import { AuthToast } from "@/components/AuthToast";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
-    template: "%s | Neomeditech Nepal",
+    default: "Medical Equipment Supplier in Nepal | Neomeditech",
+    template: "%s | Neomeditech",
   },
-  description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
+  description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
   keywords: [
     "Medical equipment in Nepal",
     "Medical equipment supplier Nepal",
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: SITE.name,
-    title: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
-    description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
+    title: "Medical Equipment Supplier in Nepal | Neomeditech",
+    description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
     url: SITE.url,
     locale: "en_US",
     images: [
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Neomeditech: Best Medical Equipment Suppliers in Nepal",
-    description: "Best medical equipment supplier and biomedical solutions in Nepal. Authorized supplier of hospital equipment, oxygen concentrators, ICU monitors, ECG, and 24/7 technical repair support.",
+    title: "Medical Equipment Supplier in Nepal | Neomeditech",
+    description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
     images: ["/hero-equipment.webp"],
   },
   other: {
