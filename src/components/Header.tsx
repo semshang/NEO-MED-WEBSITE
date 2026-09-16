@@ -47,10 +47,10 @@ export default function Header() {
           <Image
             src="/logo-transparent.png"
             alt="Neomeditech Logo"
-            width={80}
-            height={80}
+            width={600}
+            height={296}
+            sizes="(min-width: 768px) 80px, 64px"
             className="w-16 h-auto md:w-20 object-contain drop-shadow-md"
-            style={{ width: 'auto', height: 'auto' }}
             priority
           />
           <div className="flex flex-col justify-center">

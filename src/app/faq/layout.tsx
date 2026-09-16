@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
-  description: "Answers to common questions about requesting medical equipment from Neomeditech.",
-};
+export const metadata = createPageMetadata(
+  "Medical Equipment FAQs",
+  "Find answers about medical equipment enquiries, delivery, installation, warranty and support from Neomeditech in Nepal.",
+  "/faq",
+);
 
 export default function FaqLayout({ children }: { children: React.ReactNode }) {
   return children;

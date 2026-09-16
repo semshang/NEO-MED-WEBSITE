@@ -68,13 +68,9 @@ export default function Home() {
               animate="visible"
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 flex flex-col items-center lg:items-start"
             >
-              <span className="text-brand-navy">Advanced Technology.</span>
-              <span className="text-brand-navy mt-1">Reliable Care.</span>
-              <span className="mt-1 flex items-center justify-center lg:justify-start">
-                <span className="text-[#0066FF]">Better</span>
-                <span className="ml-3 text-transparent bg-clip-text bg-gradient-to-r from-[#0066FF] to-[#33CC33]">O</span>
-                <span className="text-[#33CC33]">utcomes.</span>
-              </span>
+              <span className="text-brand-navy">Medical Equipment</span>
+              <span className="text-brand-navy mt-1">Supplier</span>
+              <span className="mt-1 text-transparent bg-clip-text bg-gradient-to-r from-[#0066FF] to-[#33CC33]">in Nepal</span>
             </motion.h1>
 
             {/* Subtext */}
@@ -84,7 +80,7 @@ export default function Home() {
               animate="visible"
               className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-lg mb-8 mx-auto lg:mx-0 font-medium"
             >
-              Neomeditech provides innovative, high-quality medical devices designed to improve patient care and healthcare professionals&apos; experience across Nepal.
+              Explore medical and hospital equipment for your facility. Contact Neomeditech for specifications, quotations and technical support across Nepal.
             </motion.p>
 
             {/* Buttons */}
@@ -134,31 +130,31 @@ export default function Home() {
         <div className="bg-white rounded-2xl shadow-lg py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-gray-200">
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><FlaskConical size={26} strokeWidth={2} /></div>
-            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Innovative<br/>Medical Solutions</h4></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Innovative<br/>Medical Solutions</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-blue-500 shrink-0"><ShieldCheck size={26} strokeWidth={2} /></div>
-            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">High Quality<br/>& Reliable</h4></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">High Quality<br/>& Reliable</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-blue-500 shrink-0"><Users size={26} strokeWidth={2} /></div>
-            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Trusted by<br/>Healthcare Professionals</h4></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Trusted by<br/>Healthcare Professionals</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-green-500 shrink-0"><Globe size={26} strokeWidth={2} /></div>
-            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Nationwide Reach<br/>& Local Support</h4></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Nationwide Reach<br/>& Local Support</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><Heart size={26} strokeWidth={2} /></div>
-            <div><h4 className="font-bold text-slate-800 text-[13px] leading-tight">Better Care<br/>for Every Patient</h4></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Better Care<br/>for Every Patient</p></div>
           </div>
         </div>
       </div>

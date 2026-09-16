@@ -1,14 +1,13 @@
+import { createPageMetadata } from "@/lib/page-metadata";
 import Image from "next/image";
 import { Target, Award, Users, ThumbsUp } from "lucide-react";
 import { SITE } from "@/config/site";
 
-export const metadata = {
-  title: "About Us | Leading Medical Equipment Supplier in Nepal",
-  description: `Learn about ${SITE.name}, your trusted partner for biomedical equipment sourcing, hospital maintenance, and clinical support across Nepal.`,
-  alternates: {
-    canonical: "/about",
-  },
-};
+export const metadata = createPageMetadata(
+  "About Us | Medical Equipment in Nepal",
+  "Learn about Neomeditech Biomedical Solutions in Kathmandu and our medical equipment sourcing, quotation and technical support services in Nepal.",
+  "/about",
+);
 
 export default function About() {
     return (

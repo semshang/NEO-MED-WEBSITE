@@ -176,21 +176,21 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <div className="flex items-center space-x-3">
                     <ShieldCheck size={22} className="text-brand-green shrink-0" />
                     <div>
-                      <h4 className="text-xs font-bold text-brand-navy">Biomedical Support</h4>
+                      <p className="text-xs font-bold text-brand-navy">Biomedical Support</p>
                       <p className="text-xs text-slate-500">Installation & repair</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Truck size={22} className="text-brand-blue shrink-0" />
                     <div>
-                      <h4 className="text-xs font-bold text-brand-navy">Nationwide Delivery</h4>
+                      <p className="text-xs font-bold text-brand-navy">Nationwide Delivery</p>
                       <p className="text-xs text-slate-500">All 77 Nepal districts</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Headphones size={22} className="text-brand-green shrink-0" />
                     <div>
-                      <h4 className="text-xs font-bold text-brand-navy">Direct Quotation</h4>
+                      <p className="text-xs font-bold text-brand-navy">Direct Quotation</p>
                       <p className="text-xs text-slate-500">Inquire via WhatsApp</p>
                     </div>
                   </div>
@@ -199,6 +199,12 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
               {/* Action Buttons */}
               <div className="space-y-3 pt-2">
+                <h2 className="text-xl font-bold text-brand-navy">Request a quotation</h2>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Share your required model or configuration, quantity and delivery location.
+                  Ask our team to confirm specifications, included accessories, availability
+                  and warranty terms in your written quotation.
+                </p>
                 <a
                   href={whatsappUrl}
                   target="_blank"

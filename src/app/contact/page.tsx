@@ -1,14 +1,13 @@
+import { createPageMetadata } from "@/lib/page-metadata";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { SITE } from "@/config/site";
 import ContactForm from "@/components/ContactForm";
 
-export const metadata = {
-  title: "Contact & Quotation Inquiries in Kathmandu, Nepal",
-  description: "Contact Neomeditech Biomedical Solutions in Tarkeshwor-6, Kathmandu, Nepal. Sourcing, quotation, technical support, and equipment maintenance across all 77 districts.",
-  alternates: {
-    canonical: "/contact",
-  },
-};
+export const metadata = createPageMetadata(
+  "Contact & Quotations in Kathmandu, Nepal",
+  "Contact Neomeditech in Kathmandu for medical equipment specifications, availability, quotations and technical support in Nepal.",
+  "/contact",
+);
 
 export default function Contact() {
     const mapSearchUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(SITE.address)}`;
@@ -26,7 +25,7 @@ export default function Contact() {
           {/* Contact Information */}
           <div className="lg:w-1/3 space-y-8">
             <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
-              <h3 className="text-2xl font-bold text-brand-navy mb-6">Contact Us</h3>
+              <h2 className="text-2xl font-bold text-brand-navy mb-6">Contact Us</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -34,7 +33,7 @@ export default function Contact() {
                     <MapPin size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-brand-navy">Our Location</h4>
+                    <h3 className="font-bold text-brand-navy">Our Location</h3>
                     <p className="text-slate-600 mt-1">{SITE.address}</p>
                   </div>
                 </div>
@@ -44,9 +43,11 @@ export default function Contact() {
                     <Phone size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-brand-navy">Phone & WhatsApp</h4>
+                    <h3 className="font-bold text-brand-navy">Phone & WhatsApp</h3>
                     <p className="text-slate-600 mt-1">{SITE.phone}</p>
-                    <p className="text-slate-600">+977 {SITE.whatsapp}</p>
+                    <a href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-brand-blue">
+                      WhatsApp: +{SITE.whatsapp.slice(0, 3)} {SITE.whatsapp.slice(3)}
+                    </a>
                   </div>
                 </div>
                 
@@ -55,7 +56,7 @@ export default function Contact() {
                     <Mail size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-brand-navy">Email</h4>
+                    <h3 className="font-bold text-brand-navy">Email</h3>
                     <p className="text-slate-600 mt-1">{SITE.email}</p>
                   </div>
                 </div>
@@ -65,7 +66,7 @@ export default function Contact() {
                     <Clock size={24} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-brand-navy">Business Hours</h4>
+                    <h3 className="font-bold text-brand-navy">Business Hours</h3>
                     <p className="text-slate-600 mt-1">Please contact us to confirm current business hours and support availability.</p>
                   </div>
                 </div>
@@ -76,7 +77,7 @@ export default function Contact() {
           {/* Contact Form */}
           <div className="lg:w-2/3">
             <div className="bg-white p-8 md:p-12 rounded-3xl shadow-lg border border-gray-200">
-              <h3 className="text-2xl font-bold text-brand-navy mb-6">Send us a Message</h3>
+              <h2 className="text-2xl font-bold text-brand-navy mb-6">Send us a Message</h2>
               
               <ContactForm />
             </div>

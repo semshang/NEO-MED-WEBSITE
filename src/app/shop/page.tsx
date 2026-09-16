@@ -39,7 +39,7 @@ export default function Shop() {
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Page Header */}
         <div className="mb-10 text-center md:text-left">
-          <h1 className="text-4xl font-extrabold text-brand-navy mb-4">Our Products</h1>
+          <h1 className="text-4xl font-extrabold text-brand-navy mb-4">Medical Equipment Catalogue in Nepal</h1>
           <p className="text-slate-600 max-w-2x2 text-lg">Browse our comprehensive range of high-quality medical and hospital equipment.</p>
         </div>
 
