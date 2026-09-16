@@ -73,8 +73,8 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 pt-6 mt-6 flex flex-col md:flex-row justify-center text-center text-sm text-slate-500">
-          <p>&copy; Copyright {new Date().getFullYear()} Neomeditech. All Rights Reserved. Developed by <a href="https://unifiedsolutions.com.np/" target="_blank" rel="noopener noreferrer" className="text-[#0268d3] hover:underline">Unified Solutions</a>.</p>
-          </div>
+          <p>&copy; Copyright {new Date().getFullYear()} Neomeditech. All Rights Reserved.</p>
+        </div>
       </div>
     </footer>
   );
