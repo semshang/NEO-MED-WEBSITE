@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdmin } from "@/components/admin/AdminProvider";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { User, MessageSquare, CheckCircle2, Mail, Clock } from "lucide-react";
 import Image from "next/image";
 
 export default function MyAccount() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const { messages } = useAdmin();
   const [activeTab, setActiveTab] = useState("profile");
@@ -45,7 +47,13 @@ export default function MyAccount() {
     setTimeout(() => setSaveSuccess(false), 3000);
   };
 
-  if (status === "loading") {
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/?login=true&callbackUrl=%2Faccount");
+    }
+  }, [router, status]);
+
+  if (status === "loading" || status === "unauthenticated") {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full animate-spin"></div>

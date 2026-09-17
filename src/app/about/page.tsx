@@ -28,7 +28,7 @@ export default function About() {
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="md:w-1/2">
               <div className="aspect-video bg-white border border-slate-200 rounded-3xl flex items-center justify-center text-slate-400 shadow-sm relative overflow-hidden">
-                <Image src="/about-team.jpg" alt="Neomeditech Team" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                <Image src="/about-team.jpg" alt="Neomeditech Team" width={800} height={450} sizes="(max-width: 768px) 100vw, 50vw" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="md:w-1/2 space-y-6">

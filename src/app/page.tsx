@@ -113,11 +113,12 @@ export default function Home() {
               className="relative w-full max-w-[500px] lg:max-w-[750px] xl:max-w-[850px] aspect-[4/3] z-20 mx-auto lg:mx-0"
             >
               <Image
-                src="/hero-equipment.png"
+                src="/hero-equipment.webp"
                 alt="Premium Medical Equipment Monitor"
-                fill
+                width={850}
+                height={638}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 750px, 850px"
-                className="object-contain"
+                className="w-full h-auto object-contain"
                 priority
               />
             </motion.div>
@@ -214,7 +215,7 @@ export default function Home() {
                             transition={{ duration: 0.2, ease: "easeOut" }}
                           >
                             {product.image ? (
-                              <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain z-10" />
+                              <Image src={product.image} alt={product.name} width={400} height={400} sizes="(max-width: 640px) 100vw, 25vw" className="w-full h-full object-contain z-10" />
                             ) : <Package aria-hidden="true" size={40} className="text-slate-300" />}
                           </motion.div>
                         </div>
@@ -257,7 +258,7 @@ export default function Home() {
             {/* Card 1 */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUpVariant} className="bg-white rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
               <div className="relative w-full aspect-video">
-                <Image src="/services/calibration.jpg" alt="Calibration" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                <Image src="/services/calibration.jpg" alt="Calibration" width={600} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Calibration</h3>
@@ -268,7 +269,7 @@ export default function Home() {
             {/* Card 2 */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUpVariant} className="bg-white rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
               <div className="relative w-full aspect-video">
-                <Image src="/services/repair.jpg" alt="Repair" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                <Image src="/services/repair.jpg" alt="Repair" width={600} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Repair</h3>
@@ -279,7 +280,7 @@ export default function Home() {
             {/* Card 3 */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUpVariant} className="bg-white rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
               <div className="relative w-full aspect-video">
-                <Image src="/services/installation.jpg" alt="Installation" fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
+                <Image src="/services/installation.jpg" alt="Installation" width={600} height={400} className="w-full h-full object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Installation</h3>
@@ -327,7 +328,7 @@ export default function Home() {
                   </Link>
                 </motion.div>
                 <motion.div whileTap={{ scale: 0.97 }}>
-                  <Link href={`https://wa.me/${SITE.whatsapp}`} target="_blank" className="bg-transparent hover:bg-white/10 text-white border-2 border-white/30 px-8 py-3.5 rounded-xl font-bold transition-colors shadow-sm text-lg flex items-center justify-center w-full">
+                  <Link href={`https://wa.me/${SITE.whatsapp}`} target="_blank" rel="noopener noreferrer" className="bg-transparent hover:bg-white/10 text-white border-2 border-white/30 px-8 py-3.5 rounded-xl font-bold transition-colors shadow-sm text-lg flex items-center justify-center w-full">
                     Message on WhatsApp
                   </Link>
                 </motion.div>
@@ -340,7 +341,7 @@ export default function Home() {
               variants={fadeUpVariant}
               className="relative hidden lg:block h-[400px] w-full rounded-3xl overflow-hidden shadow-2xl"
             >
-              <Image src="/hero-equipment.webp" alt="Medical Equipment" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image src="/hero-equipment.webp" alt="Medical Equipment" width={800} height={600} className="w-full h-full object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             </motion.div>
           </div>
         </div>

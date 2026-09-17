@@ -95,7 +95,7 @@ const rawProducts = [
   { id: 60, name: "Water Level Indicator", category: "Sterilization & Infection Control Equipment (Autoclaves)", image: "https://xv73wvcdm0jqtc2k.public.blob.vercel-storage.com/products/migrated/6a95414cabd74897e959bbf4-e9c928d67af4.jpg" },
   { id: 61, name: "X-ray Collimator / LBD Lamps", category: "Imaging & Radiology Supplies", image: "https://xv73wvcdm0jqtc2k.public.blob.vercel-storage.com/products/migrated/6a95414cabd74897e959bbf5-d71cd3abab88.jpg" },
   { id: 62, name: "Xenon Lamp", category: "Surgical Equipment & Accessories", image: "https://xv73wvcdm0jqtc2k.public.blob.vercel-storage.com/products/migrated/6a95414cabd74897e959bbf6-e4d5d68af6ab.jpg" },
-  { id: 63, name: "Ultrasound Machine Probes", category: "Ultrasound & Sonography Systems", image: "/shop/ultrasound-probes.png" }
+  { id: 63, name: "Ultrasound Machine Probes", category: "Ultrasound & Sonography Systems", image: "/shop/ultrasound-probes.webp" }
 ];
 
 export const PRODUCT_SEED = rawProducts.map((p) => {

@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
         {/* Table of Contents - Desktop */}
         <aside className="hidden lg:block w-72 flex-shrink-0">
           <div className="sticky top-24 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-            <h3 className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">Contents</h3>
+            <p className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">Contents</p>
             <ul className="space-y-3">
               {sections.map((section) => (
                 <li key={section.id}>
@@ -105,7 +105,7 @@ export default function PrivacyPolicyPage() {
             <div className="bg-brand-blue/5 border border-brand-blue/20 shadow-md rounded-2xl p-6 md:p-8 mb-8">
               <div className="flex items-center gap-3 mb-4">
                 <ShieldCheck className="text-brand-green w-6 h-6" />
-                <h3 className="font-bold text-brand-navy text-lg m-0">Privacy at a Glance</h3>
+                <h2 className="font-bold text-brand-navy text-lg m-0">Privacy at a Glance</h2>
               </div>
               <ul className="list-disc pl-5 space-y-2 m-0 text-sm">
                 <li><strong className="text-brand-navy">What we collect:</strong> Name, email address, phone number, delivery address, requested equipment, and message.</li>
@@ -159,7 +159,7 @@ export default function PrivacyPolicyPage() {
                     <HelpCircle size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-brand-navy text-lg m-0">Questions about your data or privacy?</h3>
+                    <h2 className="font-bold text-brand-navy text-lg m-0">Questions about your data or privacy?</h2>
                     <p className="text-slate-500 text-sm m-0 mt-1">We&apos;re here to help clarify our policies.</p>
                   </div>
                 </div>

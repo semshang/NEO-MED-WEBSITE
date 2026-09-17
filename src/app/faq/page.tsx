@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { serializeJsonLd } from "@/lib/catalogue-structured-data";
 
 const FAQS = [
   {
@@ -64,7 +65,7 @@ export default function FAQ() {
     <div className="bg-brand-gray min-h-screen py-12">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="text-center mb-16">
@@ -74,6 +75,7 @@ export default function FAQ() {
           </p>
         </div>
 
+        <h2 className="sr-only">Common Questions & Answers</h2>
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
           {FAQS.map((faq, index) => (
             <div key={index} className="border-b border-slate-100 last:border-0">
@@ -104,7 +106,7 @@ export default function FAQ() {
         
         {/* Support Banner */}
         <div className="mt-16 bg-white border border-slate-200 rounded-3xl p-8 md:p-12 text-center shadow-sm">
-          <h3 className="text-2xl font-bold text-brand-navy mb-4">Still have questions?</h3>
+          <h2 className="text-2xl font-bold text-brand-navy mb-4">Still have questions?</h2>
           <p className="text-slate-600 mb-8 max-w-xl mx-auto">
             If you couldn&apos;t find the answer to your question, our support team is always ready to help you with any inquiries.
           </p>

@@ -103,6 +103,7 @@ export default function Shop() {
 
           {/* Product Grid */}
           <div className="lg:w-3/4">
+            <h2 className="sr-only">Medical Equipment List</h2>
             {filteredProducts.length === 0 ? (
               <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-12 text-center">
                 <p className="text-slate-500 text-lg">No products found matching your criteria.</p>
@@ -142,9 +143,10 @@ export default function Shop() {
                             <Image
                               src={product.image}
                               alt={product.name}
-                              fill
+                              width={400}
+                              height={400}
                               sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                              className="object-contain z-10"
+                              className="w-full h-full object-contain z-10"
                             />
                           ) : (
                             <Package aria-hidden="true" size={40} className="text-slate-300" />

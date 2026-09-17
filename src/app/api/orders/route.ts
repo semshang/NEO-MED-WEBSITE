@@ -9,6 +9,7 @@ import { hasOnlyKeys, MAX_ORDER_ITEMS } from "@/lib/security-validation";
 import { logSecurityEvent } from "@/lib/security-log";
 import Order from "@/models/Order";
 import Product from "@/models/Product";
+import Counter from "@/models/Counter";
 import mongoose from "mongoose";
 
 interface OrderInputItem {
@@ -31,6 +32,29 @@ function parseItems(value: unknown): OrderInputItem[] {
   }
 
   return [...quantities].map(([productId, quantity]) => ({ productId, quantity }));
+}
+
+async function generateNextOrderNumber(): Promise<string> {
+  const counter = await Counter.findOneAndUpdate(
+    { _id: "orderNumber" },
+    { $inc: { seq: 1 } },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
+
+  let seq = counter.seq;
+  let candidate = `ORD-${seq.toString().padStart(4, "0")}`;
+
+  while (await Order.exists({ orderNumber: candidate })) {
+    const next = await Counter.findOneAndUpdate(
+      { _id: "orderNumber" },
+      { $inc: { seq: 1 } },
+      { new: true }
+    );
+    seq = next.seq;
+    candidate = `ORD-${seq.toString().padStart(4, "0")}`;
+  }
+
+  return candidate;
 }
 
 export async function GET() {
@@ -104,8 +128,7 @@ export async function POST(request: Request) {
   const total = orderItems.every((item) => item.price !== null)
     ? orderItems.reduce((sum, item) => sum + (item.price ?? 0) * item.quantity, 0)
     : null;
-  const orderCount = await Order.countDocuments();
-  const orderNumber = `ORD-${(orderCount + 1).toString().padStart(4, "0")}`;
+  const orderNumber = await generateNextOrderNumber();
 
   const order = await Order.create({
     orderNumber,

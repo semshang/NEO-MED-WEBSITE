@@ -142,10 +142,11 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                   <Image
                     src={product.image}
                     alt={`${product.name} supplied by Neomeditech in Nepal`}
-                    fill
+                    width={600}
+                    height={600}
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
-                    className="object-contain"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               ) : (
@@ -199,7 +200,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
               {/* Action Buttons */}
               <div className="space-y-3 pt-2">
-                <h2 className="text-xl font-bold text-brand-navy">Request a quotation</h2>
+                <h2 className="text-xl font-bold text-brand-navy">Request a quotation for {product.name}</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   Share your required model or configuration, quantity and delivery location.
                   Ask our team to confirm specifications, included accessories, availability

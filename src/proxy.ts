@@ -8,7 +8,20 @@ const generalRateLimit = new Map<string, RateLimitEntry>();
 const authRateLimit = new Map<string, RateLimitEntry>();
 
 function clientIp(request: NextRequest) {
-  return request.headers.get("x-real-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const vercelIp = request.headers.get("x-vercel-ip")?.trim();
+  if (vercelIp) return vercelIp.slice(0, 128);
+
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp.slice(0, 128);
+
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",").map((p) => p.trim()).filter(Boolean);
+    const candidate = parts[parts.length - 1];
+    if (candidate) return candidate.slice(0, 128);
+  }
+
+  return "unknown";
 }
 
 function pruneExpired(records: Map<string, RateLimitEntry>, now: number) {
@@ -57,7 +70,15 @@ function applyRateLimit(request: NextRequest): NextResponse | null {
   return null;
 }
 
-function protectedRoute(pathname: string) {
+function isApiAdminRoute(pathname: string) {
+  return pathname.startsWith("/api/admin") || pathname === "/api/settings" || pathname.startsWith("/api/settings/");
+}
+
+function isApiAccountRoute(pathname: string) {
+  return pathname.startsWith("/api/account");
+}
+
+function protectedPageRoute(pathname: string) {
   return /^\/(admin|account)(?:\/|$)/.test(pathname);
 }
 
@@ -66,7 +87,31 @@ export default async function proxy(request: NextRequest) {
   if (rateLimitResponse) return rateLimitResponse;
 
   const { pathname, search } = request.nextUrl;
-  if (pathname.startsWith("/api") || !protectedRoute(pathname)) return NextResponse.next();
+
+  if (isApiAdminRoute(pathname)) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401, headers: { "Cache-Control": "no-store" } });
+    }
+    if (token.role !== "admin") {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403, headers: { "Cache-Control": "no-store" } });
+    }
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store, max-age=0");
+    return response;
+  }
+
+  if (isApiAccountRoute(pathname)) {
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401, headers: { "Cache-Control": "no-store" } });
+    }
+    const response = NextResponse.next();
+    response.headers.set("Cache-Control", "private, no-store, max-age=0");
+    return response;
+  }
+
+  if (pathname.startsWith("/api") || !protectedPageRoute(pathname)) return NextResponse.next();
 
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   if (!token) {

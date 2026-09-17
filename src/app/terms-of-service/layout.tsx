@@ -1,7 +1,7 @@
 import { createPageMetadata } from "@/lib/page-metadata";
 
 export const metadata = createPageMetadata(
-  "Terms of Use",
+  "Terms of Service & Conditions",
   "Read the terms for using the Neomeditech website, requesting equipment quotations, placing orders and arranging delivery.",
   "/terms-of-service",
 );

@@ -25,7 +25,7 @@ export default function Contact() {
           {/* Contact Information */}
           <div className="lg:w-1/3 space-y-8">
             <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
-              <h2 className="text-2xl font-bold text-brand-navy mb-6">Contact Us</h2>
+              <h2 className="text-2xl font-bold text-brand-navy mb-6">Contact Information</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
@@ -86,7 +86,7 @@ export default function Contact() {
 
         {/* Location link avoids loading a third-party map until the visitor chooses to open it. */}
         <div className="mt-16">
-          <a href={mapSearchUrl} target="_blank" rel="noreferrer" className="w-full min-h-56 bg-slate-100 rounded-3xl overflow-hidden relative shadow-sm border border-slate-200 flex items-center justify-center hover:bg-slate-200 transition-colors">
+          <a href={mapSearchUrl} target="_blank" rel="noopener noreferrer" className="w-full min-h-56 bg-slate-100 rounded-3xl overflow-hidden relative shadow-sm border border-slate-200 flex items-center justify-center hover:bg-slate-200 transition-colors">
             <div className="text-center">
               <MapPin size={48} className="mx-auto text-brand-green mb-4" />
               <p className="text-brand-navy font-bold">Find Neomeditech on Google Maps</p>

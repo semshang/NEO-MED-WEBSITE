@@ -40,12 +40,21 @@ export function getSeedProductBySlug(slug: string): Product | null {
   };
 }
 
+const PRODUCT_TITLE_OVERRIDES: Record<string, string> = {
+  "OT Bed": "OT Bed (Operation Theatre Bed)",
+  "Professional Dual-Frequency Ultrasonic Therapy Unit": "Ultrasonic Therapy Machine",
+  "BiPAP Machine - Advanced Respiratory Support": "BiPAP Respiratory Machine",
+  "Heating Coil of Autoclave/Boiler/Water Bath": "Autoclave & Boiler Heating Coil",
+  "USG Paper (Ultrasound thermal paper)": "USG Ultrasound Thermal Paper",
+};
+
 /**
  * Builds factual, standardized SEO title for product pages:
  * Pattern: "{Product Name} in Nepal | Neomeditech"
  */
 export function buildProductTitle(productName: string): string {
-  const cleanName = productName ? productName.trim() : "Medical Equipment";
+  const trimmed = productName ? productName.trim() : "";
+  const cleanName = trimmed ? (PRODUCT_TITLE_OVERRIDES[trimmed] || trimmed) : "Medical Equipment";
   return `${cleanName} in Nepal | Neomeditech`;
 }
 

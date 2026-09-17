@@ -9,8 +9,59 @@ type JsonResult =
   | { ok: false; response: NextResponse };
 
 export function getClientAddress(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return (request.headers.get("x-real-ip") ?? forwarded ?? "unknown").slice(0, 128);
+  const vercelIp = request.headers.get("x-vercel-ip")?.trim();
+  if (vercelIp) return vercelIp.slice(0, 128);
+
+  const realIp = request.headers.get("x-real-ip")?.trim();
+  if (realIp) return realIp.slice(0, 128);
+
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",").map((p) => p.trim()).filter(Boolean);
+    const candidate = parts[parts.length - 1];
+    if (candidate) return candidate.slice(0, 128);
+  }
+
+  return "unknown";
+}
+
+function isAllowedOriginHost(host: string): boolean {
+  const normalizedHost = host.toLowerCase().trim();
+  const allowed = new Set<string>(["neomeditech.com.np", "www.neomeditech.com.np"]);
+
+  if (process.env.NEXTAUTH_URL) {
+    try {
+      allowed.add(new URL(process.env.NEXTAUTH_URL).host.toLowerCase());
+    } catch {
+      // ignore malformed env URL
+    }
+  }
+
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    try {
+      allowed.add(new URL(process.env.NEXT_PUBLIC_SITE_URL).host.toLowerCase());
+    } catch {
+      // ignore malformed env URL
+    }
+  }
+
+  if (process.env.VERCEL_URL) {
+    allowed.add(process.env.VERCEL_URL.replace(/\/+$/, "").toLowerCase());
+  }
+
+  if (allowed.has(normalizedHost)) return true;
+
+  if (process.env.NODE_ENV !== "production") {
+    if (/^localhost(:\d+)?$/i.test(normalizedHost) || /^127\.0\.0\.1(:\d+)?$/i.test(normalizedHost)) {
+      return true;
+    }
+  }
+
+  if (process.env.VERCEL_ENV === "preview" && normalizedHost.endsWith(".vercel.app")) {
+    return true;
+  }
+
+  return false;
 }
 
 export function requireSameOrigin(request: Request): NextResponse | null {
@@ -19,13 +70,12 @@ export function requireSameOrigin(request: Request): NextResponse | null {
 
   try {
     const originUrl = new URL(origin);
-    const requestUrl = new URL(request.url);
-    const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
-    const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
-    const expectedHost = forwardedHost || requestUrl.host;
-    const expectedProtocol = forwardedProto ? `${forwardedProto}:` : requestUrl.protocol;
 
-    if (originUrl.host !== expectedHost || originUrl.protocol !== expectedProtocol) {
+    if (process.env.NODE_ENV === "production" && originUrl.protocol !== "https:") {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+
+    if (!isAllowedOriginHost(originUrl.host)) {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
   } catch {

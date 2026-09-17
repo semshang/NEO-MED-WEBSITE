@@ -110,7 +110,7 @@ export default function TermsPage() {
         {/* Table of Contents - Desktop */}
         <aside className="hidden lg:block w-72 flex-shrink-0">
           <div className="sticky top-24 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-            <h3 className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">Contents</h3>
+            <p className="font-bold text-brand-navy mb-4 text-sm uppercase tracking-wider">Contents</p>
             <ul className="space-y-3">
               {sections.map((section) => (
                 <li key={section.id}>
@@ -163,7 +163,7 @@ export default function TermsPage() {
                     <HelpCircle size={24} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-brand-navy text-lg m-0">Questions about these terms?</h3>
+                    <h2 className="font-bold text-brand-navy text-lg m-0">Questions about these terms?</h2>
                     <p className="text-slate-500 text-sm m-0 mt-1">We&apos;re here to help clarify our policies.</p>
                   </div>
                 </div>

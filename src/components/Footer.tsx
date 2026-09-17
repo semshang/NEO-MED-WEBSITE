@@ -19,13 +19,13 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <div className="text-sm text-slate-400 leading-relaxed"><h3 className="text-white font-bold mb-6 text-lg">Neomeditech Biomedical Solutions</h3><p className="lg:pr-12 xl:pr-20">Medical equipment supplier in Nepal. Neomeditech provides medical and hospital equipment throughout Nepal with technical service support.</p></div>
             <div className="flex space-x-4 pt-2">
-              <a href={SITE.social.facebook} target="_blank" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
+              <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Follow Neomeditech on Facebook" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
                 <FaFacebook size={22} />
               </a>
-              <a href={SITE.social.instagram} target="_blank" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
+              <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow Neomeditech on Instagram" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
                 <FaInstagram size={22} />
               </a>
-              <a href="https://www.youtube.com/channel/UCS_HxVBxzyCs5ojtAcno3tQ" target="_blank" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
+              <a href="https://www.youtube.com/channel/UCS_HxVBxzyCs5ojtAcno3tQ" target="_blank" rel="noopener noreferrer" aria-label="Subscribe to Neomeditech on YouTube" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-blue transition-colors text-white">
                 <FaYoutube size={22} />
               </a>
             </div>

@@ -9,6 +9,7 @@ import {
 } from "../src/lib/catalogue-structured-data.ts";
 import { PRODUCT_SEED } from "../src/data/products.ts";
 import { SITE } from "../src/config/site.ts";
+import { BUSINESS_INFO, getBusinessStructuredData } from "../src/lib/business-info.ts";
 
 test("1. catalogue structured data uses CollectionPage and ItemList, and does NOT emit Product objects", () => {
   const jsonLd = generateCatalogueJsonLd(PRODUCT_SEED, SITE.url);
@@ -114,16 +115,57 @@ test("7. Shop page source does not render per-product Product JSON-LD inside car
   assert.equal(shopContent.includes("product.name"), true);
 });
 
-test("8. Existing MedicalBusiness and FAQPage structured data remain intact", () => {
+test("8. Existing MedicalBusiness and FAQPage structured data remain intact and use serializeJsonLd", () => {
   const layoutPath = path.join(process.cwd(), "src/app/layout.tsx");
   const layoutContent = fs.readFileSync(layoutPath, "utf-8");
   assert.ok(layoutContent.includes('"@type": "MedicalBusiness"'));
   assert.ok(layoutContent.includes('"@type": "PostalAddress"'));
   assert.ok(layoutContent.includes('"@type": "GeoCoordinates"'));
+  assert.ok(layoutContent.includes("serializeJsonLd(orgJsonLd)"));
 
   const faqPath = path.join(process.cwd(), "src/app/faq/page.tsx");
   const faqContent = fs.readFileSync(faqPath, "utf-8");
   assert.ok(faqContent.includes('"@type": "FAQPage"'));
   assert.ok(faqContent.includes('"@type": "Question"'));
   assert.ok(faqContent.includes('"@type": "Answer"'));
+  assert.ok(faqContent.includes("serializeJsonLd(jsonLd)"));
+});
+
+test("9. Root layout provides sitewide Organization and LocalBusiness (MedicalBusiness) schema with complete GBP details", () => {
+  const layoutPath = path.join(process.cwd(), "src/app/layout.tsx");
+  const layoutContent = fs.readFileSync(layoutPath, "utf-8");
+  assert.ok(layoutContent.includes('"@type": "Organization"'));
+  assert.ok(layoutContent.includes('"@type": "MedicalBusiness"'));
+  assert.ok(layoutContent.includes("BUSINESS_INFO.address.streetAddress"));
+  assert.ok(layoutContent.includes("BUSINESS_INFO.telephone"));
+  assert.ok(layoutContent.includes("BUSINESS_INFO.sameAs"));
+  assert.ok(layoutContent.includes("openingHoursSpecification"));
+
+  const data = getBusinessStructuredData("https://neomeditech.com.np");
+  assert.equal(data["@context"], "https://schema.org");
+  assert.ok(Array.isArray(data["@graph"]));
+  assert.equal(data["@graph"].length, 2);
+
+  const org = data["@graph"].find((item) => item["@type"] === "Organization");
+  assert.ok(org);
+  assert.equal(org.name, BUSINESS_INFO.name);
+  assert.equal(org.url, "https://neomeditech.com.np");
+  assert.ok(org.logo);
+  assert.ok(Array.isArray(org.sameAs));
+  assert.equal(org.sameAs.length, 3);
+
+  const business = data["@graph"].find((item) => item["@type"] === "MedicalBusiness");
+  assert.ok(business);
+  assert.equal(business.address["@type"], "PostalAddress");
+  assert.equal(business.address.streetAddress, "Tarakeshwar-6");
+  assert.equal(business.address.addressLocality, "Kathmandu");
+  assert.equal(business.address.addressCountry, "NP");
+  assert.equal(business.geo["@type"], "GeoCoordinates");
+  assert.equal(business.telephone[0], "+977 9712011758");
+  assert.ok(Array.isArray(business.openingHoursSpecification));
+  assert.equal(business.parentOrganization["@id"], "https://neomeditech.com.np/#organization");
+
+  const serialized = serializeJsonLd(data);
+  assert.ok(!serialized.includes("<script>"));
+  assert.ok(serialized.includes("Tarakeshwar-6"));
 });

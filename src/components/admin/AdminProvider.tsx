@@ -105,13 +105,20 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       setMessages(nextMessages);
 
       if (isAdmin) {
-        const [nextSettings, customers] = await Promise.all([
-          requestJson<Settings>("/api/settings"),
-          requestJson<CustomerMetaResponse[]>("/api/admin/customers"),
-        ]);
-        setSettings(nextSettings);
-        setCustomerMeta(Object.fromEntries(customers.map(({ email, vip, notes }) => [email, { vip, notes }])));
+        try {
+          const [nextSettings, customers] = await Promise.all([
+            requestJson<Settings>("/api/settings"),
+            requestJson<CustomerMetaResponse[]>("/api/admin/customers"),
+          ]);
+          setSettings(nextSettings);
+          setCustomerMeta(Object.fromEntries(customers.map(({ email, vip, notes }) => [email, { vip, notes }])));
+        } catch (adminLoadError) {
+          setSettings(defaultSettings);
+          setCustomerMeta({});
+          throw adminLoadError;
+        }
       } else {
+        setSettings(defaultSettings);
         setCustomerMeta({});
       }
     } catch (loadError) {
