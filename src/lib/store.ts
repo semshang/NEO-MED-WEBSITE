@@ -16,7 +16,22 @@ export function serializeProduct(product: IProduct): Product {
     stock: product.stock,
     price: product.price,
     description: product.description,
-    isActive: product.isActive,
+    isActive: product.isActive !== false && product.active !== false,
+    active: product.isActive !== false && product.active !== false,
+    seoTitle: product.seoTitle || "",
+    seoDescription: product.seoDescription || "",
+    shortDescription: product.shortDescription || "",
+    detailedDescription: product.detailedDescription || "",
+    brand: product.brand || "",
+    model: product.model || "",
+    features: product.features || [],
+    applications: product.applications || [],
+    specifications: product.specifications?.map((s) => ({ label: s.label, value: s.value })) || [],
+    warranty: product.warranty || "",
+    installationSupport: product.installationSupport || "",
+    deliveryInformation: product.deliveryInformation || "",
+    faq: product.faq?.map((f) => ({ question: f.question, answer: f.answer })) || [],
+    imageAlt: product.imageAlt || "",
   };
 }
 

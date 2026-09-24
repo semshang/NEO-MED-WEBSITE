@@ -11,6 +11,7 @@ import { logSecurityEvent, logServerError } from "@/lib/security-log";
 import { processProductImage, cleanupBlob } from "@/lib/product-blob";
 import { CATEGORIES } from "@/data/products";
 import Product from "@/models/Product";
+import { slugifyCategory } from "@/lib/product-slugs";
 
 function slugify(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
@@ -18,9 +19,83 @@ function slugify(value: string) {
 
 export async function GET() {
   await connectDB();
-  await ensureCatalogSeeded();
-  const products = await Product.find({ isActive: true }).sort({ category: 1, name: 1 }).limit(250);
+  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+    await ensureCatalogSeeded();
+  }
+  const products = await Product.find({
+    isActive: { $ne: false },
+    active: { $ne: false },
+  })
+    .sort({ category: 1, name: 1 })
+    .limit(250);
   return NextResponse.json(products.map(serializeProduct));
+}
+
+const ALLOWED_PRODUCT_KEYS = [
+  "name",
+  "category",
+  "stock",
+  "price",
+  "description",
+  "image",
+  "isActive",
+  "active",
+  "seoTitle",
+  "seoDescription",
+  "shortDescription",
+  "detailedDescription",
+  "brand",
+  "model",
+  "features",
+  "applications",
+  "specifications",
+  "warranty",
+  "installationSupport",
+  "deliveryInformation",
+  "faq",
+  "imageAlt",
+] as const;
+
+function parseStringList(value: unknown, maxItems = 25, maxItemLen = 300): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, maxItems)
+    .map((item) => item.slice(0, maxItemLen));
+}
+
+function parseSpecifications(value: unknown, maxItems = 30): { label: string; value: string }[] {
+  if (!Array.isArray(value)) return [];
+  const result: { label: string; value: string }[] = [];
+  for (const item of value) {
+    if (result.length >= maxItems) break;
+    if (typeof item === "object" && item !== null && "label" in item && "value" in item) {
+      const label = String(item.label).trim().slice(0, 200);
+      const val = String(item.value).trim().slice(0, 500);
+      if (label && val) {
+        result.push({ label, value: val });
+      }
+    }
+  }
+  return result;
+}
+
+function parseFaq(value: unknown, maxItems = 20): { question: string; answer: string }[] {
+  if (!Array.isArray(value)) return [];
+  const result: { question: string; answer: string }[] = [];
+  for (const item of value) {
+    if (result.length >= maxItems) break;
+    if (typeof item === "object" && item !== null && "question" in item && "answer" in item) {
+      const question = String(item.question).trim().slice(0, 500);
+      const answer = String(item.answer).trim().slice(0, 2000);
+      if (question && answer) {
+        result.push({ question, answer });
+      }
+    }
+  }
+  return result;
 }
 
 export async function POST(request: Request) {
@@ -34,7 +109,7 @@ export async function POST(request: Request) {
   const parsed = await readJsonObject(request, 8 * 1024 * 1024);
   if (!parsed.ok) return parsed.response;
   const body = parsed.data;
-  if (!hasOnlyKeys(body, ["name", "category", "stock", "price", "description", "image", "isActive"])) {
+  if (!hasOnlyKeys(body, ALLOWED_PRODUCT_KEYS)) {
     return NextResponse.json({ message: "Invalid product data" }, { status: 400 });
   }
 
@@ -75,13 +150,31 @@ export async function POST(request: Request) {
       stock,
       price,
       description: stringValue(body.description, 2000),
-      isActive: body.isActive !== false,
+      isActive: body.isActive !== false && (body as { active?: unknown }).active !== false,
+      active: body.isActive !== false && (body as { active?: unknown }).active !== false,
+      seoTitle: stringValue(body.seoTitle, 160),
+      seoDescription: stringValue(body.seoDescription, 500),
+      shortDescription: stringValue(body.shortDescription, 500),
+      detailedDescription: stringValue(body.detailedDescription, 5000),
+      brand: stringValue(body.brand, 120),
+      model: stringValue(body.model, 120),
+      features: parseStringList(body.features),
+      applications: parseStringList(body.applications),
+      specifications: parseSpecifications(body.specifications),
+      warranty: stringValue(body.warranty, 500),
+      installationSupport: stringValue(body.installationSupport, 500),
+      deliveryInformation: stringValue(body.deliveryInformation, 500),
+      faq: parseFaq(body.faq),
+      imageAlt: stringValue(body.imageAlt, 200),
     });
 
     logSecurityEvent("admin_product_created", { actor: auth.session.user.email, productId: product.id });
 
     try {
       revalidatePath(`/products/${product.slug}`);
+      if (product.category) {
+        revalidatePath(`/products/category/${slugifyCategory(product.category)}`);
+      }
       revalidatePath("/shop");
       revalidatePath("/sitemap.xml");
       revalidatePath("/");

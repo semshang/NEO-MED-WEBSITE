@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/config/site";
-import { getAllPublicProducts } from "@/lib/catalog";
+import { getActiveCategoriesWithProducts, getAllPublicProducts } from "@/lib/catalog";
+import { slugifyCategory } from "@/lib/product-slugs";
 
 export const revalidate = 60;
 
@@ -28,6 +29,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route.priority,
   }));
 
+  const activeCategories = await getActiveCategoriesWithProducts();
+  const categoryEntries: MetadataRoute.Sitemap = activeCategories.map((category) => ({
+    url: `${SITE.url}/products/category/${slugifyCategory(category)}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
   const products = await getAllPublicProducts();
   const productEntries: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${SITE.url}/products/${product.slug}`,
@@ -36,5 +45,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...productEntries];
+  return [...staticEntries, ...categoryEntries, ...productEntries];
 }

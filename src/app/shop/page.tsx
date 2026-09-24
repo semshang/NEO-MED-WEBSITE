@@ -20,6 +20,7 @@ export default function Shop() {
   const catalogueJsonLd = generateCatalogueJsonLd(products, SITE.url);
 
   const filteredProducts = products.filter((product) => {
+    if (product.isActive === false || (product as { active?: boolean }).active === false) return false;
     const matchesCategory = activeCategory === "All Products" || product.category === activeCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;

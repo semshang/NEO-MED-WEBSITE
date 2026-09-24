@@ -58,7 +58,7 @@ export default function About() {
                 <Award size={32} />
               </div>
               <h3 className="text-xl font-bold text-brand-navy mb-3">Quality First</h3>
-              <p className="text-slate-600">We never compromise on the quality and authenticity of our medical equipment.</p>
+              <p className="text-slate-600">We never compromise on the quality and reliability of our medical equipment.</p>
             </div>
             
             <div className="p-8 bg-white rounded-3xl shadow-md border border-gray-200 text-center hover:shadow-lg transition-shadow">

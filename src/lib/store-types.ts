@@ -2,6 +2,16 @@ export const ORDER_STATUSES = ["New", "Confirmed", "Processing", "Delivered", "C
 
 export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
+export interface ProductSpecification {
+  label: string;
+  value: string;
+}
+
+export interface ProductFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -12,6 +22,21 @@ export interface Product {
   price: number | null;
   description: string;
   isActive: boolean;
+  active?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  shortDescription?: string;
+  detailedDescription?: string;
+  brand?: string;
+  model?: string;
+  features?: string[];
+  applications?: string[];
+  specifications?: ProductSpecification[];
+  warranty?: string;
+  installationSupport?: string;
+  deliveryInformation?: string;
+  faq?: ProductFAQ[];
+  imageAlt?: string;
 }
 
 export interface OrderItem {
