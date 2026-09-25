@@ -114,7 +114,7 @@ test("6. WhatsApp inquiry URL contains correct phone number and pre-filled produ
   assert.ok(url.includes(encodeURIComponent("Hello, I would like to inquire about the product: Oxygen Concentrator")));
 });
 
-test("7. Structured data emits Product + BreadcrumbList in @graph and strictly avoids fake offers/ratings", () => {
+test("7. Structured data conditionally emits Product schema only when genuinely qualified, and always emits BreadcrumbList", () => {
   const product = {
     name: "Patient Monitors",
     slug: "patient-monitors",
@@ -122,16 +122,15 @@ test("7. Structured data emits Product + BreadcrumbList in @graph and strictly a
     image: "https://xv73wvcdm0jqtc2k.public.blob.vercel-storage.com/sample.jpg",
   };
 
+  // Inquiry-based product without visible price or reviews MUST NOT emit "@type": "Product"
+  // to prevent Google Search Console error: "Either 'offers', 'review', or 'aggregateRating' should be specified"
   const jsonLd = buildProductDetailJsonLd(product, SITE.url);
 
   assert.equal(jsonLd["@context"], "https://schema.org");
   assert.ok(Array.isArray(jsonLd["@graph"]));
 
   const productNode = jsonLd["@graph"].find((item) => item["@type"] === "Product");
-  assert.ok(productNode, "Should contain Product node");
-  assert.equal(productNode.name, "Patient Monitors");
-  assert.equal(productNode.url, "https://neomeditech.com.np/products/patient-monitors");
-  assert.deepEqual(productNode.image, ["https://xv73wvcdm0jqtc2k.public.blob.vercel-storage.com/sample.jpg"]);
+  assert.equal(productNode, undefined, "Inquiry-based product must NOT emit Product node");
 
   const breadcrumbNode = jsonLd["@graph"].find((item) => item["@type"] === "BreadcrumbList");
   assert.ok(breadcrumbNode, "Should contain BreadcrumbList node");
@@ -141,25 +140,49 @@ test("7. Structured data emits Product + BreadcrumbList in @graph and strictly a
   assert.equal(breadcrumbNode.itemListElement[2].name, "Emergency & Critical Care Equipment");
   assert.equal(breadcrumbNode.itemListElement[3].name, "Patient Monitors");
 
-  // Critical Google Search Console error prevention: Zero fake offers, zero fake ratings or reviews
-  const serialized = JSON.stringify(jsonLd);
-  assert.equal(serialized.includes('"offers"'), false);
-  assert.equal(serialized.includes('"price"'), false);
-  assert.equal(serialized.includes('"aggregateRating"'), false);
-  assert.equal(serialized.includes('"review"'), false);
-  assert.equal(serialized.includes("www.neomeditech.com.np"), false);
-
-  // Even if internal price is present in database record, zero Offer markup is emitted
-  // because customer-facing pages are quotation-based without visible retail prices.
-  const pricedProduct = {
+  // Even if internal price is present in database record, Product schema is NOT emitted
+  // unless customer-facing visible price and currency are provided
+  const internalPricedProduct = {
     ...product,
     price: 150000,
   };
-  const pricedJsonLd = buildProductDetailJsonLd(pricedProduct, SITE.url);
-  const pricedProductNode = pricedJsonLd["@graph"].find((item) => item["@type"] === "Product");
-  assert.equal(pricedProductNode.offers, undefined);
-  assert.equal(JSON.stringify(pricedJsonLd).includes('"offers"'), false);
-  assert.equal(JSON.stringify(pricedJsonLd).includes('"price"'), false);
+  const internalPricedJsonLd = buildProductDetailJsonLd(internalPricedProduct, SITE.url);
+  assert.equal(
+    internalPricedJsonLd["@graph"].find((item) => item["@type"] === "Product"),
+    undefined,
+    "Internal database price must NOT emit Product schema without visible customer-facing offer"
+  );
+
+  // Future conditional qualification: When visiblePrice and priceCurrency exist, Product schema IS emitted with Offer
+  const qualifiedProduct = {
+    ...product,
+    visiblePrice: 150000,
+    priceCurrency: "NPR",
+  };
+  const qualifiedJsonLd = buildProductDetailJsonLd(qualifiedProduct, SITE.url);
+  const qualifiedProductNode = qualifiedJsonLd["@graph"].find((item) => item["@type"] === "Product");
+  assert.ok(qualifiedProductNode, "Qualified product should emit Product node");
+  assert.equal(qualifiedProductNode.name, "Patient Monitors");
+  assert.ok(qualifiedProductNode.offers, "Qualified product must include Offer");
+  assert.equal(qualifiedProductNode.offers.price, 150000);
+  assert.equal(qualifiedProductNode.offers.priceCurrency, "NPR");
+
+  // Future conditional qualification: When genuine reviews exist, Product schema IS emitted with Review
+  const reviewedProduct = {
+    ...product,
+    reviews: [
+      {
+        author: "Hospital Tech",
+        reviewBody: "Reliable vital signs monitoring.",
+        reviewRating: 5,
+      },
+    ],
+  };
+  const reviewedJsonLd = buildProductDetailJsonLd(reviewedProduct, SITE.url);
+  const reviewedProductNode = reviewedJsonLd["@graph"].find((item) => item["@type"] === "Product");
+  assert.ok(reviewedProductNode, "Reviewed product should emit Product node");
+  assert.ok(Array.isArray(reviewedProductNode.review));
+  assert.equal(reviewedProductNode.review[0].author.name, "Hospital Tech");
 });
 
 test("8. Shop page contains crawlable <Link> elements pointing to canonical product URLs", () => {

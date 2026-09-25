@@ -51,22 +51,25 @@ test("Phase 22 - Verify pre-rendered SEO HTML output for Category, Product, and 
   );
   assert.equal($prod('meta[name="robots"]').attr("content"), "index, follow");
 
-  // Check Product JSON-LD (Product + BreadcrumbList)
-  let foundProductGraph = false;
+  // Check Product JSON-LD (Must contain BreadcrumbList, and must NOT contain Product without Offer/review)
+  let foundBreadcrumbGraph = false;
+  let hasUnqualifiedProduct = false;
   $prod('script[type="application/ld+json"]').each((_, el) => {
     try {
       const data = JSON.parse($prod(el).html() || "{}");
       if (Array.isArray(data["@graph"])) {
         const types = data["@graph"].map((g) => g["@type"]);
-        if (types.includes("Product") && types.includes("BreadcrumbList")) {
-          foundProductGraph = true;
-          const productNode = data["@graph"].find((g) => g["@type"] === "Product");
-          assert.equal(productNode.name, "BiPAP Machine - Advanced Respiratory Support");
+        if (types.includes("BreadcrumbList")) {
+          foundBreadcrumbGraph = true;
+        }
+        if (types.includes("Product")) {
+          hasUnqualifiedProduct = true;
         }
       }
     } catch {}
   });
-  assert.ok(foundProductGraph, "Product JSON-LD must contain Product and BreadcrumbList");
+  assert.ok(foundBreadcrumbGraph, "Product JSON-LD must contain BreadcrumbList");
+  assert.equal(hasUnqualifiedProduct, false, "Inquiry-based BiPAP page must NOT emit unqualified Product schema");
 
   // 3. Homepage
   const homePath = path.join(process.cwd(), ".next/server/app/index.html");

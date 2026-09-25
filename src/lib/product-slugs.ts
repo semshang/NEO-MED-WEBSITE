@@ -216,27 +216,101 @@ export function buildProductCanonical(slug?: string, siteUrl: string = SITE.url)
   return `${normalizedBase}/products/${cleanSlug}`;
 }
 
+export interface ProductStructuredDataInput {
+  name: string;
+  slug?: string;
+  category?: string;
+  description?: string;
+  seoDescription?: string;
+  shortDescription?: string;
+  image?: string;
+  brand?: string;
+  model?: string;
+  price?: number | null;
+  /** Real customer-facing fixed price that is visibly displayed to users on the page */
+  visiblePrice?: number | null;
+  /** Currency of the visible price, e.g. 'NPR' */
+  priceCurrency?: string;
+  /** Genuine user reviews visibly displayed on the page */
+  reviews?: Array<{
+    author: string;
+    reviewBody: string;
+    reviewRating: number;
+    datePublished?: string;
+  }>;
+  /** Genuine user aggregate rating visibly displayed on the page */
+  aggregateRating?: {
+    ratingValue: number;
+    reviewCount: number;
+    bestRating?: number;
+    worstRating?: number;
+  };
+}
+
 /**
- * Builds Schema.org Product structured data strictly from actual database fields.
- * Strictly eliminates Schema.org Offer markup because this site operates via quotation/inquiry
- * workflows ("Inquire on WhatsApp", "Get Quote") without customer-facing retail prices.
- * Never invents prices, offers, ratings, reviews, or unverified claims.
+ * Validates whether a product genuinely qualifies for Google's Schema.org Product rich result.
+ * Under Google Search Console guidelines, a Product rich result MUST specify at least one of:
+ * - 'offers' (with real customer-facing price visibly displayed on the page)
+ * - 'review' (genuine user review visibly displayed on the page)
+ * - 'aggregateRating' (genuine user aggregate rating visibly displayed on the page)
+ *
+ * CRITICAL RULE: An internal MongoDB price field does NOT qualify unless it is a verified,
+ * customer-facing fixed price visibly displayed to users on the page.
+ * For quotation/WhatsApp inquiry equipment, this returns false to strictly eliminate:
+ * "Either 'offers', 'review', or 'aggregateRating' should be specified".
+ */
+export function hasEligibleProductRichResult(product: ProductStructuredDataInput): boolean {
+  // Option A — Valid Offer: visible price and currency
+  const hasVisiblePrice =
+    typeof product.visiblePrice === "number" &&
+    !Number.isNaN(product.visiblePrice) &&
+    product.visiblePrice > 0;
+
+  if (hasVisiblePrice && product.priceCurrency) {
+    return true;
+  }
+
+  // Option B — Genuine Product Reviews
+  const hasReviews =
+    Array.isArray(product.reviews) &&
+    product.reviews.length > 0;
+
+  if (hasReviews) {
+    return true;
+  }
+
+  // Option C — Genuine Aggregate Rating
+  const hasAggregateRating =
+    typeof product.aggregateRating === "object" &&
+    product.aggregateRating !== null &&
+    typeof product.aggregateRating.ratingValue === "number" &&
+    typeof product.aggregateRating.reviewCount === "number" &&
+    product.aggregateRating.reviewCount > 0;
+
+  if (hasAggregateRating) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Builds Schema.org Product structured data ONLY when the product genuinely qualifies
+ * with a valid visible Offer, Review, or AggregateRating.
+ *
+ * If the product is quotation/inquiry-based and lacks visible price/reviews/ratings,
+ * this returns null so "@type": "Product" is NOT emitted into JSON-LD.
+ * This completely eliminates Google Search Console's critical error:
+ * "Either 'offers', 'review', or 'aggregateRating' should be specified".
  */
 export function buildProductStructuredData(
-  product: {
-    name: string;
-    slug?: string;
-    category?: string;
-    description?: string;
-    seoDescription?: string;
-    shortDescription?: string;
-    image?: string;
-    brand?: string;
-    model?: string;
-    price?: number | null;
-  },
+  product: ProductStructuredDataInput,
   siteUrl: string = SITE.url
-) {
+): Record<string, unknown> | null {
+  if (!hasEligibleProductRichResult(product)) {
+    return null;
+  }
+
   const normalizedBase = (siteUrl || "https://neomeditech.com.np").replace(/\/+$/, "");
   const canonicalUrl = buildProductCanonical(product.slug, normalizedBase);
   const description = buildProductDescription(product);
@@ -264,9 +338,49 @@ export function buildProductStructuredData(
     schema.category = product.category.trim();
   }
 
-  // ZERO Offer markup: Neomeditech products require quotation/inquiry.
-  // Google requires structured data to match user-visible page content.
-  // Do NOT output internal quotation/inventory estimates in Schema.org.
+  if (
+    typeof product.visiblePrice === "number" &&
+    product.visiblePrice > 0 &&
+    product.priceCurrency
+  ) {
+    schema.offers = {
+      "@type": "Offer",
+      price: product.visiblePrice,
+      priceCurrency: product.priceCurrency,
+      availability: "https://schema.org/InStock",
+      url: canonicalUrl,
+    };
+  }
+
+  if (Array.isArray(product.reviews) && product.reviews.length > 0) {
+    schema.review = product.reviews.map((r) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: r.author,
+      },
+      reviewBody: r.reviewBody,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: r.reviewRating,
+      },
+      ...(r.datePublished ? { datePublished: r.datePublished } : {}),
+    }));
+  }
+
+  if (
+    product.aggregateRating &&
+    typeof product.aggregateRating.ratingValue === "number" &&
+    typeof product.aggregateRating.reviewCount === "number"
+  ) {
+    schema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: product.aggregateRating.ratingValue,
+      reviewCount: product.aggregateRating.reviewCount,
+      ...(typeof product.aggregateRating.bestRating === "number" ? { bestRating: product.aggregateRating.bestRating } : {}),
+      ...(typeof product.aggregateRating.worstRating === "number" ? { worstRating: product.aggregateRating.worstRating } : {}),
+    };
+  }
 
   return schema;
 }
@@ -336,26 +450,21 @@ export function buildProductBreadcrumbJsonLd(
  * Emits @graph containing the Product entity and the 4-tier BreadcrumbList.
  */
 export function buildProductDetailJsonLd(
-  product: {
-    name: string;
-    slug?: string;
-    category?: string;
-    description?: string;
-    seoDescription?: string;
-    shortDescription?: string;
-    image?: string;
-    brand?: string;
-    model?: string;
-    price?: number | null;
-  },
+  product: ProductStructuredDataInput,
   siteUrl: string = SITE.url
 ) {
+  const graph: Array<Record<string, unknown>> = [];
+
+  const productSchema = buildProductStructuredData(product, siteUrl);
+  if (productSchema) {
+    graph.push(productSchema);
+  }
+
+  graph.push(buildProductBreadcrumbJsonLd(product, siteUrl));
+
   return {
     "@context": "https://schema.org",
-    "@graph": [
-      buildProductStructuredData(product, siteUrl),
-      buildProductBreadcrumbJsonLd(product, siteUrl),
-    ],
+    "@graph": graph,
   };
 }
 
