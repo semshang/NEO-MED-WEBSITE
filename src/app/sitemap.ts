@@ -3,7 +3,7 @@ import { SITE } from "@/config/site";
 import { getActiveCategoriesWithProducts, getAllPublicProducts } from "@/lib/catalog";
 import { slugifyCategory } from "@/lib/product-slugs";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface SitemapRoute {
   path: string;
