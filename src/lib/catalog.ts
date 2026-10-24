@@ -17,6 +17,107 @@ function isSeedModeAllowed(): boolean {
   );
 }
 
+function canUseReadOnlySeedFallback(): boolean {
+  return process.env.NODE_ENV !== "production" || process.env.ALLOW_SEED_CATALOG === "true";
+}
+
+function isDatabaseUnavailableError(error: unknown): boolean {
+  const seen = new Set<unknown>();
+  const parts: string[] = [];
+
+  const visit = (value: unknown) => {
+    if (!value || seen.has(value)) return;
+    seen.add(value);
+    if (typeof value === "string") {
+      parts.push(value);
+      return;
+    }
+    if (typeof value !== "object") return;
+    const err = value as {
+      name?: string;
+      code?: number | string;
+      codeName?: string;
+      message?: string;
+      cause?: unknown;
+      errorLabelSet?: Set<string>;
+      errorResponse?: { errmsg?: string; code?: number; codeName?: string };
+    };
+    if (err.name) parts.push(String(err.name));
+    if (err.code !== undefined) parts.push(String(err.code));
+    if (err.codeName) parts.push(err.codeName);
+    if (err.message) parts.push(err.message);
+    if (err.errorResponse?.errmsg) parts.push(err.errorResponse.errmsg);
+    if (err.errorResponse?.codeName) parts.push(err.errorResponse.codeName);
+    if (err.errorLabelSet instanceof Set) parts.push(...err.errorLabelSet);
+    visit(err.cause);
+  };
+
+  visit(error);
+  const text = parts.join(" ").toLowerCase();
+  return /bad auth|authentication failed|atlaserror|enotfound|econnrefused|querysrv|server selection|mongodb_uri|handshakeerror/.test(
+    text,
+  );
+}
+
+let hasWarnedSeedFallback = false;
+
+function logSeedFallback(error: unknown): void {
+  if (hasWarnedSeedFallback) return;
+  hasWarnedSeedFallback = true;
+  const message = error instanceof Error ? error.message : "database unavailable";
+  console.warn(
+    `[Catalog] Database unavailable (${message}). Serving the local seed catalogue for read-only display. This does not restore MongoDB.`,
+  );
+}
+
+function isActiveSeedProduct(product: (typeof PRODUCT_SEED)[number]): boolean {
+  return product.isActive !== false && (product as { active?: boolean }).active !== false;
+}
+
+function seedToProduct(product: (typeof PRODUCT_SEED)[number]): ProductType {
+  return {
+    id: String(product.id),
+    name: product.name,
+    slug: product.slug,
+    category: product.category,
+    image: product.image || "",
+    stock: product.stock ?? null,
+    price: product.price ?? null,
+    description: product.description || "",
+    isActive: product.isActive !== false,
+    active: product.isActive !== false,
+  };
+}
+
+export function getSeedCatalogProducts(): ProductType[] {
+  return PRODUCT_SEED.filter(isActiveSeedProduct).map(seedToProduct);
+}
+
+export function shouldServeLocalSeedCatalog(error: unknown): boolean {
+  return canUseReadOnlySeedFallback() && isDatabaseUnavailableError(error);
+}
+
+async function withCatalogFallback<T>(operation: () => Promise<T>, fallback: () => T): Promise<T> {
+  // Production must use MongoDB and propagate outages; never substitute local seed products.
+  if (process.env.NODE_ENV === "production") {
+    return await operation();
+  }
+
+  if (isSeedModeAllowed()) {
+    return fallback();
+  }
+
+  try {
+    return await operation();
+  } catch (error) {
+    if (shouldServeLocalSeedCatalog(error)) {
+      logSeedFallback(error);
+      return fallback();
+    }
+    throw error;
+  }
+}
+
 async function getConnectedDB(): Promise<void> {
   if (!process.env.MONGODB_URI) {
     if (process.env.NODE_ENV === "production") {
@@ -52,10 +153,10 @@ export async function ensureCatalogSeeded(): Promise<void> {
     return;
   }
 
-  // 3. Only seed in development or when explicitly enabled
+  // 3. Only seed in development or when explicitly enabled.
+  // ALLOW_SEED_CATALOG is a read-only display fallback and must never authorize database writes.
   const isExplicitSeedEnabled =
     process.env.ALLOW_CATALOG_SEED === "true" ||
-    process.env.ALLOW_SEED_CATALOG === "true" ||
     process.env.NODE_ENV === "development";
 
   if (!isExplicitSeedEnabled) {
@@ -93,59 +194,59 @@ export async function getProductBySlug(slug: string): Promise<ProductType | null
   if (!slug || typeof slug !== "string") return null;
   const normalizedSlug = slug.toLowerCase().trim();
 
-  // 1. Isolated test/mock mode (only when no MONGODB_URI is configured and in test environment)
-  if (isSeedModeAllowed()) {
-    const seed = getSeedProductBySlug(normalizedSlug);
-    if (!seed || seed.isActive === false || (seed as { active?: boolean }).active === false) {
-      return null;
-    }
-    return seed;
-  }
-
-  // 2. Authoritative Database Lookup
-  // Any connection or query failure propagates an error and does NOT return null or seed data.
-  await getConnectedDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+  return withCatalogFallback(
+    async () => {
+      await getConnectedDB();
+      if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
     await ensureCatalogSeeded();
   }
 
-  const doc = await Product.findOne({
-    slug: normalizedSlug,
-    isActive: { $ne: false },
-    active: { $ne: false },
-  }).lean<IProduct>();
+      const doc = await Product.findOne({
+        slug: normalizedSlug,
+        isActive: { $ne: false },
+        active: { $ne: false },
+      }).lean<IProduct>();
 
-  if (!doc) {
-    // Successful database query with no active product matching this slug: authoritative not found
+      if (!doc) {
+        // Successful database query with no active product matching this slug: authoritative not found
     return null;
-  }
+      }
 
-  return {
-    id: String(doc._id),
-    name: doc.name,
-    slug: doc.slug,
-    category: doc.category,
-    image: doc.image || "",
-    stock: doc.stock ?? null,
-    price: doc.price ?? null,
-    description: doc.description || "",
-    isActive: doc.isActive !== false && doc.active !== false,
-    active: doc.isActive !== false && doc.active !== false,
-    seoTitle: doc.seoTitle || "",
-    seoDescription: doc.seoDescription || "",
-    shortDescription: doc.shortDescription || "",
-    detailedDescription: doc.detailedDescription || "",
-    brand: doc.brand || "",
-    model: doc.model || "",
-    features: doc.features || [],
-    applications: doc.applications || [],
-    specifications: doc.specifications?.map((s) => ({ label: s.label, value: s.value })) || [],
-    warranty: doc.warranty || "",
-    installationSupport: doc.installationSupport || "",
-    deliveryInformation: doc.deliveryInformation || "",
-    faq: doc.faq?.map((f) => ({ question: f.question, answer: f.answer })) || [],
-    imageAlt: doc.imageAlt || "",
-  };
+      return {
+        id: String(doc._id),
+        name: doc.name,
+        slug: doc.slug,
+        category: doc.category,
+        image: doc.image || "",
+        stock: doc.stock ?? null,
+        price: doc.price ?? null,
+        description: doc.description || "",
+        isActive: doc.isActive !== false && doc.active !== false,
+        active: doc.isActive !== false && doc.active !== false,
+        seoTitle: doc.seoTitle || "",
+        seoDescription: doc.seoDescription || "",
+        shortDescription: doc.shortDescription || "",
+        detailedDescription: doc.detailedDescription || "",
+        brand: doc.brand || "",
+        model: doc.model || "",
+        features: doc.features || [],
+        applications: doc.applications || [],
+        specifications: doc.specifications?.map((s) => ({ label: s.label, value: s.value })) || [],
+        warranty: doc.warranty || "",
+        installationSupport: doc.installationSupport || "",
+        deliveryInformation: doc.deliveryInformation || "",
+        faq: doc.faq?.map((f) => ({ question: f.question, answer: f.answer })) || [],
+        imageAlt: doc.imageAlt || "",
+      };
+    },
+    () => {
+      const seed = getSeedProductBySlug(normalizedSlug);
+      if (!seed || seed.isActive === false || (seed as { active?: boolean }).active === false) {
+        return null;
+      }
+      return seed;
+    },
+  );
 }
 
 export async function getRelatedProducts(
@@ -154,147 +255,117 @@ export async function getRelatedProducts(
   limit: number = 4
 ): Promise<ProductType[]> {
   const normalizedSlug = currentSlug.toLowerCase().trim();
-  if (isSeedModeAllowed()) {
+  const seedRelated = (): ProductType[] => {
     const sameCat = PRODUCT_SEED.filter(
-      (p) =>
-        p.category === category &&
-        p.slug !== normalizedSlug &&
-        p.isActive !== false &&
-        (p as { active?: boolean }).active !== false
+      (p) => p.category === category && p.slug !== normalizedSlug && isActiveSeedProduct(p),
     );
     const pool =
       sameCat.length >= limit
         ? sameCat
         : [
             ...sameCat,
-            ...PRODUCT_SEED.filter(
-              (p) =>
-                p.slug !== normalizedSlug &&
-                p.isActive !== false &&
-                (p as { active?: boolean }).active !== false
-            ),
+            ...PRODUCT_SEED.filter((p) => p.slug !== normalizedSlug && isActiveSeedProduct(p)),
           ];
-    const unique = Array.from(new Map(pool.map((p) => [p.slug, p])).values()).slice(0, limit);
-    return unique.map((p) => ({
-      id: String(p.id),
-      name: p.name,
-      slug: p.slug,
-      category: p.category,
-      image: p.image,
-      stock: p.stock,
-      price: p.price,
-      description: p.description,
-      isActive: p.isActive,
-      active: p.isActive,
-    }));
-  }
+    return Array.from(new Map(pool.map((p) => [p.slug, p])).values())
+      .slice(0, limit)
+      .map(seedToProduct);
+  };
 
-  await getConnectedDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
-    await ensureCatalogSeeded();
-  }
-  const sameCatDocs = await Product.find({
-    category,
-    slug: { $ne: normalizedSlug },
-    isActive: { $ne: false },
-    active: { $ne: false },
-  })
-    .sort({ name: 1 })
-    .limit(limit)
-    .lean<IProduct[]>();
-
-  let docs = sameCatDocs;
-  if (docs.length < limit) {
-    const needed = limit - docs.length;
-    const existingSlugs = [normalizedSlug, ...docs.map((d) => d.slug)];
-    const fallbackDocs = await Product.find({
-      slug: { $nin: existingSlugs },
+  return withCatalogFallback<ProductType[]>(async () => {
+    await getConnectedDB();
+    if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+      await ensureCatalogSeeded();
+    }
+    const sameCatDocs = await Product.find({
+      category,
+      slug: { $ne: normalizedSlug },
       isActive: { $ne: false },
       active: { $ne: false },
     })
       .sort({ name: 1 })
-      .limit(needed)
+      .limit(limit)
       .lean<IProduct[]>();
-    docs = [...docs, ...fallbackDocs];
-  }
 
-  return docs.map((doc) => ({
-    id: String(doc._id),
-    name: doc.name,
-    slug: doc.slug,
-    category: doc.category,
-    image: doc.image || "",
-    stock: doc.stock ?? null,
-    price: doc.price ?? null,
-    description: doc.description || "",
-    isActive: doc.isActive !== false && doc.active !== false,
-    active: doc.isActive !== false && doc.active !== false,
-    brand: doc.brand || "",
-    model: doc.model || "",
-  }));
+    let docs = sameCatDocs;
+    if (docs.length < limit) {
+      const needed = limit - docs.length;
+      const existingSlugs = [normalizedSlug, ...docs.map((d) => d.slug)];
+      const fallbackDocs = await Product.find({
+        slug: { $nin: existingSlugs },
+        isActive: { $ne: false },
+        active: { $ne: false },
+      })
+        .sort({ name: 1 })
+        .limit(needed)
+        .lean<IProduct[]>();
+      docs = [...docs, ...fallbackDocs];
+    }
+
+    return docs.map((doc): ProductType => ({
+      id: String(doc._id),
+      name: doc.name,
+      slug: doc.slug,
+      category: doc.category,
+      image: doc.image || "",
+      stock: doc.stock ?? null,
+      price: doc.price ?? null,
+      description: doc.description || "",
+      isActive: doc.isActive !== false && doc.active !== false,
+      active: doc.isActive !== false && doc.active !== false,
+      brand: doc.brand || "",
+      model: doc.model || "",
+    }));
+  }, seedRelated);
 }
 
 export async function getProductsByCategory(category: string): Promise<ProductType[]> {
   if (!category) return [];
-  if (isSeedModeAllowed()) {
-    return PRODUCT_SEED.filter(
-      (p) =>
-        p.category.toLowerCase() === category.toLowerCase() &&
-        p.isActive !== false &&
-        (p as { active?: boolean }).active !== false
-    ).map((p) => ({
-      id: String(p.id),
-      name: p.name,
-      slug: p.slug,
-      category: p.category,
-      image: p.image,
-      stock: p.stock,
-      price: p.price,
-      description: p.description,
-      isActive: p.isActive,
-      active: p.isActive,
+  const seedByCategory = () =>
+    PRODUCT_SEED.filter(
+      (p) => p.category.toLowerCase() === category.toLowerCase() && isActiveSeedProduct(p),
+    ).map(seedToProduct);
+
+  return withCatalogFallback(async () => {
+    await getConnectedDB();
+    if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+      await ensureCatalogSeeded();
+    }
+    const escaped = category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const docs = await Product.find({
+      category: { $regex: new RegExp(`^${escaped}$`, "i") },
+      isActive: { $ne: false },
+      active: { $ne: false },
+    })
+      .sort({ name: 1 })
+      .lean<IProduct[]>();
+
+    return docs.map((doc) => ({
+      id: String(doc._id),
+      name: doc.name,
+      slug: doc.slug,
+      category: doc.category,
+      image: doc.image || "",
+      stock: doc.stock ?? null,
+      price: doc.price ?? null,
+      description: doc.description || "",
+      isActive: doc.isActive !== false && doc.active !== false,
+      active: doc.isActive !== false && doc.active !== false,
+      seoTitle: doc.seoTitle || "",
+      seoDescription: doc.seoDescription || "",
+      shortDescription: doc.shortDescription || "",
+      detailedDescription: doc.detailedDescription || "",
+      brand: doc.brand || "",
+      model: doc.model || "",
+      features: doc.features || [],
+      applications: doc.applications || [],
+      specifications: doc.specifications?.map((s) => ({ label: s.label, value: s.value })) || [],
+      warranty: doc.warranty || "",
+      installationSupport: doc.installationSupport || "",
+      deliveryInformation: doc.deliveryInformation || "",
+      faq: doc.faq?.map((f) => ({ question: f.question, answer: f.answer })) || [],
+      imageAlt: doc.imageAlt || "",
     }));
-  }
-
-  await getConnectedDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
-    await ensureCatalogSeeded();
-  }
-  const escaped = category.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const docs = await Product.find({
-    category: { $regex: new RegExp(`^${escaped}$`, "i") },
-    isActive: { $ne: false },
-    active: { $ne: false },
-  })
-    .sort({ name: 1 })
-    .lean<IProduct[]>();
-
-  return docs.map((doc) => ({
-    id: String(doc._id),
-    name: doc.name,
-    slug: doc.slug,
-    category: doc.category,
-    image: doc.image || "",
-    stock: doc.stock ?? null,
-    price: doc.price ?? null,
-    description: doc.description || "",
-    isActive: doc.isActive !== false && doc.active !== false,
-    active: doc.isActive !== false && doc.active !== false,
-    seoTitle: doc.seoTitle || "",
-    seoDescription: doc.seoDescription || "",
-    shortDescription: doc.shortDescription || "",
-    detailedDescription: doc.detailedDescription || "",
-    brand: doc.brand || "",
-    model: doc.model || "",
-    features: doc.features || [],
-    applications: doc.applications || [],
-    specifications: doc.specifications?.map((s) => ({ label: s.label, value: s.value })) || [],
-    warranty: doc.warranty || "",
-    installationSupport: doc.installationSupport || "",
-    deliveryInformation: doc.deliveryInformation || "",
-    faq: doc.faq?.map((f) => ({ question: f.question, answer: f.answer })) || [],
-    imageAlt: doc.imageAlt || "",
-  }));
+  }, seedByCategory);
 }
 
 export interface PublicProductSummary {
@@ -307,11 +378,8 @@ export interface PublicProductSummary {
 }
 
 export async function getAllPublicProducts(): Promise<PublicProductSummary[]> {
-  // 1. Isolated test/mock mode (only when no MONGODB_URI is configured and in test environment)
-  if (isSeedModeAllowed()) {
-    return PRODUCT_SEED.filter(
-      (p) => p.isActive !== false && (p as { active?: boolean }).active !== false
-    ).map((p) => ({
+  const seedSummaries = (): PublicProductSummary[] =>
+    PRODUCT_SEED.filter(isActiveSeedProduct).map((p) => ({
       slug: p.slug,
       name: p.name,
       category: p.category,
@@ -319,53 +387,50 @@ export async function getAllPublicProducts(): Promise<PublicProductSummary[]> {
       description: p.description,
       updatedAt: undefined,
     }));
-  }
 
-  // 2. Authoritative Database Lookup
-  // Any connection or query failure propagates an error and does NOT return an empty array or seed data.
-  await getConnectedDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
-    await ensureCatalogSeeded();
-  }
+  return withCatalogFallback(async () => {
+    await getConnectedDB();
+    if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+      await ensureCatalogSeeded();
+    }
 
-  const docs = await Product.find({ isActive: { $ne: false }, active: { $ne: false } })
-    .sort({ category: 1, name: 1 })
-    .lean<Array<IProduct & { updatedAt?: Date | string }>>();
+    const docs = await Product.find({ isActive: { $ne: false }, active: { $ne: false } })
+      .sort({ category: 1, name: 1 })
+      .lean<Array<IProduct & { updatedAt?: Date | string }>>();
 
-  if (docs.length === 0) {
-    logEmptyProductionCatalogWarning();
-    return [];
-  }
+    if (docs.length === 0) {
+      logEmptyProductionCatalogWarning();
+      return [];
+    }
 
-  return docs.map((d) => ({
-    slug: d.slug || slugifyProduct(d.name),
-    name: d.name,
-    category: d.category,
-    image: d.image || "",
-    description: d.description || "",
-    updatedAt: d.updatedAt ? new Date(d.updatedAt) : undefined,
-  }));
+    return docs.map((d) => ({
+      slug: d.slug || slugifyProduct(d.name),
+      name: d.name,
+      category: d.category,
+      image: d.image || "",
+      description: d.description || "",
+      updatedAt: d.updatedAt ? new Date(d.updatedAt) : undefined,
+    }));
+  }, seedSummaries);
 }
 
 export async function getActiveCategoriesWithProducts(): Promise<string[]> {
-  if (isSeedModeAllowed()) {
-    const categoriesWithProducts = new Set(
-      PRODUCT_SEED.filter(
-        (p) =>
-          p.isActive !== false &&
-          (p as { active?: boolean }).active !== false &&
-          p.category &&
-          p.category !== "All Products"
-      ).map((p) => p.category)
+  const seedCategories = () =>
+    Array.from(
+      new Set(
+        PRODUCT_SEED.filter((p) => isActiveSeedProduct(p) && p.category && p.category !== "All Products").map(
+          (p) => p.category,
+        ),
+      ),
     );
-    return Array.from(categoriesWithProducts);
-  }
 
-  await getConnectedDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
-    await ensureCatalogSeeded();
-  }
+  return withCatalogFallback(async () => {
+    await getConnectedDB();
+    if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+      await ensureCatalogSeeded();
+    }
 
-  const distinct = await Product.distinct("category", { isActive: { $ne: false }, active: { $ne: false } });
-  return distinct.filter((c): c is string => typeof c === "string" && Boolean(c) && c !== "All Products");
+    const distinct = await Product.distinct("category", { isActive: { $ne: false }, active: { $ne: false } });
+    return distinct.filter((c): c is string => typeof c === "string" && Boolean(c) && c !== "All Products");
+  }, seedCategories);
 }

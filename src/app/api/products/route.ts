@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { ensureCatalogSeeded } from "@/lib/catalog";
+import { ensureCatalogSeeded, getSeedCatalogProducts, shouldServeLocalSeedCatalog } from "@/lib/catalog";
 import { requireAdminSession } from "@/lib/api-auth";
 import connectDB from "@/lib/mongoose";
 import { serializeProduct } from "@/lib/store";
@@ -18,17 +18,25 @@ function slugify(value: string) {
 }
 
 export async function GET() {
-  await connectDB();
-  if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
+  try {
+    await connectDB();
+    if (process.env.NODE_ENV !== "production" || process.env.ALLOW_CATALOG_SEED === "true") {
     await ensureCatalogSeeded();
   }
-  const products = await Product.find({
-    isActive: { $ne: false },
-    active: { $ne: false },
-  })
-    .sort({ category: 1, name: 1 })
-    .limit(250);
-  return NextResponse.json(products.map(serializeProduct));
+    const products = await Product.find({
+      isActive: { $ne: false },
+      active: { $ne: false },
+    })
+      .sort({ category: 1, name: 1 })
+      .limit(250);
+    return NextResponse.json(products.map(serializeProduct));
+  } catch (error) {
+    logServerError("products_get", error);
+    if (process.env.NODE_ENV !== "production" && shouldServeLocalSeedCatalog(error)) {
+      return NextResponse.json(getSeedCatalogProducts());
+    }
+    return NextResponse.json({ message: "Unable to load products." }, { status: 500 });
+  }
 }
 
 const ALLOWED_PRODUCT_KEYS = [
