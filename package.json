@@ -11,6 +11,7 @@
     "test": "node -e \"const fs = require('fs'); if (!fs.existsSync('tests')) { console.log('No tests directory found'); process.exit(0); }\" && node --test \"tests/*.test.mjs\""
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.1",
     "@vercel/blob": "^2.4.0",
     "bcryptjs": "^3.0.3",
     "embla-carousel-autoplay": "^8.6.0",
