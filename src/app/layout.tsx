@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { AuthToast } from "@/components/AuthToast";
 import { serializeJsonLd } from "@/lib/catalogue-structured-data";
 import { BUSINESS_INFO } from "@/lib/business-info";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -178,6 +179,7 @@ export default function RootLayout({
             <LoginModal />
           </Suspense>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
