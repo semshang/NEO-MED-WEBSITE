@@ -16,21 +16,7 @@ export const metadata: Metadata = {
     default: "Medical Equipment Supplier in Nepal | Neomeditech",
     template: "%s | Neomeditech",
   },
-  description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
-  keywords: [
-    "Medical equipment in Nepal",
-    "Medical equipment supplier Nepal",
-    "Biomedical solutions Nepal",
-    "Hospital equipment supplier Kathmandu",
-    "Oxygen concentrator price in Nepal",
-    "Patient monitor Nepal",
-    "ECG machine supplier Nepal",
-    "Biomedical engineering services Nepal",
-    "ICU equipment Kathmandu",
-    "Autoclave machine Nepal",
-    "Neomeditech",
-    "Neomeditech Biomedical Solutions",
-  ],
+  description: "Neomeditech Biomedical Solutions provides medical equipment information, specifications, quotations, and technical support for healthcare facilities.",
   authors: [{ name: "Neomeditech Biomedical Solutions Pvt. Ltd.", url: SITE.url }],
   creator: "Neomeditech Biomedical Solutions Pvt. Ltd.",
   publisher: "Neomeditech Biomedical Solutions Pvt. Ltd.",
@@ -52,7 +38,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE.name,
     title: "Medical Equipment Supplier in Nepal | Neomeditech",
-    description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
+    description: "Neomeditech Biomedical Solutions provides medical equipment information, specifications, quotations, and technical support for healthcare facilities.",
     url: SITE.url,
     locale: "en_US",
     images: [
@@ -67,7 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Medical Equipment Supplier in Nepal | Neomeditech",
-    description: "Neomeditech Biomedical Solutions supplies medical and biomedical equipment, hospital devices, and technical support services across Nepal.",
+    description: "Neomeditech Biomedical Solutions provides medical equipment information, specifications, quotations, and technical support for healthcare facilities.",
     images: ["/hero-equipment.webp"],
   },
   other: {
@@ -127,9 +113,6 @@ export default function RootLayout({
         "description": BUSINESS_INFO.description,
         "telephone": [BUSINESS_INFO.telephone, BUSINESS_INFO.alternateTelephone],
         "email": BUSINESS_INFO.email,
-        "priceRange": BUSINESS_INFO.priceRange,
-        "currenciesAccepted": BUSINESS_INFO.currenciesAccepted,
-        "paymentAccepted": BUSINESS_INFO.paymentAccepted,
         "additionalType": "https://en.wikipedia.org/wiki/Medical_equipment",
         "address": {
           "@type": "PostalAddress",
@@ -166,8 +149,14 @@ export default function RootLayout({
       </head>
       <body className="font-sans overflow-x-hidden">
         <Providers>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-3 focus:text-brand-navy focus:shadow-lg"
+          >
+            Skip to main content
+          </a>
           <Header />
-          <main className="min-h-screen">
+          <main id="main-content" className="min-h-screen">
             {children}
           </main>
           <Suspense fallback={null}>

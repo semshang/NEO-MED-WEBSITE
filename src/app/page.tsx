@@ -35,7 +35,7 @@ const heroButtonsVariant: Variants = {
 };
 
 export default function Home() {
-    const { products } = useAdmin();
+  const { products } = useAdmin();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 2000, stopOnInteraction: false })]
@@ -66,10 +66,11 @@ export default function Home() {
               variants={heroHeadlineVariant}
               initial="hidden"
               animate="visible"
+              aria-label="Medical Equipment Supplier in Nepal"
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.05] tracking-tight mb-6 flex flex-col items-center lg:items-start"
             >
-              <span className="text-brand-navy">Medical Equipment</span>
-              <span className="text-brand-navy mt-1">Supplier</span>
+              <span className="text-brand-navy">Medical Equipment{" "}</span>
+              <span className="text-brand-navy mt-1">Supplier{" "}</span>
               <span className="mt-1 text-transparent bg-clip-text bg-gradient-to-r from-[#0066FF] to-[#33CC33]">in Nepal</span>
             </motion.h1>
 
@@ -80,7 +81,7 @@ export default function Home() {
               animate="visible"
               className="text-lg md:text-xl text-slate-500 leading-relaxed max-w-lg mb-8 mx-auto lg:mx-0 font-medium"
             >
-              Explore medical and hospital equipment for your facility. Contact Neomeditech for specifications, quotations and technical support across Nepal.
+              Explore medical and hospital equipment for your facility. Contact Neomeditech for specifications, quotations, and technical support. Repair, calibration, or installation support may be available depending on the equipment and service requirements.
             </motion.p>
 
             {/* Buttons */}
@@ -114,7 +115,7 @@ export default function Home() {
             >
               <Image
                 src="/hero-equipment.webp"
-                alt="Premium Medical Equipment Monitor"
+                alt="Medical equipment including an oxygen concentrator and patient monitors"
                 width={850}
                 height={638}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 750px, 850px"
@@ -131,31 +132,31 @@ export default function Home() {
         <div className="bg-white rounded-2xl shadow-lg py-6 px-6 sm:px-8 flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-y-6 gap-x-4 border border-gray-200">
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><FlaskConical size={26} strokeWidth={2} /></div>
-            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Innovative<br/>Medical Solutions</p></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Medical Equipment<br/> & Supplies</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-blue-500 shrink-0"><ShieldCheck size={26} strokeWidth={2} /></div>
-            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">High Quality<br/>& Reliable</p></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Specifications<br/>& Quotations</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-blue-500 shrink-0"><Users size={26} strokeWidth={2} /></div>
-            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Trusted by<br/>Healthcare Professionals</p></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Technical Support<br/>Enquiries</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-green-500 shrink-0"><Globe size={26} strokeWidth={2} /></div>
-            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Nationwide Reach<br/>& Local Support</p></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Equipment Service<br/>Enquiries</p></div>
           </div>
           <div className="hidden lg:block w-px h-10 bg-slate-200"></div>
           
           <div className="flex items-center space-x-3 w-full sm:w-[45%] lg:w-auto">
             <div className="text-teal-500 shrink-0"><Heart size={26} strokeWidth={2} /></div>
-            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Better Care<br/>for Every Patient</p></div>
+            <div><p className="font-bold text-slate-800 text-[13px] leading-tight">Healthcare Facility<br/>Support</p></div>
           </div>
         </div>
       </div>
@@ -172,7 +173,7 @@ export default function Home() {
           >
             <div>
               <h2 className="text-3xl font-bold text-brand-navy mb-4">Featured Equipment</h2>
-              <p className="text-slate-600 max-w-2xl">Discover our top-rated medical devices trusted by healthcare professionals across the country.</p>
+              <p className="text-slate-600 max-w-2xl">Browse medical equipment in the current catalogue and contact us to confirm specifications, availability, and quotations.</p>
             </div>
             <div className="hidden md:flex items-center space-x-4">
               <button 
@@ -240,6 +241,83 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Equipment Supply and Support Information */}
+      <section className="py-12 md:py-16 bg-white border-t border-gray-200" aria-labelledby="equipment-support-heading">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="max-w-3xl mb-10">
+            <h2 id="equipment-support-heading" className="text-3xl font-bold text-brand-navy mb-4">Medical equipment supply and support for healthcare facilities</h2>
+            <p className="text-slate-600 leading-relaxed">Neomeditech Biomedical Solutions helps hospitals, clinics, laboratories, and other healthcare providers in Nepal explore medical and hospital equipment, request specifications and quotations, and discuss technical support.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <article className="rounded-2xl border border-gray-200 p-6">
+              <h3 className="text-xl font-bold text-brand-navy mb-3">Equipment categories</h3>
+              <p className="text-slate-600 leading-relaxed mb-4">The current catalogue includes diagnostic, laboratory, respiratory care, patient monitoring, hospital furniture, sterilization equipment, and medical supplies.</p>
+              <Link
+                href="/shop"
+                className="inline-flex items-center font-bold text-brand-blue hover:text-brand-navy"
+              >
+                Browse the catalogue <ArrowRight size={16} className="ml-2" />
+              </Link>
+            </article>
+            <article className="rounded-2xl border border-gray-200 p-6">
+              <h3 className="text-xl font-bold text-brand-navy mb-3">Specifications and quotations</h3>
+              <p className="text-slate-600 leading-relaxed mb-4">Use a product page or contact the team to discuss specifications, availability, and quotation requirements before making a purchase decision.</p>
+              <Link
+                href="/contact"
+                className="inline-flex items-center font-bold text-brand-blue hover:text-brand-navy"
+              >
+                Request product information <ArrowRight size={16} className="ml-2" />
+              </Link>
+            </article>
+            <article className="rounded-2xl border border-gray-200 p-6">
+              <h3 className="text-xl font-bold text-brand-navy mb-3">Biomedical equipment services</h3>
+              <p className="text-slate-600 leading-relaxed mb-4">We can discuss repair, calibration, or installation support for selected equipment. Service suitability depends on the equipment model, issue, and scope of work.</p>
+              <Link
+                href="/contact"
+                className="inline-flex items-center font-bold text-brand-blue hover:text-brand-navy"
+              >
+                Discuss a service <ArrowRight size={16} className="ml-2" />
+              </Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Frequently Asked Questions */}
+      <section className="py-12 md:py-16 bg-[#F5F7FA] border-t border-gray-200" aria-labelledby="homepage-faq-heading">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <h2 id="homepage-faq-heading" className="text-3xl font-bold text-brand-navy mb-8">Questions about medical equipment and quotations?</h2>
+          <div className="space-y-4">
+            <details className="rounded-xl border border-gray-200 bg-white p-5">
+              <summary className="cursor-pointer font-bold text-brand-navy">How can I request a quotation?</summary>
+              <p className="mt-3 text-slate-600 leading-relaxed">Use the contact form or WhatsApp link and include the equipment name, required specifications, and facility details.</p>
+            </details>
+            <details className="rounded-xl border border-gray-200 bg-white p-5">
+              <summary className="cursor-pointer font-bold text-brand-navy">How can I confirm product availability?</summary>
+              <p className="mt-3 text-slate-600 leading-relaxed">Contact Neomeditech before ordering to confirm current availability and delivery details.</p>
+            </details>
+            <details className="rounded-xl border border-gray-200 bg-white p-5">
+              <summary className="cursor-pointer font-bold text-brand-navy">How can I ask about equipment specifications or services?</summary>
+              <p className="mt-3 text-slate-600 leading-relaxed">Open a product page or contact the team with the product name and your requirements to discuss specifications, quotations, and whether repair, calibration, or installation support is available.</p>
+            </details>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-4">
+            <Link
+              href="/faq"
+              className="font-bold text-brand-blue hover:text-brand-navy"
+            >
+              Read all FAQs <ArrowRight size={16} className="inline ml-1" />
+            </Link>
+            <Link
+              href="/contact"
+              className="font-bold text-brand-blue hover:text-brand-navy"
+            >
+              Contact Neomeditech <ArrowRight size={16} className="inline ml-1" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Service Showcase */}
       <section className="pt-2 pb-10 md:pt-4 md:pb-12 bg-white border-t border-gray-200">
         <div className="container mx-auto px-4 max-w-7xl">
@@ -250,8 +328,8 @@ export default function Home() {
             variants={fadeUpVariant}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold text-brand-navy mb-4">Repair, Calibration & Installation Services</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">Our certified technicians keep your equipment running safely and accurately — from initial installation to ongoing maintenance.</p>
+            <h2 className="text-3xl font-bold text-brand-navy mb-4">Technical Support and Service Enquiries</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">Technical support, including repair, calibration, or installation, may be available depending on the equipment and service requirements. Contact us to discuss your needs.</p>
           </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -262,7 +340,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Calibration</h3>
-                <p className="mt-3 text-slate-600 leading-relaxed">Precision testing to ensure accurate, reliable readings.</p>
+                <p className="mt-3 text-slate-600 leading-relaxed">Calibration support may be available for selected equipment, depending on the equipment and service requirements.</p>
               </div>
             </motion.div>
             
@@ -273,7 +351,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Repair</h3>
-                <p className="mt-3 text-slate-600 leading-relaxed">Expert diagnosis and repair to minimize equipment downtime.</p>
+                <p className="mt-3 text-slate-600 leading-relaxed">Repair support may be available after reviewing the equipment model, issue, and scope of work.</p>
               </div>
             </motion.div>
             
@@ -284,7 +362,7 @@ export default function Home() {
               </div>
               <div className="p-8 flex-grow">
                 <h3 className="text-xl font-bold text-brand-navy">Installation</h3>
-                <p className="mt-3 text-slate-600 leading-relaxed">Professional setup and integration at your facility.</p>
+                <p className="mt-3 text-slate-600 leading-relaxed">Installation support may be available depending on the equipment and installation requirements.</p>
               </div>
             </motion.div>
           </div>
@@ -317,9 +395,9 @@ export default function Home() {
               variants={fadeUpVariant}
               className="text-left"
             >
-              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">Need Medical Equipment for Your Clinic?</h2>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">Need medical equipment for your clinic or healthcare facility?</h2>
               <p className="text-slate-300 text-lg mb-10 max-w-2xl">
-                Get in touch with our experts today for customized solutions, bulk orders, and specialized biomedical equipment.
+                Contact Neomeditech for product availability, specifications, quotations, and technical support.
               </p>
               <div className="flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4">
                 <motion.div whileTap={{ scale: 0.97 }}>
@@ -341,7 +419,7 @@ export default function Home() {
               variants={fadeUpVariant}
               className="relative hidden lg:block h-[400px] w-full rounded-3xl overflow-hidden shadow-2xl"
             >
-              <Image src="/hero-equipment.webp" alt="Medical Equipment" width={800} height={600} className="w-full h-full object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image src="/hero-equipment.webp" alt="" width={800} height={600} className="w-full h-full object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             </motion.div>
           </div>
         </div>

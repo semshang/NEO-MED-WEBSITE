@@ -17,7 +17,7 @@ export default function About() {
         <div className="container mx-auto px-4 max-w-7xl text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-white">About Neomeditech</h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-            We are dedicated to improving healthcare in Nepal by providing top-quality medical equipment, reliable maintenance, and exceptional customer service.
+            Neomeditech helps healthcare providers in Nepal explore medical equipment, request quotations, and discuss technical support.
           </p>
         </div>
       </section>
@@ -58,7 +58,7 @@ export default function About() {
                 <Award size={32} />
               </div>
               <h3 className="text-xl font-bold text-brand-navy mb-3">Quality First</h3>
-              <p className="text-slate-600">We never compromise on the quality and reliability of our medical equipment.</p>
+              <p className="text-slate-600">We encourage customers to confirm product specifications and requirements before making a purchase decision.</p>
             </div>
             
             <div className="p-8 bg-white rounded-3xl shadow-md border border-gray-200 text-center hover:shadow-lg transition-shadow">
@@ -66,7 +66,7 @@ export default function About() {
                 <Users size={32} />
               </div>
               <h3 className="text-xl font-bold text-brand-navy mb-3">Customer Centric</h3>
-              <p className="text-slate-600">Our clients&apos; needs and patient outcomes are at the heart of our business.</p>
+              <p className="text-slate-600">We use customer requirements to guide product information and quotation discussions.</p>
             </div>
             
             <div className="p-8 bg-white rounded-3xl shadow-md border border-gray-200 text-center hover:shadow-lg transition-shadow">
@@ -82,7 +82,7 @@ export default function About() {
                 <ThumbsUp size={32} />
               </div>
               <h3 className="text-xl font-bold text-brand-navy mb-3">Integrity</h3>
-              <p className="text-slate-600">We conduct our business with absolute transparency and honesty.</p>
+              <p className="text-slate-600">We communicate the information confirmed for a product or service request.</p>
             </div>
           </div>
         </div>

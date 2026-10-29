@@ -308,8 +308,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
                 <h2 className="text-xl font-bold text-brand-navy">Request a quotation for {product.name}</h2>
                 <p className="text-sm text-slate-600 leading-relaxed">
                   Share your required model or configuration, quantity and delivery location in Nepal.
-                  Our biomedical engineering team will confirm specifications, included accessories, availability,
-                  and official quotation.
+                  Our team can review specifications, included accessories, availability, and official quotation
+                  requirements for your request.
                 </p>
                 <a
                   href={whatsappUrl}

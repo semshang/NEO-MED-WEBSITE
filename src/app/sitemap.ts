@@ -24,7 +24,6 @@ const publicRoutes: SitemapRoute[] = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries: MetadataRoute.Sitemap = publicRoutes.map((route) => ({
     url: `${SITE.url}${route.path}`,
-    lastModified: new Date(),
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));
@@ -32,7 +31,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const activeCategories = await getActiveCategoriesWithProducts();
   const categoryEntries: MetadataRoute.Sitemap = activeCategories.map((category) => ({
     url: `${SITE.url}/products/category/${slugifyCategory(category)}`,
-    lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));

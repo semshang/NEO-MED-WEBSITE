@@ -5,8 +5,8 @@ export const SITE = {
   phone: "+977 9712011758, +977 9712011757",
   email: "contact.neomeditech@gmail.com",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://neomeditech.com.np",
-  address: "Tarkeshwor-6, Kathmandu, Nepal",
-  fullAddress: "Tarkeshwor-6, Kathmandu, Nepal - Nationwide Delivery",
+  address: "Tarakeshwar-6, Kathmandu, Nepal",
+  fullAddress: "Tarakeshwar-6, Kathmandu, Nepal",
   tagline: "Medical equipment sourcing and quotation support for healthcare providers in Nepal.",
   social: {
     facebook: "https://facebook.com/neomeditechbiomedicalsolutions",

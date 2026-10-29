@@ -12,13 +12,10 @@ export const BUSINESS_INFO = {
   logo: `${SITE.url}/logo-transparent.png`,
   image: `${SITE.url}/hero-equipment.webp`,
   description:
-    "Leading medical equipment supplier and biomedical engineering service provider in Kathmandu, Nepal. Sourcing, delivery, installation, and repair across all 77 districts.",
+    "Medical equipment sourcing and quotation support for healthcare providers in Nepal. Technical support may be available depending on the equipment and service requirements.",
   telephone: "+977 9712011758",
   alternateTelephone: "+977 9712011757",
   email: SITE.email,
-  priceRange: "$$",
-  currenciesAccepted: "NPR",
-  paymentAccepted: "Cash, Bank Transfer, Fonepay, Cheque",
   address: {
     streetAddress: "Tarakeshwar-6",
     addressLocality: "Kathmandu",
@@ -106,9 +103,6 @@ export function getBusinessStructuredData(siteUrl: string = SITE.url) {
         "description": BUSINESS_INFO.description,
         "telephone": [BUSINESS_INFO.telephone, BUSINESS_INFO.alternateTelephone],
         "email": BUSINESS_INFO.email,
-        "priceRange": BUSINESS_INFO.priceRange,
-        "currenciesAccepted": BUSINESS_INFO.currenciesAccepted,
-        "paymentAccepted": BUSINESS_INFO.paymentAccepted,
         "additionalType": "https://en.wikipedia.org/wiki/Medical_equipment",
         "address": {
           "@type": "PostalAddress",

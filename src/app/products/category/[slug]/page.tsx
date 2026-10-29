@@ -293,7 +293,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               Need assistance with {category} in Nepal?
             </h2>
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-              Our team assists healthcare centers and clinics across Nepal with equipment specifications, availability, and quotation requests.
+              Our team can discuss equipment specifications, availability, and quotation requests for healthcare facilities.
             </p>
             <div className="flex flex-wrap gap-4">
               <a
