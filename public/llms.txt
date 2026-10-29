@@ -1,54 +1,65 @@
 # Neomeditech Biomedical Solutions Pvt. Ltd.
 
-> Leading medical equipment supplier, biomedical engineering, and clinical technology solutions in Nepal.
+> Neomeditech Biomedical Solutions Pvt. Ltd. is a Nepal-based business providing medical equipment and related product information for healthcare facilities and other customers.
 
 ## Organization Overview
-- **Legal Business Name**: Neomeditech Biomedical Solutions Pvt. Ltd.
-- **Brand Names**: Neomeditech, Neomeditech Nepal
-- **Headquarters**: Tarkeshwor-6, Kathmandu, Bagmati Province, Nepal
-- **Coverage**: All 77 districts across Nepal (Kathmandu Valley, Pokhara, Chitwan, Biratnagar, Butwal, Nepalgunj, Dhangadhi, and nationwide)
-- **Official Website**: https://neomeditech.com.np
-- **Official Email**: contact.neomeditech@gmail.com
-- **Official Contact Lines**: +977 9712011758, +977 9712011757
-- **WhatsApp Support**: +977 9712011758
+- **Legal Business Name:** Neomeditech Biomedical Solutions Pvt. Ltd.
+- **Brand Names:** Neomeditech, Neomeditech Nepal
+- **Address:** Tarakeshwar-6, Kathmandu, Bagmati Province, Nepal
+- **Official Website:** [https://neomeditech.com.np](https://neomeditech.com.np)
+- **Email:** [contact.neomeditech@gmail.com](mailto:contact.neomeditech@gmail.com)
+- **Contact Numbers:** +977 9712011758, +977 9712011757
+- **WhatsApp:** +977 9712011758
 
-## Core Offerings & Medical Equipment
-Neomeditech supplies hospital-grade, CE/ISO certified medical devices and clinical equipment to hospitals, clinics, diagnostic laboratories, nursing homes, and home-care patients:
+## Medical Equipment Categories
 
-1. **Respiratory & Critical Care**:
-   - Oxygen Concentrators (5L, 10L medical grade)
-   - BiPAP and CPAP machines & circuits
-   - Ventilators and respiratory accessories
-2. **Cardiology & Diagnostic Devices**:
-   - Multi-parameter Patient Monitors & ICU Monitors
-   - ECG Machines (12-lead digital electrocardiographs) & accessories
-   - ABPM (24-Hour Ambulatory Blood Pressure Monitors)
-   - EEG Machines (Neurology diagnostics)
-3. **Emergency & Life Support**:
-   - Defibrillators & Automated External Defibrillators (AED)
-   - Crash Carts & Emergency Trolleys
-   - Infusion Pumps and Syringe Pumps
-4. **Sterilization & Infection Control**:
-   - Autoclave Machines (Vertical, Horizontal, Tabletop B-Class)
-   - Door Gaskets and sterilization accessories
-5. **Maternal & Neonatal Care**:
-   - Radiant Baby Warmers & Phototherapy Units
-   - CTG (Cardiotocography) Machines & Probes
-   - Fetal Dopplers
-6. **Surgical & Laboratory Equipment**:
-   - Bipolar Electrosurgical Forceps & Cables
-   - Laboratory Centrifuges & Colorimeters
-   - Ultrasound & Sonography systems, probes, and accessories
+Neomeditech's website provides information about medical equipment and related accessories, including the following categories. Availability and specifications should be confirmed for individual products.
 
-## Biomedical Engineering Services
-- **Biomedical Equipment Calibration & Testing**: Accurate clinical testing ensuring equipment meets healthcare safety regulations.
-- **On-Site Installation & Staff Training**: Hands-on training for doctors, nurses, and technicians conducted by certified biomedical engineers.
-- **Preventive Maintenance & Repair**: Rapid-response repair and periodic maintenance to minimize hospital downtime.
-- **Warranty**: Comprehensive manufacturer warranty (1 to 2 years) backed by an in-house biomedical engineering service center in Kathmandu.
+### Respiratory and Critical Care
 
-## Key Web Links
+- Oxygen concentrators
+- BiPAP and CPAP machines and accessories
+- Ventilators and respiratory accessories
+
+### Cardiology and Diagnostic Equipment
+
+- Multiparameter patient monitors
+- ECG machines and accessories
+- Ambulatory blood pressure monitors (ABPM)
+- EEG equipment
+
+### Emergency and Life-Support Equipment
+
+- Defibrillators and automated external defibrillators (AEDs)
+- Crash carts and emergency trolleys
+- Infusion pumps and syringe pumps
+
+### Sterilization and Infection Control
+
+- Vertical, horizontal, and tabletop autoclaves
+- Sterilization accessories and replacement parts
+
+### Maternal and Neonatal Care
+
+- Radiant baby warmers
+- Phototherapy units
+- Cardiotocography (CTG) machines and probes
+- Fetal Dopplers
+
+### Surgical and Laboratory Equipment
+
+- Bipolar electrosurgical forceps and cables
+- Laboratory centrifuges and colorimeters
+- Ultrasound systems, probes, and accessories
+
+## Product Information and Support
+
+For current product availability, technical specifications, pricing, warranty conditions, installation, training, maintenance, or repair enquiries, contact Neomeditech directly. Service availability and warranty coverage may vary by product.
+
+## Official Website Links
+
 - [Homepage](https://neomeditech.com.np/)
-- [Medical Equipment Catalog / Shop](https://neomeditech.com.np/shop)
+- [Medical Equipment Catalogue](https://neomeditech.com.np/shop)
 - [About Neomeditech](https://neomeditech.com.np/about)
-- [Frequently Asked Questions (FAQ)](https://neomeditech.com.np/faq)
-- [Contact & Quote Request](https://neomeditech.com.np/contact)
+- [Frequently Asked Questions](https://neomeditech.com.np/faq)
+- [Contact and Quote Requests](https://neomeditech.com.np/contact)
