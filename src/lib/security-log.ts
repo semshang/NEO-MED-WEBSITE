@@ -1,11 +1,11 @@
 import "server-only";
 import { createHmac } from "crypto";
+import { getSecurityLogKey } from "@/lib/security-log-config";
 
 type SafeDetails = Record<string, string | number | boolean | null | undefined>;
 
 function pseudonymize(value: string) {
-  const key = process.env.NEXTAUTH_SECRET ?? "development-only-security-log-key";
-  return createHmac("sha256", key).update(value.toLowerCase()).digest("hex").slice(0, 20);
+  return createHmac("sha256", getSecurityLogKey()).update(value.toLowerCase()).digest("hex").slice(0, 20);
 }
 
 function sanitizeDetails(details: SafeDetails) {

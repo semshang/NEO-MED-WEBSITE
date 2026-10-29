@@ -3,7 +3,7 @@ import { getApiSession } from "@/lib/api-auth";
 import { isAdmin } from "@/lib/auth";
 import connectDB from "@/lib/mongoose";
 import { serializeMessage } from "@/lib/store";
-import { requireSameOrigin, readJsonObject, privateJson } from "@/lib/request-security";
+import { enforceRateLimit, requireSameOrigin, readJsonObject, privateJson } from "@/lib/request-security";
 import ContactMessage from "@/models/ContactMessage";
 import mongoose from "mongoose";
 import { hasOnlyKeys } from "@/lib/security-validation";
@@ -14,9 +14,11 @@ export async function PATCH(request: Request, props: { params: Promise<{ id: str
   if (originError) return originError;
 
   const session = await getApiSession();
-  if (!isAdmin(session)) {
+  if (!session?.user?.email || !isAdmin(session)) {
     return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   }
+  const rateLimit = await enforceRateLimit(request, "admin-contact-update", 60, 15 * 60_000, session.user.email);
+  if (rateLimit) return rateLimit;
 
   const parsed = await readJsonObject(request, 4 * 1024);
   if (!parsed.ok) return parsed.response;

@@ -1,29 +1,15 @@
 import "server-only";
 import { NextResponse } from "next/server";
+import { getClientAddress } from "@/lib/client-ip";
 import { consumeRateLimit } from "@/lib/rate-limit";
 import { isRecord, type UnknownRecord } from "@/lib/validation";
 import { MAX_JSON_BODY_BYTES } from "@/lib/security-validation";
 
+export { getClientAddress } from "@/lib/client-ip";
+
 type JsonResult =
   | { ok: true; data: UnknownRecord }
   | { ok: false; response: NextResponse };
-
-export function getClientAddress(request: Request): string {
-  const vercelIp = request.headers.get("x-vercel-ip")?.trim();
-  if (vercelIp) return vercelIp.slice(0, 128);
-
-  const realIp = request.headers.get("x-real-ip")?.trim();
-  if (realIp) return realIp.slice(0, 128);
-
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const parts = forwarded.split(",").map((p) => p.trim()).filter(Boolean);
-    const candidate = parts[parts.length - 1];
-    if (candidate) return candidate.slice(0, 128);
-  }
-
-  return "unknown";
-}
 
 function isAllowedOriginHost(host: string): boolean {
   const normalizedHost = host.toLowerCase().trim();

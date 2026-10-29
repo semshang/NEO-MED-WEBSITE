@@ -4,16 +4,18 @@ import connectDB from "@/lib/mongoose";
 import { enforceRateLimit } from "@/lib/request-security";
 import { emailValue } from "@/lib/validation";
 import { logSecurityEvent, logServerError } from "@/lib/security-log";
+import { getVerificationRedirectOrigin } from "@/lib/auth-origin";
 import User from "@/models/User";
 
 function redirectToLogin(request: Request, result: "verified" | "invalid") {
-  const configuredUrl = process.env.NEXTAUTH_URL;
-  let baseUrl: URL;
-  try {
-    baseUrl = configuredUrl ? new URL(configuredUrl) : new URL(request.url);
-  } catch {
-    baseUrl = new URL(request.url);
+  const baseUrl = getVerificationRedirectOrigin(request);
+  if (!baseUrl) {
+    const response = NextResponse.json({ message: "Email verification is temporarily unavailable." }, { status: 503 });
+    response.headers.set("Cache-Control", "no-store");
+    response.headers.set("Referrer-Policy", "no-referrer");
+    return response;
   }
+
   const target = new URL("/", baseUrl);
   target.searchParams.set("login", "true");
   target.searchParams.set("verification", result);
